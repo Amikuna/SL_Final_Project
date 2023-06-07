@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Button } from "react-bootstrap";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         reprehenderit, vero fugit, nostrum asperiores quam omnis quaerat optio,
         eius assumenda?
       </p>
+      <Button></Button>
     </div>
   );
 }
