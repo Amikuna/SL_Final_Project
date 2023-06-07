@@ -201,8 +201,25 @@ function App() {
 
   if (mans.length === 0 && categorys.length === 0 && products.length === 0) {
     return (
-      <div>
-        <h1>Loading</h1>
+      <div className="App">
+        <Navbar.Brand href="/">
+          <div className="header">
+            <Container className="nav">
+              <img
+                src={logo}
+                width="131"
+                height="40"
+                className="d-inline-block align-top logo"
+                alt="React Bootstrap logo"
+              />
+            </Container>
+          </div>
+        </Navbar.Brand>
+        <Container>
+          <div className="d-flex justify-content-center align-items-center">
+            <h1>Loading...</h1>
+          </div>
+        </Container>
       </div>
     );
   }
@@ -214,8 +231,8 @@ function App() {
           <Container className="nav">
             <img
               src={logo}
-              width="141"
-              height="45"
+              width="131"
+              height="40"
               className="d-inline-block align-top logo"
               alt="React Bootstrap logo"
             />
