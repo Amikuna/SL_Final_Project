@@ -1,8 +1,11 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button, Navbar, Container } from "react-bootstrap";
+import { Button, Navbar, Container, Col, Card, Row } from "react-bootstrap";
 import logo from "./assets/logo.png";
+import car from "./assets/car.png";
+import spec from "./assets/spec.png";
+import moto from "./assets/moto.png";
 import { useState, useEffect } from "react";
 
 function App() {
@@ -240,6 +243,25 @@ function App() {
         </div>
       </Navbar.Brand>
       <Container className="main">
+        <Card style={{ width: "250px" }}>
+          <Row>
+            <Col className="d-flex justify-content-center align-items-center cat-col">
+              <img
+                src={car}
+                width="30px"
+                height="14px"
+                style={{ color: "black" }}
+              />
+            </Col>
+            <Col className="cat-col">
+              <Button className="moto">Car</Button>
+            </Col>
+            <Col className="cat-col">
+              <Button className="spec">Car</Button>
+            </Col>
+          </Row>
+        </Card>
+
         <p>cool</p>
         {products.map((man) => {
           return <h1>{man.cylinders}</h1>;

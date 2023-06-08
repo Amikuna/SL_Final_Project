@@ -9,3 +9,21 @@ body {
 .logo {
   margin: 10px 0px 10px 0px;
 }
+.car {
+  width: 100%;
+  border-radius: 0px !important;
+}
+.moto {
+  width: 100%;
+  border-radius: 0px !important;
+}
+.spec {
+  width: 100%;
+  border-radius: 0px !important;
+}
+.cat-col {
+  background-color: #f2f3f6;
+}
+.cat-col:hover {
+  background-color: #ffffff;
+}
