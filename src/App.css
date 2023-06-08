@@ -9,21 +9,50 @@ body {
 .logo {
   margin: 10px 0px 10px 0px;
 }
-.car {
-  width: 100%;
-  border-radius: 0px !important;
-}
-.moto {
-  width: 100%;
-  border-radius: 0px !important;
-}
-.spec {
-  width: 100%;
-  border-radius: 0px !important;
-}
+
 .cat-col {
   background-color: #f2f3f6;
+  width: 33.3%;
+  height: 45px;
+  border-bottom: 2px black !important;
 }
 .cat-col:hover {
   background-color: #ffffff;
+}
+.card {
+  width: 250px !important;
+}
+.cl {
+  margin-left: 5%;
+}
+.sel {
+  font-size: 15px;
+}
+.opt {
+  font-size: 15px !important;
+}
+.opt-2 {
+  font-size: 15px !important;
+}
+.form-sel {
+  border-bottom: 1px solid #e9e9f0;
+  width: 100% !important;
+}
+.price-sel {
+  width: 35% !important;
+}
+.prod-img {
+  width: 182px;
+  height: 144px;
+  border-radius: 10px;
+  margin: 1.5% 1.5% 1.5% 1.5%;
+}
+.prod-car {
+  background-color: #ffffff;
+  margin-bottom: 2%;
+  margin-left: 2%;
+  border-radius: 20px;
+}
+.title {
+  margin-top: 1.5%;
 }

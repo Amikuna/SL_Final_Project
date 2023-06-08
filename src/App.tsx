@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button, Navbar, Container, Col, Card, Row } from "react-bootstrap";
+import { Button, Navbar, Container, Col, Row, Form } from "react-bootstrap";
 import logo from "./assets/logo.png";
 import car from "./assets/car.png";
 import spec from "./assets/spec.png";
@@ -10,13 +10,16 @@ import { useState, useEffect } from "react";
 
 function App() {
   type manProps = {
-    man_id: number;
+    man_id: string;
     man_name: string;
-    is_car: number;
-    is_spec: number;
-    is_moto: number;
+    is_car: string;
+    is_spec: string;
+    is_moto: string;
   };
   type modProps = {
+    data: modelProps[];
+  };
+  type modelProps = {
     model_id: number;
     model_name: string;
     model_group: string;
@@ -163,20 +166,43 @@ function App() {
     comfort_features: number[];
   };
   const [mans, setMans] = useState<manProps[]>([]);
-  const [models, setModels] = useState<modProps[]>([]);
+  const [models, setModels] = useState<modelProps[]>([]);
   const [categorys, setCategorys] = useState<categoryProps[]>([]);
   const [prod, setProd] = useState<prodAPI | null>(null);
   const [products, setProducts] = useState<itemProps[]>([]);
 
-  function GetModels(id: number) {
-    const url = "https://api2.myauto.ge/ka/getManModels?man_id=" + id;
+  // const fetchData = async (id: number) => {
+  //   let url: string = "https://api2.myauto.ge/ka/getManModels?man_id=" + id;
+  //   try {
+  //     const response = await fetch(url);
+  //     const jsonData = await response.json();
+  //     setModels(jsonData);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
+  // function GetModels(id: number) {
+  //   const url = "https://api2.myauto.ge/ka/getManModels?man_id=" + id;
 
-    useEffect(() => {
-      fetch(url)
-        .then((response) => response.json())
-        .then((data: modProps[]) => setModels(data));
-    });
-  }
+  //   useEffect(() => {
+  //     fetch(url)
+  //       .then((response) => response.json())
+  //       .then((data: modProps[]) => setModels(data));
+  //   });
+  // }
+  useEffect(() => {
+    if (products.length == 15) {
+      products.forEach((prod) => {
+        let url =
+          "https://api2.myauto.ge/ka/getManModels?man_id=" + prod.man_id;
+        fetch(url)
+          .then((response) => response.json())
+          .then((data: modProps) => {
+            setModels(data.data);
+          });
+      });
+    }
+  }, [products]);
 
   useEffect(() => {
     fetch("https://static.my.ge/myauto/js/mans.json")
@@ -201,8 +227,16 @@ function App() {
         }
       });
   }, []);
+  // const getModels = (id: number) => {
+  //   fetchData(id);
+  // };
 
-  if (mans.length === 0 && categorys.length === 0 && products.length === 0) {
+  if (
+    mans.length === 0 &&
+    categorys.length === 0 &&
+    products.length === 0 &&
+    models.length < 15
+  ) {
     return (
       <div className="App">
         <Navbar.Brand href="/">
@@ -242,30 +276,172 @@ function App() {
           </Container>
         </div>
       </Navbar.Brand>
+      <br />
+      <br />
       <Container className="main">
-        <Card style={{ width: "250px" }}>
-          <Row>
-            <Col className="d-flex justify-content-center align-items-center cat-col">
-              <img
-                src={car}
-                width="30px"
-                height="14px"
-                style={{ color: "black" }}
-              />
-            </Col>
-            <Col className="cat-col">
-              <Button className="moto">Car</Button>
-            </Col>
-            <Col className="cat-col">
-              <Button className="spec">Car</Button>
-            </Col>
-          </Row>
-        </Card>
+        <div className="d-flex">
+          <Col className="card" style={{ width: "250px", height: "570px" }}>
+            <div
+              className="d-flex justify-content-center"
+              style={{ width: "100%" }}
+            >
+              <Row style={{ width: "100%" }}>
+                <Col className="d-flex justify-content-center align-items-center cat-col">
+                  <img
+                    src={car}
+                    width="30px"
+                    height="14px"
+                    style={{ color: "black" }}
+                  />
+                </Col>
+                <Col className="d-flex justify-content-center align-items-center cat-col">
+                  <img
+                    src={spec}
+                    width="22px"
+                    height="18px"
+                    style={{ color: "black" }}
+                  />
+                </Col>
+                <Col className="d-flex justify-content-center align-items-center cat-col">
+                  <img
+                    src={moto}
+                    width="22px"
+                    height="18px"
+                    style={{ color: "black" }}
+                  />
+                </Col>
+              </Row>
+            </div>
+            <div className="form-sel" style={{ width: "250px" }}>
+              <br></br>
+              <Row>
+                <Col>
+                  <div
+                    style={{ width: "60%" }}
+                    className="d-flex justify-content-center sel"
+                  >
+                    <Form.Label>გარიგების ტიპი</Form.Label>
+                  </div>
 
-        <p>cool</p>
-        {products.map((man) => {
-          return <h1>{man.cylinders}</h1>;
-        })}
+                  <div className="d-flex justify-content-center">
+                    <Form.Select className="opt" style={{ width: "80%" }}>
+                      <option className="opt" value="1">
+                        იყიდება
+                      </option>
+                      <option value="2">ქირავდება</option>
+                    </Form.Select>
+                  </div>
+                </Col>
+              </Row>
+              <br></br>
+              <Row>
+                <Col>
+                  <div
+                    style={{ width: "55%" }}
+                    className="d-flex justify-content-center sel"
+                  >
+                    <Form.Label>მწარმოებელი</Form.Label>
+                  </div>
+
+                  <div className="d-flex justify-content-center">
+                    <Form.Select className="opt-2" style={{ width: "80%" }}>
+                      <option>ყველა მწარმოებელი</option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </Form.Select>
+                  </div>
+                </Col>
+              </Row>
+              <br></br>
+              <Row>
+                <Col>
+                  <div
+                    style={{ width: "48%" }}
+                    className="d-flex justify-content-center sel"
+                  >
+                    <Form.Label>კატეგორია</Form.Label>
+                  </div>
+
+                  <div className="d-flex justify-content-center">
+                    <Form.Select className="opt" style={{ width: "80%" }}>
+                      <option>ყველა კატეგორია</option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </Form.Select>
+                  </div>
+                </Col>
+              </Row>
+              <br></br>
+            </div>
+            <div className="form-sel" style={{ width: "250px" }}>
+              <br />
+              <Row>
+                <Col>
+                  <div
+                    style={{ width: "40%" }}
+                    className="d-flex justify-content-center sel"
+                  >
+                    <Form.Label>ფასი</Form.Label>
+                  </div>
+
+                  <div
+                    style={{ width: "100%" }}
+                    className="d-flex justify-content-center"
+                  >
+                    <Form.Control
+                      className="price-sel justify-self-start"
+                      type="text"
+                      id="price"
+                      placeholder="დან"
+                    />
+                    <span style={{ alignSelf: "center", margin: "0 5px" }}>
+                      -
+                    </span>
+                    <Form.Control
+                      className="price-sel justify-self-end"
+                      type="text"
+                      id="price"
+                      placeholder="მდე"
+                    />
+                  </div>
+                  <br />
+                </Col>
+              </Row>
+            </div>
+          </Col>
+          <Col className="products col-9">
+            {products.map((prod) => {
+              // console.log(prod);
+
+              let img_url =
+                "https://static.my.ge/myauto/photos/" +
+                prod.photo +
+                "/thumbs/" +
+                prod.car_id +
+                "_1.jpg?v=" +
+                prod.photo_ver;
+              let title: manProps[] = mans.filter(
+                (man) => man.man_id === prod.man_id.toString()
+              );
+              // GetModels(Number(prod.man_id));
+
+              // console.log(models);
+              let q_model: modelProps[] = models.filter(
+                (model) => model.model_id === prod.model_id
+              );
+              console.log(q_model[0]);
+
+              return (
+                <div className="d-flex prod-car">
+                  <img className="prod-img" src={img_url} alt="product-img" />
+                  <h4 className="title">{title[0].man_name + " "}</h4>
+                </div>
+              );
+            })}
+          </Col>
+        </div>
       </Container>
     </div>
   );
