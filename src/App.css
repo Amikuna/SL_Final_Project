@@ -55,6 +55,7 @@ body {
 }
 .title {
   margin-top: 1.5%;
+  width: 50%;
 }
 .skeleton {
   animation: skeleton-loading 1s linear infinite alternate;
@@ -80,4 +81,75 @@ body {
   height: 144px;
   border-radius: 10px;
   margin: 1.5% 1.5% 1.5% 1.5%;
+}
+.total {
+  font-size: 16px !important;
+  width: 20%;
+  font-weight: 400 !important;
+  /* font-style: normal; */
+  margin-left: 3%;
+  /* font-family: "ge"; */
+
+  /* margin-top: 1%;
+  margin-bottom: 2%; */
+}
+.filter {
+  height: 40px;
+  margin-top: 1%;
+  margin-bottom: 2%;
+}
+.opt3 {
+  background-color: #ffffff !important;
+}
+
+.btn-secondary {
+  background-color: #ffffff !important;
+  color: #454857 !important;
+  border: 0px !important;
+  font-family: "ge" !important;
+}
+.year {
+  margin-left: 1.5%;
+  margin-top: 0.2%;
+  color: #8c929b;
+  font-family: "ge";
+  font-size: 1.3rem;
+}
+
+.page-item .page-link {
+  background-color: #ffffff;
+  border: 0px;
+  color: #caced4;
+}
+.pagination {
+  --bs-pagination-color: #fd4100 !important;
+  --bs-pagination-hover-color: #caced4 !important;
+  --bs-pagination-disabled-bg: #ffffff !important;
+  --bs-pagination-disabled-color: #ffffff !important;
+  --bs-pagination-focus-bg: #ffffff;
+  margin: 0% 0% 2% 0%;
+  font-size: 19px !important;
+  /* height: 2rem; */
+}
+.active > .page-link,
+.page-link.active {
+  background-color: #ffffff !important;
+  color: #fd4100 !important;
+}
+.pagination
+  > .page-item:nth-last-child(-n + 2)
+  .page-link:nth-last-child(-n + 2) {
+  color: #f80505 !important;
+}
+.pagination > .page-item:nth-child(-n + 2) .page-link:nth-child(-n + 2) {
+  color: #f80505 !important;
+}
+.disabled {
+  visibility: hidden !important;
+}
+.pgntion {
+  /* width: 100%; */
+  background-color: #ffffff;
+  margin-left: 2%;
+  border-radius: 8px;
 }

@@ -1,12 +1,23 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button, Navbar, Container, Col, Row, Form } from "react-bootstrap";
+import {
+  Button,
+  Navbar,
+  Container,
+  Col,
+  Row,
+  Form,
+  DropdownButton,
+  Dropdown,
+} from "react-bootstrap";
 import logo from "./assets/logo.png";
 import car from "./assets/car.png";
 import spec from "./assets/spec.png";
 import moto from "./assets/moto.png";
 import { useState, useEffect } from "react";
+import "./fonts/ge/bpg_glaho_sylfaen.ttf";
+import { PaginationControl } from "react-bootstrap-pagination-control";
 
 function App() {
   type manProps = {
@@ -53,6 +64,13 @@ function App() {
   };
   type dataProps = {
     items: itemProps[];
+    meta: metaProp;
+  };
+  type metaProp = {
+    total: number;
+    per_page: number;
+    current_page: number;
+    last_page: number;
   };
   type itemProps = {
     car_id: number;
@@ -169,8 +187,12 @@ function App() {
   const [mans, setMans] = useState<manProps[]>([]);
   const [models, setModels] = useState<modelProps[]>([]);
   const [categorys, setCategorys] = useState<categoryProps[]>([]);
-  const [prod, setProd] = useState<prodAPI | null>(null);
+  const [meta, setMeta] = useState<metaProp | null>(null);
   const [products, setProducts] = useState<itemProps[]>([]);
+  const [page, setPage] = useState(1);
+  const prod_url = "https://api2.myauto.ge/ka/products";
+  const [s_url, setS_url] = useState(prod_url);
+  const [lastPage, setLastPage] = useState(1);
 
   // const fetchData = async (id: number) => {
   //   let url: string = "https://api2.myauto.ge/ka/getManModels?man_id=" + id;
@@ -207,14 +229,17 @@ function App() {
       });
   }, []);
   useEffect(() => {
-    fetch("https://api2.myauto.ge/ka/products/")
+    fetch(s_url)
       .then((response) => response.json())
       .then((data: prodAPI) => {
         if (data) {
           setProducts(data.data.items);
+          setMeta(data.data.meta);
+          setLastPage(data.data.meta.last_page);
         }
+        console.log(data);
       });
-  }, []);
+  }, [s_url]);
   // const getModels = (id: number) => {
   //   fetchData(id);
   // };
@@ -224,10 +249,15 @@ function App() {
         .then((response) => response.json())
         .then((data: modProps) => {
           if (data) {
-            let mods: modelProps[] = models;
+            let mods: modelProps[] = [];
             data.data.forEach((dat) => {
-              mods.push(dat);
+              products.forEach((prod) => {
+                if (prod.model_id === dat.model_id) {
+                  mods.push(dat);
+                }
+              });
             });
+
             setModels((prev) => [...prev, ...mods]);
           }
         });
@@ -235,7 +265,7 @@ function App() {
   }, [products]);
 
   useEffect(() => {
-    console.log(models.length);
+    // console.log(models);
   }, [models]);
 
   if (
@@ -419,6 +449,40 @@ function App() {
             </div>
           </Col>
           <Col className="products col-9">
+            <div className="d-flex align-items-center">
+              <Col className="total">
+                <h6>{meta?.total} განცხადება</h6>
+              </Col>
+              <Col className="d-flex justify-content-end filter">
+                <DropdownButton
+                  id="selectDropdown"
+                  title="პერიოდი "
+                  variant="secondary"
+                  className="opt-3"
+                >
+                  <Dropdown.Item eventKey="1">ბოლო 1 საათი</Dropdown.Item>
+                  <Dropdown.Item eventKey="2">ბოლო 3 საათი</Dropdown.Item>
+                  <Dropdown.Item eventKey="2">ბოლო 6 საათი</Dropdown.Item>
+                  <Dropdown.Item eventKey="2">ბოლო 12 საათი</Dropdown.Item>
+                  <Dropdown.Item eventKey="2">ბოლო 24 საათი</Dropdown.Item>
+                </DropdownButton>
+                <span style={{ margin: "0 2%" }}></span>
+                <DropdownButton
+                  id="selectDropdown"
+                  title="თარიღი კლებადი "
+                  variant="secondary"
+                  className="opt-3"
+                >
+                  <Dropdown.Item eventKey="1">თარიღი კლებადი</Dropdown.Item>
+                  <Dropdown.Item eventKey="2">თარიღი ზრდადი</Dropdown.Item>
+                  <Dropdown.Item eventKey="2">ფასი კლებადი</Dropdown.Item>
+                  <Dropdown.Item eventKey="2">ფასი ზრდადი</Dropdown.Item>
+                  <Dropdown.Item eventKey="2">გარბენი კლებადი</Dropdown.Item>
+                  <Dropdown.Item eventKey="2">გარბენი ზრდადი</Dropdown.Item>
+                </DropdownButton>
+              </Col>
+            </div>
+
             {products.map((prod) => {
               let img_url =
                 "https://static.my.ge/myauto/photos/" +
@@ -445,14 +509,40 @@ function App() {
                 );
               }
               return (
-                <div className="d-flex prod-car">
-                  <img className="prod-img" src={img_url} alt="product-img" />
-                  <h4 className="title">
-                    {title[0].man_name + " " + q_model[0].model_name}
-                  </h4>
+                <div>
+                  <div className="d-flex prod-car">
+                    <img className="prod-img" src={img_url} alt="" />
+                    <div className="d-flex title">
+                      <h5 className="name">
+                        {title[0].man_name +
+                          " " +
+                          q_model[0].model_name +
+                          " " +
+                          prod.car_model}
+                      </h5>
+
+                      <h5 className="year">{prod.prod_year + " წ"}</h5>
+                    </div>
+                  </div>
                 </div>
               );
             })}
+            <div className="pgntion">
+              <PaginationControl
+                page={page}
+                between={4}
+                total={lastPage}
+                limit={20}
+                last={true}
+                changePage={(page) => {
+                  setPage(page);
+                  setProducts((prev) => []);
+                  setS_url(prod_url + "?Page=" + page);
+                  console.log(s_url);
+                }}
+                ellipsis={0}
+              />
+            </div>
           </Col>
         </div>
       </Container>
