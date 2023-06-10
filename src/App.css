@@ -56,3 +56,28 @@ body {
 .title {
   margin-top: 1.5%;
 }
+.skeleton {
+  animation: skeleton-loading 1s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: hsl(200, 20%, 80%);
+  }
+  100% {
+    background-color: hsl(200, 20%, 95%);
+  }
+}
+
+.skel-title {
+  width: 70%;
+  height: 0.7rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.25rem;
+}
+.skel-img {
+  width: 182px;
+  height: 144px;
+  border-radius: 10px;
+  margin: 1.5% 1.5% 1.5% 1.5%;
+}

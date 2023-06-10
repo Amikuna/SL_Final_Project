@@ -18,6 +18,7 @@ function App() {
   };
   type modProps = {
     data: modelProps[];
+    versioning: object;
   };
   type modelProps = {
     model_id: number;
@@ -190,19 +191,6 @@ function App() {
   //       .then((data: modProps[]) => setModels(data));
   //   });
   // }
-  useEffect(() => {
-    if (products.length == 15) {
-      products.forEach((prod) => {
-        let url =
-          "https://api2.myauto.ge/ka/getManModels?man_id=" + prod.man_id;
-        fetch(url)
-          .then((response) => response.json())
-          .then((data: modProps) => {
-            setModels(data.data);
-          });
-      });
-    }
-  }, [products]);
 
   useEffect(() => {
     fetch("https://static.my.ge/myauto/js/mans.json")
@@ -230,6 +218,25 @@ function App() {
   // const getModels = (id: number) => {
   //   fetchData(id);
   // };
+  useEffect(() => {
+    products.map((product) => {
+      fetch(`https://api2.myauto.ge/ka/getManModels?man_id=${product.man_id}`)
+        .then((response) => response.json())
+        .then((data: modProps) => {
+          if (data) {
+            let mods: modelProps[] = models;
+            data.data.forEach((dat) => {
+              mods.push(dat);
+            });
+            setModels((prev) => [...prev, ...mods]);
+          }
+        });
+    });
+  }, [products]);
+
+  useEffect(() => {
+    console.log(models.length);
+  }, [models]);
 
   if (
     mans.length === 0 &&
@@ -413,8 +420,6 @@ function App() {
           </Col>
           <Col className="products col-9">
             {products.map((prod) => {
-              // console.log(prod);
-
               let img_url =
                 "https://static.my.ge/myauto/photos/" +
                 prod.photo +
@@ -422,21 +427,29 @@ function App() {
                 prod.car_id +
                 "_1.jpg?v=" +
                 prod.photo_ver;
+
               let title: manProps[] = mans.filter(
                 (man) => man.man_id === prod.man_id.toString()
               );
-              // GetModels(Number(prod.man_id));
 
-              // console.log(models);
               let q_model: modelProps[] = models.filter(
                 (model) => model.model_id === prod.model_id
               );
-              console.log(q_model[0]);
 
+              if (!q_model[0]) {
+                return (
+                  <div className="d-flex prod-car">
+                    <div className="skeleton skel-img prod-img"></div>
+                    <h4 className="skeleton skel-title title"></h4>
+                  </div>
+                );
+              }
               return (
                 <div className="d-flex prod-car">
                   <img className="prod-img" src={img_url} alt="product-img" />
-                  <h4 className="title">{title[0].man_name + " "}</h4>
+                  <h4 className="title">
+                    {title[0].man_name + " " + q_model[0].model_name}
+                  </h4>
                 </div>
               );
             })}
