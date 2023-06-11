@@ -18,211 +18,36 @@ import moto from "./assets/moto.png";
 import { useState, useEffect } from "react";
 import "./fonts/ge/bpg_glaho_sylfaen.ttf";
 import { PaginationControl } from "react-bootstrap-pagination-control";
-
+import {
+  ManProps,
+  ModelProps,
+  CategoryProps,
+  MetaProp,
+  ItemProps,
+  CatProps,
+  ProdApi,
+  ModProps,
+} from "./Types/Types";
 function App() {
-  type manProps = {
-    man_id: string;
-    man_name: string;
-    is_car: string;
-    is_spec: string;
-    is_moto: string;
-  };
-  type modProps = {
-    data: modelProps[];
-    versioning: object;
-  };
-  type modelProps = {
-    model_id: number;
-    model_name: string;
-    model_group: string;
-    sort_order: number;
-    cat_man_id: number;
-    cat_model_id: number;
-    cat_modif_id: number;
-    is_car: boolean;
-    is_moto: boolean;
-    is_spec: boolean;
-    show_in_salons: number;
-    shown_in_slider: number;
-  };
-  type catProps = {
-    data: categoryProps[];
-    mess?: object;
-  };
-  type categoryProps = {
-    category_id: number;
-    category_type: number;
-    has_icon: number;
-    title: string;
-    seo_title: string;
-    vehicle_types: number[];
-  };
-  type prodAPI = {
-    statusCode: number;
-    statusMessage: string;
-    data: dataProps;
-  };
-  type dataProps = {
-    items: itemProps[];
-    meta: metaProp;
-  };
-  type metaProp = {
-    total: number;
-    per_page: number;
-    current_page: number;
-    last_page: number;
-  };
-  type itemProps = {
-    car_id: number;
-    status_id: number;
-    dealer_user_id: number;
-    paid_add: number;
-    photo: string;
-    pic_number: number;
-    prod_year: number;
-    prod_month: number;
-    man_id: number;
-    car_model: string;
-    price: number;
-    price_usd: number;
-    first_deposit: number;
-    price_value: number;
-    fuel_type_id: number;
-    gear_type_id: number;
-    drive_type_id: number;
-    door_type_id: number;
-    color_id: number;
-    saloon_color_id: number;
-    cylinders: number;
-    car_run: number;
-    car_run_km: number;
-    car_run_dim: number;
-    engine_volume: number;
-    airbags: number;
-    abs: boolean;
-    esd: boolean;
-    el_windows: boolean;
-    conditioner: boolean;
-    leather: boolean;
-    disks: boolean;
-    nav_system: boolean;
-    central_lock: boolean;
-    hatch: boolean;
-    rigth_wheel: boolean;
-    alarm: boolean;
-    board_comp: boolean;
-    hydraulics: boolean;
-    chair_warming: boolean;
-    climat_control: boolean;
-    obstacle_indicator: boolean;
-    customs_passed: boolean;
-    client_name: string;
-    client_phone: number;
-    model_id: number;
-    location_id: number;
-    parent_loc_id: number;
-    tech_inspection: boolean;
-    checked_for_duplicates: boolean;
-    order_number: number;
-    stickers: null;
-    changable: boolean;
-    auction: boolean;
-    has_turbo: boolean;
-    for_rent: boolean;
-    rent_daily: boolean;
-    rent_purchase: boolean;
-    rent_insured: boolean;
-    rent_driver: boolean;
-    currency_id: number;
-    vehicle_type: number;
-    category_id: number;
-    vin: number;
-    user_type: null;
-    prom_color: number;
-    special_persons: boolean;
-    back_camera: boolean;
-    car_desc: string;
-    order_date: string;
-    video_url: string;
-    hp: number;
-    hours_used: number;
-    photo_ver: number;
-    checked: boolean;
-    lang_type_id: number;
-    el_starter: boolean;
-    start_stop: boolean;
-    trunk: boolean;
-    windshield: boolean;
-    inspected_in_greenway: boolean;
-    license_number: string;
-    words_checked: number;
-    is_payd: boolean;
-    condition_type_id: number;
-    primary_damage_type: number;
-    secondary_damage_type: number;
-    auction_has_key: number;
-    is_auction: number;
-    saloon_material_id: number;
-    map_lat: number;
-    map_long: number;
-    zoom: number;
-    predicted_price: string;
-    hdd: number;
-    map_title: string;
-    has_catalyst: number;
-    tmp: string;
-    views: number;
-    dealer_id: null;
-    has_log: null;
-    logo_ver: null;
-    active_ads: null;
-    dealer_title: null;
-    has_predicted_price: boolean;
-    pred_first_breakpoint: number;
-    pred_second_breakpoint: number;
-    pred_min_price: number;
-    pred_max_price: number;
-    comfort_features: number[];
-  };
-  const [mans, setMans] = useState<manProps[]>([]);
-  const [models, setModels] = useState<modelProps[]>([]);
-  const [categorys, setCategorys] = useState<categoryProps[]>([]);
-  const [meta, setMeta] = useState<metaProp | null>(null);
-  const [products, setProducts] = useState<itemProps[]>([]);
+  const [mans, setMans] = useState<ManProps[]>([]);
+  const [models, setModels] = useState<ModelProps[]>([]);
+  const [categorys, setCategorys] = useState<CategoryProps[]>([]);
+  const [meta, setMeta] = useState<MetaProp | null>(null);
+  const [products, setProducts] = useState<ItemProps[]>([]);
   const [page, setPage] = useState(1);
   const prod_url = "https://api2.myauto.ge/ka/products";
   const [s_url, setS_url] = useState(prod_url);
   const [lastPage, setLastPage] = useState(1);
 
-  // const fetchData = async (id: number) => {
-  //   let url: string = "https://api2.myauto.ge/ka/getManModels?man_id=" + id;
-  //   try {
-  //     const response = await fetch(url);
-  //     const jsonData = await response.json();
-  //     setModels(jsonData);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-  // function GetModels(id: number) {
-  //   const url = "https://api2.myauto.ge/ka/getManModels?man_id=" + id;
-
-  //   useEffect(() => {
-  //     fetch(url)
-  //       .then((response) => response.json())
-  //       .then((data: modProps[]) => setModels(data));
-  //   });
-  // }
-
   useEffect(() => {
     fetch("https://static.my.ge/myauto/js/mans.json")
       .then((response) => response.json())
-      .then((data: manProps[]) => setMans(data));
+      .then((data: ManProps[]) => setMans(data));
   }, []);
   useEffect(() => {
     fetch("https://api2.myauto.ge/ka/cats/get")
       .then((response) => response.json())
-      .then((data: catProps) => {
+      .then((data: CatProps) => {
         if (data) {
           setCategorys(data.data);
         }
@@ -231,25 +56,23 @@ function App() {
   useEffect(() => {
     fetch(s_url)
       .then((response) => response.json())
-      .then((data: prodAPI) => {
+      .then((data: ProdApi) => {
         if (data) {
           setProducts(data.data.items);
           setMeta(data.data.meta);
           setLastPage(data.data.meta.last_page);
         }
         console.log(data);
+        console.log(data.data.meta.last_page);
       });
   }, [s_url]);
-  // const getModels = (id: number) => {
-  //   fetchData(id);
-  // };
   useEffect(() => {
     products.map((product) => {
       fetch(`https://api2.myauto.ge/ka/getManModels?man_id=${product.man_id}`)
         .then((response) => response.json())
-        .then((data: modProps) => {
+        .then((data: ModProps) => {
           if (data) {
-            let mods: modelProps[] = [];
+            let mods: ModelProps[] = [];
             data.data.forEach((dat) => {
               products.forEach((prod) => {
                 if (prod.model_id === dat.model_id) {
@@ -265,13 +88,54 @@ function App() {
   }, [products]);
 
   useEffect(() => {
-    // console.log(models);
+    console.log(models);
   }, [models]);
 
+  const period1H = () => {
+    let el = document.getElementById("selectDropdown-1");
+    if (el) {
+      console.log(el.title);
+      el.innerHTML = "ბოლო 1 საათი";
+      console.log(el.title);
+    }
+  };
+  const period3H = () => {
+    let el = document.getElementById("selectDropdown-1");
+    if (el) {
+      console.log(el.title);
+      el.innerHTML = "ბოლო 3 საათი";
+      console.log(el.title);
+    }
+  };
+  const period6H = () => {
+    let el = document.getElementById("selectDropdown-1");
+    if (el) {
+      console.log(el.title);
+      el.innerHTML = "ბოლო 6 საათი";
+      console.log(el.title);
+    }
+  };
+  const period12H = () => {
+    let el = document.getElementById("selectDropdown-1");
+    if (el) {
+      console.log(el.title);
+      el.innerHTML = "ბოლო 12 საათი";
+      console.log(el.title);
+    }
+  };
+  const period24H = () => {
+    let el = document.getElementById("selectDropdown-1");
+    if (el) {
+      console.log(el.title);
+      el.innerHTML = "ბოლო 24 საათი";
+      console.log(el.title);
+    }
+  };
+
   if (
-    mans.length === 0 &&
-    categorys.length === 0 &&
-    products.length === 0 &&
+    mans.length === 0 ||
+    categorys.length === 0 ||
+    products.length === 0 ||
     models.length < 15
   ) {
     return (
@@ -455,20 +319,30 @@ function App() {
               </Col>
               <Col className="d-flex justify-content-end filter">
                 <DropdownButton
-                  id="selectDropdown"
+                  id="selectDropdown-1"
                   title="პერიოდი "
                   variant="secondary"
                   className="opt-3"
                 >
-                  <Dropdown.Item eventKey="1">ბოლო 1 საათი</Dropdown.Item>
-                  <Dropdown.Item eventKey="2">ბოლო 3 საათი</Dropdown.Item>
-                  <Dropdown.Item eventKey="2">ბოლო 6 საათი</Dropdown.Item>
-                  <Dropdown.Item eventKey="2">ბოლო 12 საათი</Dropdown.Item>
-                  <Dropdown.Item eventKey="2">ბოლო 24 საათი</Dropdown.Item>
+                  <Dropdown.Item eventKey="1" onClick={period1H}>
+                    ბოლო 1 საათი
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="2" onClick={period3H}>
+                    ბოლო 3 საათი
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="2" onClick={period6H}>
+                    ბოლო 6 საათი
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="2" onClick={period12H}>
+                    ბოლო 12 საათი
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="2" onClick={period24H}>
+                    ბოლო 24 საათი
+                  </Dropdown.Item>
                 </DropdownButton>
                 <span style={{ margin: "0 2%" }}></span>
                 <DropdownButton
-                  id="selectDropdown"
+                  id="selectDropdown-2"
                   title="თარიღი კლებადი "
                   variant="secondary"
                   className="opt-3"
@@ -492,15 +366,18 @@ function App() {
                 "_1.jpg?v=" +
                 prod.photo_ver;
 
-              let title: manProps[] = mans.filter(
+              let title: ManProps[] = mans.filter(
                 (man) => man.man_id === prod.man_id.toString()
               );
 
-              let q_model: modelProps[] = models.filter(
+              let q_model: ModelProps[] = models.filter(
                 (model) => model.model_id === prod.model_id
               );
 
-              if (!q_model[0]) {
+              if (
+                typeof q_model[0] === "undefined" ||
+                typeof title[0] === "undefined"
+              ) {
                 return (
                   <div className="d-flex prod-car">
                     <div className="skeleton skel-img prod-img"></div>
@@ -532,7 +409,7 @@ function App() {
                 page={page}
                 between={4}
                 total={lastPage}
-                limit={20}
+                limit={1}
                 last={true}
                 changePage={(page) => {
                   setPage(page);
