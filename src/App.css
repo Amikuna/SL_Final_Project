@@ -110,10 +110,10 @@ body {
 }
 .year {
   margin-left: 1.5%;
-  margin-top: 0.2%;
+  margin-top: 0.3%;
   color: #8c929b;
   font-family: "ge";
-  font-size: 1.3rem;
+  /* font-size: 1.3rem; */
 }
 
 .page-item .page-link {
@@ -152,4 +152,11 @@ body {
   background-color: #ffffff;
   margin-left: 2%;
   border-radius: 8px;
+}
+
+.br {
+  /* margin-left: 8%; */
+  border: 1px solid #eef0f3;
+  border-radius: 5px;
+  max-width: 80% !important;
 }

@@ -11,6 +11,7 @@ import {
   DropdownButton,
   Dropdown,
 } from "react-bootstrap";
+import { BsChevronDown } from "react-icons/bs";
 import logo from "./assets/logo.png";
 import car from "./assets/car.png";
 import spec from "./assets/spec.png";
@@ -38,6 +39,10 @@ function App() {
   const prod_url = "https://api2.myauto.ge/ka/products";
   const [s_url, setS_url] = useState(prod_url);
   const [lastPage, setLastPage] = useState(1);
+  const [period, setPeriod] = useState<number>(0);
+  const [isPeriod, setIsPeriod] = useState<boolean>(false);
+  const [sort, setSort] = useState<number>(1);
+  const [marginLeft, setMarginLeft] = useState("16vh");
 
   useEffect(() => {
     fetch("https://static.my.ge/myauto/js/mans.json")
@@ -54,7 +59,15 @@ function App() {
       });
   }, []);
   useEffect(() => {
-    fetch(s_url)
+    console.log(s_url);
+    let url = s_url; //+ `?page=${page}`;
+    if (isPeriod) {
+      url = url + `?Period=${period}h` + `&SortOrder=${sort}` + `&Page=${page}`;
+    } else {
+      url = url + `?SortOrder=${sort}` + `&Page=${page}`;
+    }
+    console.log(url);
+    fetch(url)
       .then((response) => response.json())
       .then((data: ProdApi) => {
         if (data) {
@@ -62,10 +75,10 @@ function App() {
           setMeta(data.data.meta);
           setLastPage(data.data.meta.last_page);
         }
-        console.log(data);
-        console.log(data.data.meta.last_page);
+        // console.log(data);
+        // console.log(data.data.meta.last_page);
       });
-  }, [s_url]);
+  }, [page, period, isPeriod, sort]);
   useEffect(() => {
     products.map((product) => {
       fetch(`https://api2.myauto.ge/ka/getManModels?man_id=${product.man_id}`)
@@ -88,47 +101,270 @@ function App() {
   }, [products]);
 
   useEffect(() => {
-    console.log(models);
+    // console.log(models);
   }, [models]);
+  useEffect(() => {
+    console.log(period);
+    if (period === 1) {
+      let el = document.getElementById("selectDropdown-1");
+
+      if (el) {
+        console.log(el.innerHTML);
+        console.log(period);
+
+        el.innerHTML = "ბოლო 1 საათი";
+      }
+    }
+    if (period === 3) {
+      let el = document.getElementById("selectDropdown-1");
+
+      if (el) {
+        console.log(el.innerHTML);
+        console.log(period);
+
+        el.innerHTML = "ბოლო 3 საათი";
+      }
+    }
+    if (period === 6) {
+      let el = document.getElementById("selectDropdown-1");
+
+      if (el) {
+        console.log(el.innerHTML);
+        console.log(period);
+
+        el.innerHTML = "ბოლო 6 საათი";
+      }
+    }
+    if (period === 12) {
+      let el = document.getElementById("selectDropdown-1");
+
+      if (el) {
+        console.log(el.innerHTML);
+        console.log(period);
+
+        el.innerHTML = "ბოლო 12 საათი";
+      }
+    }
+    if (period === 24) {
+      let el = document.getElementById("selectDropdown-1");
+
+      if (el) {
+        console.log(el.innerHTML);
+        console.log(period);
+
+        el.innerHTML = "ბოლო 24 საათი";
+      }
+    }
+    let el = document.getElementById("selectDropdown-2");
+    if (sort === 1) {
+      if (el) {
+        console.log(el.title);
+        el.innerHTML = "თარიღი კლებადი";
+        console.log(el.title);
+      }
+    } else if (sort === 2) {
+      if (el) {
+        console.log(el.title);
+        el.innerHTML = "თარიღი ზრდადი";
+        console.log(el.title);
+      }
+    } else if (sort === 3) {
+      if (el) {
+        console.log(el.title);
+        el.innerHTML = "ფასი კლებადი";
+        console.log(el.title);
+      }
+    } else if (sort === 4) {
+      if (el) {
+        console.log(el.title);
+        el.innerHTML = "ფასი ზრდადი";
+        console.log(el.title);
+      }
+    } else if (sort === 5) {
+      if (el) {
+        console.log(el.title);
+        el.innerHTML = "გარბენი კლებადი";
+        console.log(el.title);
+      }
+    } else if (sort === 6) {
+      if (el) {
+        console.log(el.title);
+        el.innerHTML = "გარბენი ზრდადი";
+        console.log(el.title);
+      }
+    }
+  }, [page, products]);
 
   const period1H = () => {
     let el = document.getElementById("selectDropdown-1");
+    let url: string = s_url;
     if (el) {
       console.log(el.title);
+      console.log(url.length);
       el.innerHTML = "ბოლო 1 საათი";
       console.log(el.title);
+      if (url.length === 34) {
+        url = url + "?Period=1h";
+      } else {
+        url = url + "&Period=1h";
+      }
+
+      // setS_url((prev) => url);
+      setPeriod(1);
+      setIsPeriod(true);
+      setPage(1);
     }
   };
   const period3H = () => {
     let el = document.getElementById("selectDropdown-1");
+    let url: string = s_url;
     if (el) {
       console.log(el.title);
       el.innerHTML = "ბოლო 3 საათი";
       console.log(el.title);
+      if (url.length === 34) {
+        url = url + "?Period=3h";
+      } else {
+        url = url + "&Period=3h";
+      }
+      // setS_url((prev) => url);
+      setPeriod(3);
+      setIsPeriod(true);
+      setPage(1);
     }
   };
   const period6H = () => {
     let el = document.getElementById("selectDropdown-1");
+    let url: string = s_url;
     if (el) {
       console.log(el.title);
       el.innerHTML = "ბოლო 6 საათი";
       console.log(el.title);
+      if (url.length === 34) {
+        url = url + "?Period=6h";
+      } else {
+        url = url + "&Period=6h";
+      }
+      // setS_url((prev) => url);
+      setPeriod(6);
+      setIsPeriod(true);
+      setPage(1);
     }
   };
   const period12H = () => {
     let el = document.getElementById("selectDropdown-1");
+    let url: string = s_url;
     if (el) {
       console.log(el.title);
       el.innerHTML = "ბოლო 12 საათი";
       console.log(el.title);
     }
+    if (url.length === 34) {
+      url = url + "?Period=12h";
+    } else {
+      url = url + "&Period=12h";
+    }
+    // setS_url((prev) => url);
+    setPeriod(12);
+    setIsPeriod(true);
+    setPage(1);
   };
   const period24H = () => {
     let el = document.getElementById("selectDropdown-1");
+
+    let url: string = s_url;
     if (el) {
       console.log(el.title);
       el.innerHTML = "ბოლო 24 საათი";
       console.log(el.title);
+      if (url.length === 34) {
+        url = url + "?Period=24h";
+      } else {
+        url = url + "&Period=24h";
+      }
+      // setS_url((prev) => url);
+      setPeriod(24);
+      setIsPeriod(true);
+      setPage(1);
+    }
+  };
+  const dateDec = () => {
+    let el = document.getElementById("selectDropdown-2");
+    if (el) {
+      console.log(el.title);
+      el.innerHTML = "თარიღი კლებადი";
+      console.log(el.title);
+      setSort(1);
+    }
+  };
+  const dateInc = () => {
+    let el = document.getElementById("selectDropdown-2");
+    if (el) {
+      console.log(el.title);
+      el.innerHTML = "თარიღი ზრდადი";
+      console.log(el.title);
+      setSort(2);
+    }
+  };
+  const priceDec = () => {
+    let el = document.getElementById("selectDropdown-2");
+    if (el) {
+      console.log(el.title);
+      el.innerHTML = "ფასი კლებადი";
+      console.log(el.title);
+      setSort(3);
+    }
+  };
+  const priceInc = () => {
+    let el = document.getElementById("selectDropdown-2");
+    if (el) {
+      console.log(el.title);
+      el.innerHTML = "ფასი ზრდადი";
+      console.log(el.title);
+      setSort(4);
+    }
+  };
+  const runDec = () => {
+    let el = document.getElementById("selectDropdown-2");
+    if (el) {
+      console.log(el.title);
+      el.innerHTML = "გარბენი კლებადი";
+      console.log(el.title);
+      setSort(5);
+    }
+  };
+  const runInc = () => {
+    let el = document.getElementById("selectDropdown-2");
+    if (el) {
+      console.log(el.title);
+      el.innerHTML = "გარბენი ზრდადი";
+      console.log(el.title);
+      setSort(6);
+    }
+  };
+  const buy = () => {
+    let el = document.getElementById("selectDropdown-3");
+    if (el) {
+      console.log(el.title);
+      el.innerHTML = "იყიდება";
+      console.log(el.title);
+      setMarginLeft("16vh");
+      // setSort(6);
+    }
+  };
+  const rent = () => {
+    let el = document.getElementById("selectDropdown-3");
+    let tog = document.getElementById(
+      "#selectDropdown-3 > dropdown-toggle:after"
+    );
+
+    if (el) {
+      console.log(el.title);
+      el.innerHTML = "ქირავდება";
+      console.log(el.title);
+      setMarginLeft("14vh");
+
+      // setSort(6);
     }
   };
 
@@ -225,13 +461,29 @@ function App() {
                   </div>
 
                   <div className="d-flex justify-content-center">
-                    <Form.Select className="opt" style={{ width: "80%" }}>
+                    {/* <Form.Select className="opt" style={{ width: "80%" }}>
                       <option className="opt" value="1">
                         იყიდება
                       </option>
                       <option value="2">ქირავდება</option>
-                    </Form.Select>
+                    </Form.Select> */}
+                    <DropdownButton
+                      title="იყიდება"
+                      // onSelect={buy}
+                      id="selectDropdown-3"
+                      variant="seondary"
+                      // style={{ marginLeft: rentClicked ? "20px" : "10px" }}
+                      className="d-flex align-items-center justify-content-between position-relative br my-dropdown-button"
+                    >
+                      <Dropdown.Item onClick={buy}>იყიდება</Dropdown.Item>
+                      <Dropdown.Item onClick={rent}>ქირავდება</Dropdown.Item>
+                    </DropdownButton>
                   </div>
+                  <style>
+                    {`.br > .dropdown-toggle:after {
+          margin-left: ${marginLeft};
+        }`}
+                  </style>
                 </Col>
               </Row>
               <br></br>
@@ -324,19 +576,13 @@ function App() {
                   variant="secondary"
                   className="opt-3"
                 >
-                  <Dropdown.Item eventKey="1" onClick={period1H}>
-                    ბოლო 1 საათი
-                  </Dropdown.Item>
-                  <Dropdown.Item eventKey="2" onClick={period3H}>
-                    ბოლო 3 საათი
-                  </Dropdown.Item>
-                  <Dropdown.Item eventKey="2" onClick={period6H}>
-                    ბოლო 6 საათი
-                  </Dropdown.Item>
-                  <Dropdown.Item eventKey="2" onClick={period12H}>
+                  <Dropdown.Item onClick={period1H}>ბოლო 1 საათი</Dropdown.Item>
+                  <Dropdown.Item onClick={period3H}>ბოლო 3 საათი</Dropdown.Item>
+                  <Dropdown.Item onClick={period6H}>ბოლო 6 საათი</Dropdown.Item>
+                  <Dropdown.Item onClick={period12H}>
                     ბოლო 12 საათი
                   </Dropdown.Item>
-                  <Dropdown.Item eventKey="2" onClick={period24H}>
+                  <Dropdown.Item onClick={period24H}>
                     ბოლო 24 საათი
                   </Dropdown.Item>
                 </DropdownButton>
@@ -347,12 +593,16 @@ function App() {
                   variant="secondary"
                   className="opt-3"
                 >
-                  <Dropdown.Item eventKey="1">თარიღი კლებადი</Dropdown.Item>
-                  <Dropdown.Item eventKey="2">თარიღი ზრდადი</Dropdown.Item>
-                  <Dropdown.Item eventKey="2">ფასი კლებადი</Dropdown.Item>
-                  <Dropdown.Item eventKey="2">ფასი ზრდადი</Dropdown.Item>
-                  <Dropdown.Item eventKey="2">გარბენი კლებადი</Dropdown.Item>
-                  <Dropdown.Item eventKey="2">გარბენი ზრდადი</Dropdown.Item>
+                  <Dropdown.Item onClick={dateDec}>
+                    თარიღი კლებადი
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={dateInc}>თარიღი ზრდადი</Dropdown.Item>
+                  <Dropdown.Item onClick={priceDec}>ფასი კლებადი</Dropdown.Item>
+                  <Dropdown.Item onClick={priceInc}>ფასი ზრდადი</Dropdown.Item>
+                  <Dropdown.Item onClick={runDec}>
+                    გარბენი კლებადი
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={runInc}>გარბენი ზრდადი</Dropdown.Item>
                 </DropdownButton>
               </Col>
             </div>
@@ -375,7 +625,7 @@ function App() {
               );
 
               if (
-                typeof q_model[0] === "undefined" ||
+                // typeof q_model[0] === "undefined" ||
                 typeof title[0] === "undefined"
               ) {
                 return (
@@ -390,15 +640,17 @@ function App() {
                   <div className="d-flex prod-car">
                     <img className="prod-img" src={img_url} alt="" />
                     <div className="d-flex title">
-                      <h5 className="name">
-                        {title[0].man_name +
-                          " " +
-                          q_model[0].model_name +
-                          " " +
-                          prod.car_model}
-                      </h5>
+                      <h6 className="name">
+                        {q_model[0]
+                          ? title[0].man_name +
+                            " " +
+                            q_model[0].model_name +
+                            " " +
+                            prod.car_model
+                          : title[0].man_name + " " + prod.car_model}
+                      </h6>
 
-                      <h5 className="year">{prod.prod_year + " წ"}</h5>
+                      <h6 className="year">{prod.prod_year + " წ"}</h6>
                     </div>
                   </div>
                 </div>
@@ -414,7 +666,7 @@ function App() {
                 changePage={(page) => {
                   setPage(page);
                   setProducts((prev) => []);
-                  setS_url(prod_url + "?Page=" + page);
+                  // setS_url(prod_url + "?Page=" + page);
                   console.log(s_url);
                 }}
                 ellipsis={0}
