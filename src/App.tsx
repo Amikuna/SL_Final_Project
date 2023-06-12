@@ -48,6 +48,9 @@ function App() {
   const [bargType, setBargType] = useState<number | string>("");
   const [submited, setSubmited] = useState<number>(0);
   const [manType, setManType] = useState<number | string>("");
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [width, setWidth] = useState<number>();
+  const [width2, setWidth2] = useState<number>();
 
   useEffect(() => {
     fetch("https://static.my.ge/myauto/js/mans.json")
@@ -76,7 +79,11 @@ function App() {
         `&Page=${page}`;
     } else {
       url =
-        url + `?ForRent=${bargType}` + `&SortOrder=${sort}` + `&Page=${page}`;
+        url +
+        `?ForRent=${bargType}` +
+        `&Mans=${manType}` +
+        `&SortOrder=${sort}` +
+        `&Page=${page}`;
     }
 
     console.log(url);
@@ -369,10 +376,6 @@ function App() {
   };
   const rent = () => {
     let el = document.getElementById("selectDropdown-3");
-    let tog = document.getElementById(
-      "#selectDropdown-3 > dropdown-toggle:after"
-    );
-
     if (el) {
       console.log(el.title);
       el.innerHTML = "ქირავდება";
@@ -385,6 +388,33 @@ function App() {
   };
   const submit = () => {
     setSubmited((prev) => prev + 1);
+    if (width && width2) {
+      console.log(width);
+      console.log(width2);
+      console.log(100 * (1 - width / width2));
+      // console.log(100 - (width / width2) * 100);
+    }
+  };
+  const setMan = (man: string) => {
+    let el = document.getElementById("selectDropdown-4");
+    let el2 = document.getElementsByClassName("br2");
+    if (el) {
+      el.innerHTML = mans.filter((manf) => manf.man_id == man)[0].man_name;
+      let arr: string[] = [];
+      setManType(man);
+      let width1 = el.clientWidth;
+      let width2 = el2[0].clientWidth;
+      setWidth(width1);
+      setWidth2(width2);
+    }
+  };
+  const handleClick = () => {
+    let but = document.getElementById("selectDropdown-4");
+    console.log(5);
+    if (but) {
+      console.log(but.innerHTML);
+      but.click();
+    }
   };
 
   if (
@@ -509,30 +539,41 @@ function App() {
                   </div>
 
                   <div className="d-flex justify-content-center">
-                    <DropdownButton
+                    <Dropdown
                       title="ყველა მწარმოებელი"
-                      id="selectDropdown-3"
-                      variant="seondary"
-                      className="d-flex align-items-center justify-content-between position-relative br2 my-dropdown-button"
+                      id="selectDropdown-4-div"
+                      role="button"
+                      onClick={handleClick}
+                      className="d-flex align-items-center justify-content-between position-relative br2"
                     >
-                      {mans.map((model) => {
-                        return (
-                          <Dropdown.Item onClick={buy} key={model.man_name}>
-                            {model.man_name}
-                          </Dropdown.Item>
-                        );
-                      })}
-
-                      {/* <Dropdown.Item onClick={buy}>იყიდება</Dropdown.Item>
-    <Dropdown.Item onClick={rent}>ქირავდება</Dropdown.Item> */}
-                    </DropdownButton>
+                      <DropdownButton
+                        title="ყველა მწარმოებელი"
+                        id="selectDropdown-4"
+                        variant="seondary"
+                        className="d-flex align-items-center justify-content-between position-relative br2 br2-button"
+                      >
+                        {mans.map((man) => {
+                          return (
+                            <Dropdown.Item
+                              onClick={() => setMan(man.man_id)}
+                              key={man.man_name}
+                            >
+                              {man.man_name}
+                            </Dropdown.Item>
+                          );
+                        })}
+                      </DropdownButton>
+                      <BsChevronDown style={{ marginRight: "3%" }} />
+                    </Dropdown>
                   </div>
-                  <style>
-                    {`.br2 > .dropdown-toggle:after {
-          margin-left: ${marginS2};
-          
-        }`}
-                  </style>
+                  {width && width2 ? (
+                    <style>
+                      {`.br2 > .dropdown-toggle:after {
+        margin-left: ;
+        
+      }`}
+                    </style>
+                  ) : null}
                 </Col>
               </Row>
               <br></br>
