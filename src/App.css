@@ -158,5 +158,37 @@ body {
   /* margin-left: 8%; */
   border: 1px solid #eef0f3;
   border-radius: 5px;
+  width: 80% !important;
+}
+.br2 {
+  border: 1px solid #eef0f3;
+  border-radius: 5px;
   max-width: 80% !important;
+  /* overflow-y: auto; */
+  max-height: 400px !important;
+}
+.br2 > .dropdown-menu {
+  height: auto;
+  max-height: 200px;
+  overflow-y: scroll;
+}
+.br > .dropdown-menu {
+  width: 100% !important;
+}
+.br > .dropdown-toggle {
+  width: 100%;
+}
+.search {
+  background-color: #fd4100 !important;
+  color: #ffffff;
+  font-family: "ge";
+  font-size: 100% !important;
+  height: 50%;
+  color: #ffffff !important;
+}
+.s-btn {
+  height: 100px !important;
+}
+.search:hover {
+  background-color: #d43601 !important;
 }

@@ -29,6 +29,7 @@ import {
   ProdApi,
   ModProps,
 } from "./Types/Types";
+import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
 function App() {
   const [mans, setMans] = useState<ManProps[]>([]);
   const [models, setModels] = useState<ModelProps[]>([]);
@@ -42,7 +43,11 @@ function App() {
   const [period, setPeriod] = useState<number>(0);
   const [isPeriod, setIsPeriod] = useState<boolean>(false);
   const [sort, setSort] = useState<number>(1);
-  const [marginLeft, setMarginLeft] = useState("16vh");
+  const [marginS1, setMarginS1] = useState("40%");
+  const [marginS2, setMarginS2] = useState("5vh");
+  const [bargType, setBargType] = useState<number | string>("");
+  const [submited, setSubmited] = useState<number>(0);
+  const [manType, setManType] = useState<number | string>("");
 
   useEffect(() => {
     fetch("https://static.my.ge/myauto/js/mans.json")
@@ -62,10 +67,18 @@ function App() {
     console.log(s_url);
     let url = s_url; //+ `?page=${page}`;
     if (isPeriod) {
-      url = url + `?Period=${period}h` + `&SortOrder=${sort}` + `&Page=${page}`;
+      url =
+        url +
+        `?ForRent=${bargType}` +
+        `&Mans=${manType}` +
+        `&Period=${period}h` +
+        `&SortOrder=${sort}` +
+        `&Page=${page}`;
     } else {
-      url = url + `?SortOrder=${sort}` + `&Page=${page}`;
+      url =
+        url + `?ForRent=${bargType}` + `&SortOrder=${sort}` + `&Page=${page}`;
     }
+
     console.log(url);
     fetch(url)
       .then((response) => response.json())
@@ -75,10 +88,11 @@ function App() {
           setMeta(data.data.meta);
           setLastPage(data.data.meta.last_page);
         }
+
         // console.log(data);
         // console.log(data.data.meta.last_page);
       });
-  }, [page, period, isPeriod, sort]);
+  }, [page, period, isPeriod, sort, submited]);
   useEffect(() => {
     products.map((product) => {
       fetch(`https://api2.myauto.ge/ka/getManModels?man_id=${product.man_id}`)
@@ -348,7 +362,8 @@ function App() {
       console.log(el.title);
       el.innerHTML = "იყიდება";
       console.log(el.title);
-      setMarginLeft("16vh");
+      setMarginS1("66%");
+      setBargType(0);
       // setSort(6);
     }
   };
@@ -362,10 +377,14 @@ function App() {
       console.log(el.title);
       el.innerHTML = "ქირავდება";
       console.log(el.title);
-      setMarginLeft("14vh");
+      setMarginS1("58%");
+      setBargType(1);
 
       // setSort(6);
     }
+  };
+  const submit = () => {
+    setSubmited((prev) => prev + 1);
   };
 
   if (
@@ -461,18 +480,10 @@ function App() {
                   </div>
 
                   <div className="d-flex justify-content-center">
-                    {/* <Form.Select className="opt" style={{ width: "80%" }}>
-                      <option className="opt" value="1">
-                        იყიდება
-                      </option>
-                      <option value="2">ქირავდება</option>
-                    </Form.Select> */}
                     <DropdownButton
-                      title="იყიდება"
-                      // onSelect={buy}
+                      title="გარიგების ტიპი"
                       id="selectDropdown-3"
                       variant="seondary"
-                      // style={{ marginLeft: rentClicked ? "20px" : "10px" }}
                       className="d-flex align-items-center justify-content-between position-relative br my-dropdown-button"
                     >
                       <Dropdown.Item onClick={buy}>იყიდება</Dropdown.Item>
@@ -481,7 +492,8 @@ function App() {
                   </div>
                   <style>
                     {`.br > .dropdown-toggle:after {
-          margin-left: ${marginLeft};
+          margin-left: ${marginS1};
+          
         }`}
                   </style>
                 </Col>
@@ -497,13 +509,30 @@ function App() {
                   </div>
 
                   <div className="d-flex justify-content-center">
-                    <Form.Select className="opt-2" style={{ width: "80%" }}>
-                      <option>ყველა მწარმოებელი</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </Form.Select>
+                    <DropdownButton
+                      title="ყველა მწარმოებელი"
+                      id="selectDropdown-3"
+                      variant="seondary"
+                      className="d-flex align-items-center justify-content-between position-relative br2 my-dropdown-button"
+                    >
+                      {mans.map((model) => {
+                        return (
+                          <Dropdown.Item onClick={buy} key={model.man_name}>
+                            {model.man_name}
+                          </Dropdown.Item>
+                        );
+                      })}
+
+                      {/* <Dropdown.Item onClick={buy}>იყიდება</Dropdown.Item>
+    <Dropdown.Item onClick={rent}>ქირავდება</Dropdown.Item> */}
+                    </DropdownButton>
                   </div>
+                  <style>
+                    {`.br2 > .dropdown-toggle:after {
+          margin-left: ${marginS2};
+          
+        }`}
+                  </style>
                 </Col>
               </Row>
               <br></br>
@@ -563,6 +592,18 @@ function App() {
                 </Col>
               </Row>
             </div>
+            <Row className="align-items-center">
+              <div className="d-flex justify-content-center align-items-center s-btn">
+                <Button
+                  type="submit"
+                  variant="secondary"
+                  className="search"
+                  onClick={submit}
+                >
+                  ძებნა
+                </Button>
+              </div>
+            </Row>
           </Col>
           <Col className="products col-9">
             <div className="d-flex align-items-center">
