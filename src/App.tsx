@@ -31,8 +31,8 @@ import {
   ProdApi,
   ModProps,
 } from "./Types/Types";
-import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
-import { url } from "inspector";
+import Gel from "./assets/gel.png";
+import Usd from "./assets/usd.png";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 function App() {
   const [mans, setMans] = useState<ManProps[]>([]);
@@ -680,23 +680,27 @@ function App() {
                     </Col>
                     <Col className="justify-self-end">
                       <fieldset>
-                        <ToggleButtonGroup type="radio" name="view">
+                        <ToggleButtonGroup
+                          type="radio"
+                          name="view"
+                          className="swt"
+                        >
                           <ToggleButton
                             id="week"
                             value="week"
                             variant="light"
-                            className="gel btn-circle btn-lg"
+                            className="gel btn-circle rounded-circle d-flex align-items-center justify-content-center"
                             active
                           >
-                            Week
+                            <img src={Gel} />
                           </ToggleButton>
                           <ToggleButton
                             id="month"
                             value="month"
                             variant="light"
-                            className="usd"
+                            className="usd btn-circle rounded-circle d-flex align-items-center justify-content-center"
                           >
-                            Month
+                            <img src={Usd} />
                           </ToggleButton>
                         </ToggleButtonGroup>
                       </fieldset>
