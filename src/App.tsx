@@ -10,6 +10,8 @@ import {
   Form,
   DropdownButton,
   Dropdown,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "react-bootstrap";
 import { BsChevronDown } from "react-icons/bs";
 import logo from "./assets/logo.png";
@@ -30,6 +32,8 @@ import {
   ModProps,
 } from "./Types/Types";
 import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
+import { url } from "inspector";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 function App() {
   const [mans, setMans] = useState<ManProps[]>([]);
   const [models, setModels] = useState<ModelProps[]>([]);
@@ -51,6 +55,10 @@ function App() {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [width, setWidth] = useState<number>();
   const [width2, setWidth2] = useState<number>();
+  const [catType, setCatType] = useState<number | string>("");
+  const [priceFrom, setPriceFrom] = useState<number | string>("");
+  const [priceTo, setPriceTo] = useState<number | string>("");
+  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
     fetch("https://static.my.ge/myauto/js/mans.json")
@@ -74,6 +82,9 @@ function App() {
         url +
         `?ForRent=${bargType}` +
         `&Mans=${manType}` +
+        `&Cats=${catType}` +
+        `&PriceFrom=${priceFrom}` +
+        `&PriceTo=${priceTo}` +
         `&Period=${period}h` +
         `&SortOrder=${sort}` +
         `&Page=${page}`;
@@ -82,6 +93,9 @@ function App() {
         url +
         `?ForRent=${bargType}` +
         `&Mans=${manType}` +
+        `&Cats=${catType}` +
+        `&PriceFrom=${priceFrom}` +
+        `&PriceTo=${priceTo}` +
         `&SortOrder=${sort}` +
         `&Page=${page}`;
     }
@@ -388,12 +402,9 @@ function App() {
   };
   const submit = () => {
     setSubmited((prev) => prev + 1);
-    if (width && width2) {
-      console.log(width);
-      console.log(width2);
-      console.log(100 * (1 - width / width2));
-      // console.log(100 - (width / width2) * 100);
-    }
+
+    console.log(priceFrom);
+    console.log(priceTo);
   };
   const setMan = (man: string) => {
     let el = document.getElementById("selectDropdown-4");
@@ -408,6 +419,14 @@ function App() {
       setWidth2(width2);
     }
   };
+  const brgClick = () => {
+    let but = document.getElementById("selectDropdown-3");
+    console.log(5);
+    if (but) {
+      console.log(but.innerHTML);
+      but.click();
+    }
+  };
   const handleClick = () => {
     let but = document.getElementById("selectDropdown-4");
     console.log(5);
@@ -416,11 +435,31 @@ function App() {
       but.click();
     }
   };
+  const catClick = () => {
+    let but = document.getElementById("selectDropdown-5");
+    console.log(5);
+    if (but) {
+      // console.log(but.innerHTML);
+      but.click();
+    }
+  };
+  const setCat = (cat: CategoryProps) => {
+    let el = document.getElementById("selectDropdown-5");
+    console.log(5);
+    if (el) {
+      el.innerHTML = cat.title;
+      // console.log(but.innerHTML);
+      setCatType(cat.category_id);
+    }
+  };
+  const handleToggle = () => {
+    setIsActive(!isActive);
+  };
 
   if (
     mans.length === 0 ||
     categorys.length === 0 ||
-    products.length === 0 ||
+    // products.length === 0 ||
     models.length < 15
   ) {
     return (
@@ -510,7 +549,7 @@ function App() {
                   </div>
 
                   <div className="d-flex justify-content-center">
-                    <DropdownButton
+                    {/* <DropdownButton
                       title="გარიგების ტიპი"
                       id="selectDropdown-3"
                       variant="seondary"
@@ -518,7 +557,25 @@ function App() {
                     >
                       <Dropdown.Item onClick={buy}>იყიდება</Dropdown.Item>
                       <Dropdown.Item onClick={rent}>ქირავდება</Dropdown.Item>
-                    </DropdownButton>
+                    </DropdownButton> */}
+                    <Dropdown
+                      title="გარიგების ტიპი"
+                      id="selectDropdown-4-div"
+                      role="button"
+                      onClick={brgClick}
+                      className="d-flex align-items-center justify-content-between position-relative br2"
+                    >
+                      <DropdownButton
+                        title="ყველა მწარმოებელი"
+                        id="selectDropdown-3"
+                        variant="seondary"
+                        className="d-flex align-items-center justify-content-between position-relative br br2-button"
+                      >
+                        <Dropdown.Item onClick={buy}>იყიდება</Dropdown.Item>
+                        <Dropdown.Item onClick={rent}>ქირავდება</Dropdown.Item>
+                      </DropdownButton>
+                      <BsChevronDown style={{ marginRight: "3%" }} />
+                    </Dropdown>
                   </div>
                   <style>
                     {`.br > .dropdown-toggle:after {
@@ -566,14 +623,6 @@ function App() {
                       <BsChevronDown style={{ marginRight: "3%" }} />
                     </Dropdown>
                   </div>
-                  {width && width2 ? (
-                    <style>
-                      {`.br2 > .dropdown-toggle:after {
-        margin-left: ;
-        
-      }`}
-                    </style>
-                  ) : null}
                 </Col>
               </Row>
               <br></br>
@@ -587,12 +636,32 @@ function App() {
                   </div>
 
                   <div className="d-flex justify-content-center">
-                    <Form.Select className="opt" style={{ width: "80%" }}>
-                      <option>ყველა კატეგორია</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </Form.Select>
+                    <Dropdown
+                      title="ყველა მწარმოებელი"
+                      id="selectDropdown-4-div"
+                      role="button"
+                      onClick={catClick}
+                      className="d-flex align-items-center justify-content-between position-relative br2"
+                    >
+                      <DropdownButton
+                        title="ყველა კატეგორია"
+                        id="selectDropdown-5"
+                        variant="seondary"
+                        className="d-flex align-items-center justify-content-between position-relative br2 br2-button"
+                      >
+                        {categorys.map((category) => {
+                          return (
+                            <Dropdown.Item
+                              onClick={() => setCat(category)}
+                              // key={category.title}
+                            >
+                              {category.title}
+                            </Dropdown.Item>
+                          );
+                        })}
+                      </DropdownButton>
+                      <BsChevronDown style={{ marginRight: "3%" }} />
+                    </Dropdown>
                   </div>
                 </Col>
               </Row>
@@ -603,10 +672,35 @@ function App() {
               <Row>
                 <Col>
                   <div
-                    style={{ width: "40%" }}
-                    className="d-flex justify-content-center sel"
+                    style={{ width: "100%" }}
+                    className="d-flex align-items-center justify-content-center sel"
                   >
-                    <Form.Label>ფასი</Form.Label>
+                    <Col className=" pr d-flex align-text-bottom">
+                      <Form.Label>ფასი</Form.Label>
+                    </Col>
+                    <Col className="justify-self-end">
+                      <fieldset>
+                        <ToggleButtonGroup type="radio" name="view">
+                          <ToggleButton
+                            id="week"
+                            value="week"
+                            variant="light"
+                            className="gel btn-circle btn-lg"
+                            active
+                          >
+                            Week
+                          </ToggleButton>
+                          <ToggleButton
+                            id="month"
+                            value="month"
+                            variant="light"
+                            className="usd"
+                          >
+                            Month
+                          </ToggleButton>
+                        </ToggleButtonGroup>
+                      </fieldset>
+                    </Col>
                   </div>
 
                   <div
@@ -616,8 +710,9 @@ function App() {
                     <Form.Control
                       className="price-sel justify-self-start"
                       type="text"
-                      id="price"
+                      id="price-f"
                       placeholder="დან"
+                      onChange={(e) => setPriceFrom(e.target.value)}
                     />
                     <span style={{ alignSelf: "center", margin: "0 5px" }}>
                       -
@@ -625,8 +720,9 @@ function App() {
                     <Form.Control
                       className="price-sel justify-self-end"
                       type="text"
-                      id="price"
+                      id="price-t"
                       placeholder="მდე"
+                      onChange={(e) => setPriceTo(e.target.value)}
                     />
                   </div>
                   <br />
