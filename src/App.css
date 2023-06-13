@@ -258,5 +258,19 @@ body {
   border-radius: 25px;
 }
 .swt {
-  border: ;
+  border: 1px solid #e2e5eb;
+  border-radius: 40% !important;
+  margin-bottom: 15%;
+}
+.gel {
+  --bs-btn-active-bg: #272a37 !important;
+  --bs-btn-bg: #ffffff !important;
+}
+.usd {
+  /* background-color: #ffffff !important; */
+  --bs-btn-active-bg: #272a37 !important;
+  --bs-btn-bg: #ffffff !important;
+}
+.sw-col {
+  margin-right: 12%;
 }

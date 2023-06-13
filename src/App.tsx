@@ -32,7 +32,9 @@ import {
   ModProps,
 } from "./Types/Types";
 import Gel from "./assets/gel.png";
+import GelB from "./assets/gel_black.png";
 import Usd from "./assets/usd.png";
+import UsdB from "./assets/usd_black.png";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 function App() {
   const [mans, setMans] = useState<ManProps[]>([]);
@@ -58,7 +60,9 @@ function App() {
   const [catType, setCatType] = useState<number | string>("");
   const [priceFrom, setPriceFrom] = useState<number | string>("");
   const [priceTo, setPriceTo] = useState<number | string>("");
-  const [isActive, setIsActive] = useState(false);
+  const [gel, setGel] = useState<string>(Gel);
+  const [usd, setUsd] = useState<string>(UsdB);
+  const [curr, setCurr] = useState<number>(3);
 
   useEffect(() => {
     fetch("https://static.my.ge/myauto/js/mans.json")
@@ -452,8 +456,14 @@ function App() {
       setCatType(cat.category_id);
     }
   };
-  const handleToggle = () => {
-    setIsActive(!isActive);
+  const handleToggle = (id: number) => {
+    if (id === 1) {
+      setGel(Gel);
+      setUsd(UsdB);
+    } else {
+      setGel(GelB);
+      setUsd(Usd);
+    }
   };
 
   if (
@@ -678,29 +688,32 @@ function App() {
                     <Col className=" pr d-flex align-text-bottom">
                       <Form.Label>ფასი</Form.Label>
                     </Col>
-                    <Col className="justify-self-end">
+                    <Col className="d-flex justify-content-end sw-col">
                       <fieldset>
                         <ToggleButtonGroup
                           type="radio"
                           name="view"
-                          className="swt"
+                          className="swt rounded-pill"
                         >
                           <ToggleButton
                             id="week"
                             value="week"
                             variant="light"
+                            onClick={() => handleToggle(1)}
                             className="gel btn-circle rounded-circle d-flex align-items-center justify-content-center"
-                            active
+                            // active
                           >
-                            <img src={Gel} />
+                            <img src={gel} />
                           </ToggleButton>
                           <ToggleButton
                             id="month"
                             value="month"
                             variant="light"
+                            onClick={() => handleToggle(2)}
+                            // active
                             className="usd btn-circle rounded-circle d-flex align-items-center justify-content-center"
                           >
-                            <img src={Usd} />
+                            <img src={usd} />
                           </ToggleButton>
                         </ToggleButtonGroup>
                       </fieldset>
