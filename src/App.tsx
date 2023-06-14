@@ -35,6 +35,8 @@ import Gel from "./assets/gel.png";
 import GelB from "./assets/gel_black.png";
 import Usd from "./assets/usd.png";
 import UsdB from "./assets/usd_black.png";
+import Check from "./assets/check.png";
+import PriceWithCommas from "./components/PriceWithCommas";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 function App() {
   const [mans, setMans] = useState<ManProps[]>([]);
@@ -86,6 +88,7 @@ function App() {
         url +
         `?ForRent=${bargType}` +
         `&Mans=${manType}` +
+        `$CurrencyID=${curr}` +
         `&Cats=${catType}` +
         `&PriceFrom=${priceFrom}` +
         `&PriceTo=${priceTo}` +
@@ -97,6 +100,7 @@ function App() {
         url +
         `?ForRent=${bargType}` +
         `&Mans=${manType}` +
+        `$CurrencyID=${curr}` +
         `&Cats=${catType}` +
         `&PriceFrom=${priceFrom}` +
         `&PriceTo=${priceTo}` +
@@ -460,9 +464,11 @@ function App() {
     if (id === 1) {
       setGel(Gel);
       setUsd(UsdB);
+      setCurr(3);
     } else {
       setGel(GelB);
       setUsd(Usd);
+      setCurr(2);
     }
   };
 
@@ -576,7 +582,7 @@ function App() {
                       className="d-flex align-items-center justify-content-between position-relative br2"
                     >
                       <DropdownButton
-                        title="ყველა მწარმოებელი"
+                        title="გარიგების ტიპი"
                         id="selectDropdown-3"
                         variant="seondary"
                         className="d-flex align-items-center justify-content-between position-relative br br2-button"
@@ -651,7 +657,7 @@ function App() {
                       id="selectDropdown-4-div"
                       role="button"
                       onClick={catClick}
-                      className="d-flex align-items-center justify-content-between position-relative br2"
+                      className="d-flex checkbox-item align-items-center justify-content-between position-relative br2"
                     >
                       <DropdownButton
                         title="ყველა კატეგორია"
@@ -700,6 +706,7 @@ function App() {
                             value="week"
                             variant="light"
                             onClick={() => handleToggle(1)}
+                            active={curr == 3}
                             className="gel btn-circle rounded-circle d-flex align-items-center justify-content-center"
                             // active
                           >
@@ -710,7 +717,7 @@ function App() {
                             value="month"
                             variant="light"
                             onClick={() => handleToggle(2)}
-                            // active
+                            active={curr == 2}
                             className="usd btn-circle rounded-circle d-flex align-items-center justify-content-center"
                           >
                             <img src={usd} />
@@ -832,20 +839,35 @@ function App() {
               }
               return (
                 <div>
-                  <div className="d-flex prod-car">
-                    <img className="prod-img" src={img_url} alt="" />
-                    <div className="d-flex title">
-                      <h6 className="name">
-                        {q_model[0]
-                          ? title[0].man_name +
-                            " " +
-                            q_model[0].model_name +
-                            " " +
-                            prod.car_model
-                          : title[0].man_name + " " + prod.car_model}
-                      </h6>
+                  <div className="prod-car">
+                    <div className="d-flex">
+                      <img className="prod-img" src={img_url} alt="" />
+                      <div className="d-flex title">
+                        <h6 className="name">
+                          {q_model[0]
+                            ? title[0].man_name +
+                              " " +
+                              q_model[0].model_name +
+                              " " +
+                              prod.car_model
+                            : title[0].man_name + " " + prod.car_model}
+                        </h6>
 
-                      <h6 className="year">{prod.prod_year + " წ"}</h6>
+                        <h6 className="year">{prod.prod_year + " წ"}</h6>
+                      </div>
+                      <div>
+                        {prod.customs_passed ? (
+                          <div className="custom_passed">
+                            <img className="check" src={Check}></img>{" "}
+                            განბაჟებული
+                          </div>
+                        ) : (
+                          <div className="custom_not">განუბაჟებელი</div>
+                        )}
+                      </div>
+                      <div className="d-flex cont align-middle">
+                        <PriceWithCommas price={prod.price} />
+                      </div>
                     </div>
                   </div>
                 </div>

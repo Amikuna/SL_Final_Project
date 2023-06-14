@@ -141,6 +141,9 @@ body {
   .page-link:nth-last-child(-n + 2) {
   color: #f80505 !important;
 }
+.pagination:focus {
+  --bs-pagination-focus-color: #fd4100 !important;
+}
 .pagination > .page-item:nth-child(-n + 2) .page-link:nth-child(-n + 2) {
   color: #f80505 !important;
 }
@@ -273,4 +276,16 @@ body {
 }
 .sw-col {
   margin-right: 12%;
+}
+.align-middle {
+  display: flex;
+  align-items: center;
+}
+.custom_passed {
+  color: #26b753;
+  font-size: 90%;
+}
+.custom_not {
+  color: #ff3b30;
+  font-size: 90%;
 }
