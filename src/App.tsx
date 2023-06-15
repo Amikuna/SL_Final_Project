@@ -37,7 +37,9 @@ import Usd from "./assets/usd.png";
 import UsdB from "./assets/usd_black.png";
 import Check from "./assets/check.png";
 import PriceWithCommas from "./components/PriceWithCommas";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import CheckboxMenu from "./components/DealType";
+import DealType from "./components/DealType";
+
 function App() {
   const [mans, setMans] = useState<ManProps[]>([]);
   const [models, setModels] = useState<ModelProps[]>([]);
@@ -385,16 +387,17 @@ function App() {
       setSort(6);
     }
   };
-  const buy = () => {
-    let el = document.getElementById("selectDropdown-3");
-    if (el) {
-      console.log(el.title);
-      el.innerHTML = "იყიდება";
-      console.log(el.title);
-      setMarginS1("66%");
-      setBargType(0);
-      // setSort(6);
-    }
+  const buy = (newBargType: number | string) => {
+    setBargType(newBargType);
+    // let el = document.getElementById("selectDropdown-3");
+    // if (el) {
+    //   console.log(el.title);
+    //   el.innerHTML = "იყიდება";
+    //   console.log(el.title);
+    //   setMarginS1("66%");
+    //   // setBargType(0);
+    //   // setSort(6);
+    // }
   };
   const rent = () => {
     let el = document.getElementById("selectDropdown-3");
@@ -565,34 +568,9 @@ function App() {
                   </div>
 
                   <div className="d-flex justify-content-center">
-                    {/* <DropdownButton
-                      title="გარიგების ტიპი"
-                      id="selectDropdown-3"
-                      variant="seondary"
-                      className="d-flex align-items-center justify-content-between position-relative br my-dropdown-button"
-                    >
-                      <Dropdown.Item onClick={buy}>იყიდება</Dropdown.Item>
-                      <Dropdown.Item onClick={rent}>ქირავდება</Dropdown.Item>
-                    </DropdownButton> */}
-                    <Dropdown
-                      title="გარიგების ტიპი"
-                      id="selectDropdown-4-div"
-                      role="button"
-                      onClick={brgClick}
-                      className="d-flex align-items-center justify-content-between position-relative br2"
-                    >
-                      <DropdownButton
-                        title="გარიგების ტიპი"
-                        id="selectDropdown-3"
-                        variant="seondary"
-                        className="d-flex align-items-center justify-content-between position-relative br br2-button"
-                      >
-                        <Dropdown.Item onClick={buy}>იყიდება</Dropdown.Item>
-                        <Dropdown.Item onClick={rent}>ქირავდება</Dropdown.Item>
-                      </DropdownButton>
-                      <BsChevronDown style={{ marginRight: "3%" }} />
-                    </Dropdown>
+                    <DealType bargType={bargType} onBargTypeChange={buy} />
                   </div>
+
                   <style>
                     {`.br > .dropdown-toggle:after {
           margin-left: ${marginS1};

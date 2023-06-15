@@ -289,3 +289,43 @@ body {
   color: #ff3b30;
   font-size: 90%;
 }
+.dr > .dropdown-toggle:after {
+  visibility: hidden !important;
+  /* margin-left: 50px !important; */
+}
+.dv {
+  border: 1px solid #eef1f4;
+  border-radius: 5px;
+  width: 80%;
+}
+
+.dr2 {
+  /* border: 1px solid #eef0f3; */
+  /* border-radius: 5px; */
+  max-width: 100% !important;
+  min-width: 100% !important;
+  /* overflow-y: auto; */
+  max-height: 400px !important;
+}
+.txt {
+  margin-left: -1% !important;
+  font-weight: 100;
+  color: #8c929b;
+}
+
+.chevron {
+  margin-right: -5000% !important;
+  width: 7%;
+  color: #8c929b;
+}
+.form-check-input:checked {
+  background-color: #fd4100 !important;
+  border-color: #fd4100 !important;
+}
+.form-check-input {
+  margin-left: 1% !important;
+  margin-right: 5% !important;
+}
+.dropdown-menu.show {
+  width: 110% !important;
+}
