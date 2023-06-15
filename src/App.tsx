@@ -37,7 +37,7 @@ import Usd from "./assets/usd.png";
 import UsdB from "./assets/usd_black.png";
 import Check from "./assets/check.png";
 import PriceWithCommas from "./components/PriceWithCommas";
-import CheckboxMenu from "./components/DealType";
+import Manufacturer from "./components/Manufacturer";
 import DealType from "./components/DealType";
 
 function App() {
@@ -590,7 +590,7 @@ function App() {
                   </div>
 
                   <div className="d-flex justify-content-center">
-                    <Dropdown
+                    {/* <Dropdown
                       title="ყველა მწარმოებელი"
                       id="selectDropdown-4-div"
                       role="button"
@@ -615,7 +615,8 @@ function App() {
                         })}
                       </DropdownButton>
                       <BsChevronDown style={{ marginRight: "3%" }} />
-                    </Dropdown>
+                    </Dropdown> */}
+                    <Manufacturer mans={mans} onManTypeChange={buy} />
                   </div>
                 </Col>
               </Row>

@@ -329,3 +329,9 @@ body {
 .dropdown-menu.show {
   width: 110% !important;
 }
+.char-limit {
+  width: 25ch;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
