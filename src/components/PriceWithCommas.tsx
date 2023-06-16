@@ -1,10 +1,17 @@
 import React from "react";
+import GelG from "../assets/gel-gray.svg";
+import UsdG from "../assets/usd-gray.svg";
+import { ItemProps } from "../Types/Types";
 
 type PriceWithCommasProps = {
-  price: number;
+  price: ItemProps;
+  priceId: number;
 };
 
-const PriceWithCommas: React.FC<PriceWithCommasProps> = ({ price }) => {
+const PriceWithCommas: React.FC<PriceWithCommasProps> = ({
+  price,
+  priceId,
+}) => {
   const formatPrice = (price: number): string => {
     if (price > 999) {
       let priceStr = price.toString().split("");
@@ -15,8 +22,22 @@ const PriceWithCommas: React.FC<PriceWithCommasProps> = ({ price }) => {
     }
     return price.toString();
   };
-
-  return <h5 className="price">{formatPrice(price)}</h5>;
+  if (price.price_value === 0) {
+    return <h6 className="price-txt">ფასი შეთანხმებით</h6>;
+  } else if (priceId == 3) {
+    return (
+      <div className="d-flex">
+        <h5 className="price">{formatPrice(price.price_value)}</h5>
+        <img className="price-icon" src={GelG} alt="" />
+      </div>
+    );
+  }
+  return (
+    <div className="d-flex">
+      <h5 className="price">{formatPrice(price.price_usd)}</h5>
+      <img className="price-icon" src={UsdG} />
+    </div>
+  );
 };
 
 export default PriceWithCommas;

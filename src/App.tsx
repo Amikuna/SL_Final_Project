@@ -90,7 +90,7 @@ function App() {
         url +
         `?ForRent=${bargType}` +
         `&Mans=${manType}` +
-        `$CurrencyID=${curr}` +
+        `&CurrencyID=${curr}` +
         `&Cats=${catType}` +
         `&PriceFrom=${priceFrom}` +
         `&PriceTo=${priceTo}` +
@@ -102,7 +102,7 @@ function App() {
         url +
         `?ForRent=${bargType}` +
         `&Mans=${manType}` +
-        `$CurrencyID=${curr}` +
+        `&CurrencyID=${curr}` +
         `&Cats=${catType}` +
         `&PriceFrom=${priceFrom}` +
         `&PriceTo=${priceTo}` +
@@ -418,17 +418,19 @@ function App() {
     console.log(priceTo);
   };
   const setMan = (man: string) => {
-    let el = document.getElementById("selectDropdown-4");
-    let el2 = document.getElementsByClassName("br2");
-    if (el) {
-      el.innerHTML = mans.filter((manf) => manf.man_id == man)[0].man_name;
-      let arr: string[] = [];
-      setManType(man);
-      let width1 = el.clientWidth;
-      let width2 = el2[0].clientWidth;
-      setWidth(width1);
-      setWidth2(width2);
-    }
+    // let el = document.getElementById("selectDropdown-4");
+    // let el2 = document.getElementsByClassName("br2");
+    // if (el) {
+    //   el.innerHTML = mans.filter((manf) => manf.man_id == man)[0].man_name;
+    //   let arr: string[] = [];
+    //   setManType(man);
+    //   let width1 = el.clientWidth;
+    //   let width2 = el2[0].clientWidth;
+    //   setWidth(width1);
+    //   setWidth2(width2);
+    // }
+    console.log(man);
+    setManType(man);
   };
   const brgClick = () => {
     let but = document.getElementById("selectDropdown-3");
@@ -590,33 +592,7 @@ function App() {
                   </div>
 
                   <div className="d-flex justify-content-center">
-                    {/* <Dropdown
-                      title="ყველა მწარმოებელი"
-                      id="selectDropdown-4-div"
-                      role="button"
-                      onClick={handleClick}
-                      className="d-flex align-items-center justify-content-between position-relative br2"
-                    >
-                      <DropdownButton
-                        title="ყველა მწარმოებელი"
-                        id="selectDropdown-4"
-                        variant="seondary"
-                        className="d-flex align-items-center justify-content-between position-relative br2 br2-button"
-                      >
-                        {mans.map((man) => {
-                          return (
-                            <Dropdown.Item
-                              onClick={() => setMan(man.man_id)}
-                              key={man.man_name}
-                            >
-                              {man.man_name}
-                            </Dropdown.Item>
-                          );
-                        })}
-                      </DropdownButton>
-                      <BsChevronDown style={{ marginRight: "3%" }} />
-                    </Dropdown> */}
-                    <Manufacturer mans={mans} onManTypeChange={buy} />
+                    <Manufacturer mans={mans} onManTypeChange={setMan} />
                   </div>
                 </Col>
               </Row>
@@ -821,31 +797,44 @@ function App() {
                   <div className="prod-car">
                     <div className="d-flex">
                       <img className="prod-img" src={img_url} alt="" />
-                      <div className="d-flex title">
-                        <h6 className="name">
-                          {q_model[0]
-                            ? title[0].man_name +
-                              " " +
-                              q_model[0].model_name +
-                              " " +
-                              prod.car_model
-                            : title[0].man_name + " " + prod.car_model}
-                        </h6>
+                      <div className="d-flex flex-column w-100">
+                        <Row className="row-1">
+                          <div className="d-flex justify-content-between">
+                            <div className="d-flex title">
+                              <h6 className="name">
+                                {q_model[0]
+                                  ? title[0].man_name +
+                                    " " +
+                                    q_model[0].model_name +
+                                    " " +
+                                    prod.car_model
+                                  : title[0].man_name + " " + prod.car_model}
+                              </h6>
 
-                        <h6 className="year">{prod.prod_year + " წ"}</h6>
-                      </div>
-                      <div>
-                        {prod.customs_passed ? (
-                          <div className="custom_passed">
-                            <img className="check" src={Check}></img>{" "}
-                            განბაჟებული
+                              <h6
+                                className="year justify-self-start"
+                                style={{ width: "20%" }}
+                              >
+                                {prod.prod_year + " წ"}
+                              </h6>
+                            </div>
+                            <div className="justify-self-end">
+                              {prod.customs_passed ? (
+                                <div className="custom_passed">
+                                  <img className="check" src={Check}></img>{" "}
+                                  განბაჟებული
+                                </div>
+                              ) : (
+                                <div className="custom_not">განუბაჟებელი</div>
+                              )}
+                            </div>
                           </div>
-                        ) : (
-                          <div className="custom_not">განუბაჟებელი</div>
-                        )}
-                      </div>
-                      <div className="d-flex cont align-middle">
-                        <PriceWithCommas price={prod.price} />
+                        </Row>
+                        <Row>
+                          <div className="d-flex cont align-middle">
+                            <PriceWithCommas price={prod} priceId={curr} />
+                          </div>
+                        </Row>
                       </div>
                     </div>
                   </div>
