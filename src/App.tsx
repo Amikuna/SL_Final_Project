@@ -39,6 +39,7 @@ import Check from "./assets/check.png";
 import PriceWithCommas from "./components/PriceWithCommas";
 import Manufacturer from "./components/Manufacturer";
 import DealType from "./components/DealType";
+import Category from "./components/Category";
 
 function App() {
   const [mans, setMans] = useState<ManProps[]>([]);
@@ -90,10 +91,10 @@ function App() {
         url +
         `?ForRent=${bargType}` +
         `&Mans=${manType}` +
-        `&CurrencyID=${curr}` +
         `&Cats=${catType}` +
         `&PriceFrom=${priceFrom}` +
         `&PriceTo=${priceTo}` +
+        `&CurrencyID=${curr}` +
         `&Period=${period}h` +
         `&SortOrder=${sort}` +
         `&Page=${page}`;
@@ -102,10 +103,10 @@ function App() {
         url +
         `?ForRent=${bargType}` +
         `&Mans=${manType}` +
-        `&CurrencyID=${curr}` +
         `&Cats=${catType}` +
         `&PriceFrom=${priceFrom}` +
         `&PriceTo=${priceTo}` +
+        `&CurrencyID=${curr}` +
         `&SortOrder=${sort}` +
         `&Page=${page}`;
     }
@@ -456,14 +457,15 @@ function App() {
       but.click();
     }
   };
-  const setCat = (cat: CategoryProps) => {
-    let el = document.getElementById("selectDropdown-5");
-    console.log(5);
-    if (el) {
-      el.innerHTML = cat.title;
-      // console.log(but.innerHTML);
-      setCatType(cat.category_id);
-    }
+  const setCat = (cat: string) => {
+    // let el = document.getElementById("selectDropdown-5");
+    // console.log(5);
+    // if (el) {
+    //   el.innerHTML = cat.title;
+    //   // console.log(but.innerHTML);
+    //   setCatType(cat.category_id);
+    // }
+    setCatType(cat);
   };
   const handleToggle = (id: number) => {
     if (id === 1) {
@@ -473,7 +475,7 @@ function App() {
     } else {
       setGel(GelB);
       setUsd(Usd);
-      setCurr(2);
+      setCurr(1);
     }
   };
 
@@ -607,7 +609,7 @@ function App() {
                   </div>
 
                   <div className="d-flex justify-content-center">
-                    <Dropdown
+                    {/* <Dropdown
                       title="ყველა მწარმოებელი"
                       id="selectDropdown-4-div"
                       role="button"
@@ -632,7 +634,8 @@ function App() {
                         })}
                       </DropdownButton>
                       <BsChevronDown style={{ marginRight: "3%" }} />
-                    </Dropdown>
+                    </Dropdown> */}
+                    <Category cats={categorys} onCatTypeChange={setCat} />
                   </div>
                 </Col>
               </Row>

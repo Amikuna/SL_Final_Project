@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Dropdown, Form } from "react-bootstrap";
 import { BsChevronDown } from "react-icons/bs";
 import { useRef } from "react";
-import { ManProps } from "../Types/Types";
+import { CategoryProps, ManProps } from "../Types/Types";
 
 type checkMenu = {
-  mans: ManProps[];
-  onManTypeChange: (newBargType: string) => void;
+  cats: CategoryProps[];
+  onCatTypeChange: (newCatType: string) => void;
 };
-const Manufacturer: React.FC<checkMenu> = ({ mans, onManTypeChange }) => {
+const Manufacturer: React.FC<checkMenu> = ({ cats, onCatTypeChange }) => {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const dropdown = useRef<HTMLButtonElement>(null);
   const text = useRef<HTMLDivElement>(null);
-  const [title, setTitle] = useState<string>("ყველა მწარმოებელი");
+  const [title, setTitle] = useState<string>("ყველა კატეგორია");
   const [clas, setClas] = useState<string>("txt");
   const [ids, setIds] = useState<string>("");
 
@@ -33,10 +33,10 @@ const Manufacturer: React.FC<checkMenu> = ({ mans, onManTypeChange }) => {
       let id = "";
       text = text + selectedItems[0];
       id =
-        id + mans.filter((man) => man.man_name == selectedItems[0])[0].man_id;
+        id + cats.filter((cat) => cat.title == selectedItems[0])[0].category_id;
       setTitle(text);
       setClas("txt char-limit");
-      onManTypeChange(id);
+      onCatTypeChange(id);
     } else if (selectedItems.length > 1) {
       let text = "";
       let id = "";
@@ -44,18 +44,23 @@ const Manufacturer: React.FC<checkMenu> = ({ mans, onManTypeChange }) => {
       selectedItems.map((item, index) => {
         if (index === selectedItems.length - 1) {
           text = text + item;
-          id = id + mans.filter((man) => man.man_name == item)[0].man_id;
+          id =
+            id +
+            cats.filter((cat) => cat.title == selectedItems[0])[0].category_id;
         } else {
           text = text + item + ",";
-          id = id + mans.filter((man) => man.man_name == item)[0].man_id + "-";
+          id =
+            id +
+            cats.filter((cat) => cat.title == selectedItems[0])[0].category_id +
+            ".";
         }
       });
       setClas("txt char-limit");
       setTitle(text);
-      onManTypeChange(id);
+      onCatTypeChange(id);
     } else {
-      setTitle("ყველა მწარმოებელი");
-      onManTypeChange("");
+      setTitle("ყველა კატეგორია");
+      onCatTypeChange("");
       setClas("txt");
     }
   }, [selectedItems]);
@@ -85,12 +90,12 @@ const Manufacturer: React.FC<checkMenu> = ({ mans, onManTypeChange }) => {
         <Dropdown.Menu>
           <Form>
             <Form.Group>
-              {mans.map((man) => (
+              {cats.map((cat) => (
                 <Form.Check
                   type="checkbox"
-                  label={man.man_name}
-                  checked={selectedItems.includes(man.man_name)}
-                  onChange={() => handleItemClick(man.man_name)}
+                  label={cat.title}
+                  checked={selectedItems.includes(cat.title)}
+                  onChange={() => handleItemClick(cat.title)}
                 />
               ))}
             </Form.Group>
