@@ -15,9 +15,12 @@ import {
 } from "react-bootstrap";
 import { BsChevronDown } from "react-icons/bs";
 import logo from "./assets/logo.png";
-import car from "./assets/car.png";
-import spec from "./assets/spec.png";
-import moto from "./assets/moto.png";
+import car from "./assets/car.svg";
+import spec from "./assets/spec.svg";
+import moto from "./assets/moto.svg";
+import carG from "./assets/car_gray.svg";
+import specG from "./assets/spec_gray.svg";
+import motoG from "./assets/moto_gray.svg";
 import { useState, useEffect } from "react";
 import "./fonts/ge/bpg_glaho_sylfaen.ttf";
 import { PaginationControl } from "react-bootstrap-pagination-control";
@@ -43,6 +46,14 @@ import Category from "./components/Category";
 import Destination from "./components/Destination";
 import Engine from "./components/Engine";
 import Run from "./components/Run";
+import GearBox from "./components/GearBox";
+import Wheel from "./components/Wheel";
+import Views from "./components/Views";
+import Time from "./components/Time";
+import Oval from "./assets/Oval.svg";
+import Heart from "./assets/heart.svg";
+import Vector from "./assets/Vector.svg";
+import Shape from "./assets/Shape.svg";
 
 function App() {
   const [mans, setMans] = useState<ManProps[]>([]);
@@ -71,6 +82,11 @@ function App() {
   const [gel, setGel] = useState<string>(Gel);
   const [usd, setUsd] = useState<string>(UsdB);
   const [curr, setCurr] = useState<number>(3);
+  const [type, setType] = useState<number>(0);
+  const [Car, setCar] = useState<string>(car);
+  const [Spec, setSpec] = useState<string>(specG);
+  const [Moto, setMoto] = useState<string>(motoG);
+  const plc: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
   useEffect(() => {
     fetch("https://static.my.ge/myauto/js/mans.json")
@@ -92,7 +108,8 @@ function App() {
     if (isPeriod) {
       url =
         url +
-        `?ForRent=${bargType}` +
+        `?TypeID=${type}` +
+        `&ForRent=${bargType}` +
         `&Mans=${manType}` +
         `&Cats=${catType}` +
         `&PriceFrom=${priceFrom}` +
@@ -104,7 +121,8 @@ function App() {
     } else {
       url =
         url +
-        `?ForRent=${bargType}` +
+        `?TypeID=${type}` +
+        `&ForRent=${bargType}` +
         `&Mans=${manType}` +
         `&Cats=${catType}` +
         `&PriceFrom=${priceFrom}` +
@@ -393,15 +411,6 @@ function App() {
   };
   const buy = (newBargType: number | string) => {
     setBargType(newBargType);
-    // let el = document.getElementById("selectDropdown-3");
-    // if (el) {
-    //   console.log(el.title);
-    //   el.innerHTML = "იყიდება";
-    //   console.log(el.title);
-    //   setMarginS1("66%");
-    //   // setBargType(0);
-    //   // setSort(6);
-    // }
   };
   const rent = () => {
     let el = document.getElementById("selectDropdown-3");
@@ -411,8 +420,6 @@ function App() {
       console.log(el.title);
       setMarginS1("58%");
       setBargType(1);
-
-      // setSort(6);
     }
   };
   const submit = () => {
@@ -422,18 +429,6 @@ function App() {
     console.log(priceTo);
   };
   const setMan = (man: string) => {
-    // let el = document.getElementById("selectDropdown-4");
-    // let el2 = document.getElementsByClassName("br2");
-    // if (el) {
-    //   el.innerHTML = mans.filter((manf) => manf.man_id == man)[0].man_name;
-    //   let arr: string[] = [];
-    //   setManType(man);
-    //   let width1 = el.clientWidth;
-    //   let width2 = el2[0].clientWidth;
-    //   setWidth(width1);
-    //   setWidth2(width2);
-    // }
-    console.log(man);
     setManType(man);
   };
   const brgClick = () => {
@@ -444,30 +439,8 @@ function App() {
       but.click();
     }
   };
-  const handleClick = () => {
-    let but = document.getElementById("selectDropdown-4");
-    console.log(5);
-    if (but) {
-      console.log(but.innerHTML);
-      but.click();
-    }
-  };
-  const catClick = () => {
-    let but = document.getElementById("selectDropdown-5");
-    console.log(5);
-    if (but) {
-      // console.log(but.innerHTML);
-      but.click();
-    }
-  };
+
   const setCat = (cat: string) => {
-    // let el = document.getElementById("selectDropdown-5");
-    // console.log(5);
-    // if (el) {
-    //   el.innerHTML = cat.title;
-    //   // console.log(but.innerHTML);
-    //   setCatType(cat.category_id);
-    // }
     setCatType(cat);
   };
   const handleToggle = (id: number) => {
@@ -479,6 +452,24 @@ function App() {
       setGel(GelB);
       setUsd(Usd);
       setCurr(1);
+    }
+  };
+  const handleToggle2 = (id: number) => {
+    if (id === 0) {
+      setType(0);
+      setCar(car);
+      setSpec(specG);
+      setMoto(motoG);
+    } else if (id === 1) {
+      setType(1);
+      setCar(carG);
+      setSpec(spec);
+      setMoto(motoG);
+    } else if (id === 2) {
+      setType(2);
+      setCar(carG);
+      setSpec(specG);
+      setMoto(moto);
     }
   };
 
@@ -503,10 +494,19 @@ function App() {
             </Container>
           </div>
         </Navbar.Brand>
-        <Container>
-          <div className="d-flex justify-content-center align-items-center">
-            <h1>Loading...</h1>
-          </div>
+        <Container className="cont">
+          {plc.map((plc) => {
+            return (
+              <div className="d-flex justify-content-center  loading">
+                <div className="d-flex prod-car">
+                  <div className="skeleton skel-img prod-img"></div>
+                  <h4 className="skeleton skel-title title">
+                    {"                                          "}
+                  </h4>
+                </div>
+              </div>
+            );
+          })}
         </Container>
       </div>
     );
@@ -537,30 +537,41 @@ function App() {
               style={{ width: "100%" }}
             >
               <Row style={{ width: "100%" }}>
-                <Col className="d-flex justify-content-center align-items-center cat-col">
-                  <img
-                    src={car}
-                    width="30px"
-                    height="14px"
-                    style={{ color: "black" }}
-                  />
-                </Col>
-                <Col className="d-flex justify-content-center align-items-center cat-col">
-                  <img
-                    src={spec}
-                    width="22px"
-                    height="18px"
-                    style={{ color: "black" }}
-                  />
-                </Col>
-                <Col className="d-flex justify-content-center align-items-center cat-col">
-                  <img
-                    src={moto}
-                    width="22px"
-                    height="18px"
-                    style={{ color: "black" }}
-                  />
-                </Col>
+                <div className="d-flex justify-content-between typ">
+                  <ToggleButtonGroup type="radio" name="view" className="types">
+                    <ToggleButton
+                      id="car"
+                      value="car"
+                      variant="light"
+                      onClick={() => handleToggle2(0)}
+                      active={type === 0}
+                      className="d-flex align-items-center justify-content-center cat-col coll-1"
+                      // active
+                    >
+                      <img width="30px" height="14px" src={Car} />
+                    </ToggleButton>
+                    <ToggleButton
+                      id="spec"
+                      value="spec"
+                      variant="light"
+                      onClick={() => handleToggle2(1)}
+                      active={type === 1}
+                      className="d-flex align-items-center justify-content-center cat-col"
+                    >
+                      <img width="22px" height="18px" src={Spec} />
+                    </ToggleButton>
+                    <ToggleButton
+                      id="spec"
+                      value="moto"
+                      variant="light"
+                      onClick={() => handleToggle2(2)}
+                      active={type === 2}
+                      className="d-flex align-items-center justify-content-center cat-col coll-3"
+                    >
+                      <img width="22px" height="18px" src={Moto} />
+                    </ToggleButton>
+                  </ToggleButtonGroup>
+                </div>
               </Row>
             </div>
             <div className="form-sel" style={{ width: "250px" }}>
@@ -637,23 +648,24 @@ function App() {
                           className="swt rounded-pill"
                         >
                           <ToggleButton
-                            id="week"
-                            value="week"
+                            id="gel"
+                            value="gel"
                             variant="light"
                             onClick={() => handleToggle(1)}
                             active={curr == 3}
-                            className="gel btn-circle rounded-circle d-flex align-items-center justify-content-center"
+                            className="gel-2 btn-circle rounded-circle d-flex align-items-center justify-content-center"
                             // active
                           >
                             <img src={gel} />
                           </ToggleButton>
+
                           <ToggleButton
-                            id="month"
-                            value="month"
+                            id="usd"
+                            value="usd"
                             variant="light"
                             onClick={() => handleToggle(2)}
-                            active={curr == 2}
-                            className="usd btn-circle rounded-circle d-flex align-items-center justify-content-center"
+                            active={curr == 1}
+                            className="usd-2 btn-circle rounded-circle d-flex align-items-center justify-content-center"
                           >
                             <img src={usd} />
                           </ToggleButton>
@@ -707,40 +719,73 @@ function App() {
                 <h6>{meta?.total} განცხადება</h6>
               </Col>
               <Col className="d-flex justify-content-end filter">
-                <DropdownButton
-                  id="selectDropdown-1"
-                  title="პერიოდი "
-                  variant="secondary"
-                  className="opt-3"
-                >
-                  <Dropdown.Item onClick={period1H}>ბოლო 1 საათი</Dropdown.Item>
-                  <Dropdown.Item onClick={period3H}>ბოლო 3 საათი</Dropdown.Item>
-                  <Dropdown.Item onClick={period6H}>ბოლო 6 საათი</Dropdown.Item>
-                  <Dropdown.Item onClick={period12H}>
-                    ბოლო 12 საათი
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={period24H}>
-                    ბოლო 24 საათი
-                  </Dropdown.Item>
-                </DropdownButton>
+                <div className="d-flex justify-content-center">
+                  <Dropdown
+                    title="გარიგების ტიპი"
+                    id="selectDropdown-4-div"
+                    role="button"
+                    className="d-flex align-items-center justify-content-between position-relative opt-3"
+                  >
+                    <DropdownButton
+                      title="პერიოდი"
+                      id="selectDropdown-1"
+                      variant="seondary"
+                      className="d-flex align-items-center justify-content-between position-relative br opt-3"
+                    >
+                      <Dropdown.Item onClick={period1H}>
+                        ბოლო 1 საათი
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={period3H}>
+                        ბოლო 3 საათი
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={period6H}>
+                        ბოლო 6 საათი
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={period12H}>
+                        ბოლო 12 საათი
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={period24H}>
+                        ბოლო 24 საათი
+                      </Dropdown.Item>
+                    </DropdownButton>
+                    <BsChevronDown style={{ marginRight: "3%" }} />
+                  </Dropdown>
+                </div>
                 <span style={{ margin: "0 2%" }}></span>
-                <DropdownButton
-                  id="selectDropdown-2"
-                  title="თარიღი კლებადი "
-                  variant="secondary"
-                  className="opt-3"
+
+                <Dropdown
+                  title="გარიგების ტიპი"
+                  id="selectDropdown-4-div"
+                  role="button"
+                  className="d-flex align-items-center justify-content-between position-relative opt-3"
                 >
-                  <Dropdown.Item onClick={dateDec}>
-                    თარიღი კლებადი
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={dateInc}>თარიღი ზრდადი</Dropdown.Item>
-                  <Dropdown.Item onClick={priceDec}>ფასი კლებადი</Dropdown.Item>
-                  <Dropdown.Item onClick={priceInc}>ფასი ზრდადი</Dropdown.Item>
-                  <Dropdown.Item onClick={runDec}>
-                    გარბენი კლებადი
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={runInc}>გარბენი ზრდადი</Dropdown.Item>
-                </DropdownButton>
+                  <DropdownButton
+                    title="თარიღი კლებადი"
+                    id="selectDropdown-2"
+                    variant="seondary"
+                    className="d-flex align-items-center justify-content-between position-relative br2 opt-3"
+                  >
+                    <Dropdown.Item onClick={dateDec}>
+                      თარიღი კლებადი
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={dateInc}>
+                      თარიღი ზრდადი
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={priceDec}>
+                      ფასი კლებადი
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={priceInc}>
+                      ფასი ზრდადი
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={runDec}>
+                      გარბენი კლებადი
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={runInc}>
+                      გარბენი ზრდადი
+                    </Dropdown.Item>
+                  </DropdownButton>
+                  <BsChevronDown style={{ marginRight: "3%" }} />
+                </Dropdown>
               </Col>
             </div>
 
@@ -818,17 +863,33 @@ function App() {
                               Volume={prod.engine_volume}
                               FuelId={prod.fuel_type_id}
                             />
-                            <Run Run={prod.car_run_km} />
+                            <Run Range={prod.car_run_km} />
                             <PriceWithCommas price={prod} priceId={curr} />
                           </div>
                         </Row>
                         <Row>
-                          <div className="d-flex cont align-middle justify-content-">
-                            <Engine
-                              Volume={prod.engine_volume}
-                              FuelId={prod.fuel_type_id}
+                          <div className="d-flex cont-2 align-middle justify-content-between">
+                            <GearBox id={prod.gear_type_id} />
+
+                            <Wheel id={prod.rigth_wheel} />
+
+                            <PriceWithCommas
+                              vis="hidden"
+                              price={prod}
+                              priceId={curr}
                             />
-                            <Run Run={prod.car_run_km} />
+                          </div>
+                        </Row>
+                        <Row>
+                          <div className="d-flex align-items-center">
+                            <div className="d-flex cont-3 align-middle">
+                              <Views amount={prod.views} />
+                              <img className="oval" src={Oval} />
+                              <Time date={prod.order_date} />
+                            </div>
+                            <img className="vector" src={Vector} />
+                            <img className="shape" src={Shape} />
+                            <img className="heart" src={Heart} />
                           </div>
                         </Row>
                       </div>
@@ -847,6 +908,7 @@ function App() {
                 changePage={(page) => {
                   setPage(page);
                   setProducts((prev) => []);
+                  setModels((prev) => []);
                   console.log(s_url);
                 }}
                 ellipsis={0}

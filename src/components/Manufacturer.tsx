@@ -82,7 +82,7 @@ const Manufacturer: React.FC<checkMenu> = ({ mans, onManTypeChange }) => {
           </div>
         </Dropdown.Toggle>
         <BsChevronDown className="chevron" onClick={click} />
-        <Dropdown.Menu>
+        <Dropdown.Menu className="scr">
           <Form>
             <Form.Group>
               {mans.map((man) => (
@@ -91,6 +91,7 @@ const Manufacturer: React.FC<checkMenu> = ({ mans, onManTypeChange }) => {
                   label={man.man_name}
                   checked={selectedItems.includes(man.man_name)}
                   onChange={() => handleItemClick(man.man_name)}
+                  className="scr"
                 />
               ))}
             </Form.Group>

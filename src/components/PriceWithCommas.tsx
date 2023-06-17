@@ -6,12 +6,15 @@ import { ItemProps } from "../Types/Types";
 type PriceWithCommasProps = {
   price: ItemProps;
   priceId: number;
+  vis?: string;
 };
 
 const PriceWithCommas: React.FC<PriceWithCommasProps> = ({
   price,
   priceId,
+  vis,
 }) => {
+  // const visi: Visibility = vis;
   const formatPrice = (price: number): string => {
     if (price > 999) {
       let priceStr = Math.round(price).toString().split("");
@@ -23,17 +26,30 @@ const PriceWithCommas: React.FC<PriceWithCommasProps> = ({
     return Math.round(price).toString();
   };
   if (price.price_value === 0) {
-    return <h6 className="price-txt">ფასი შეთანხმებით</h6>;
+    return (
+      <h6
+        style={{ visibility: vis ? "hidden" : "visible" }}
+        className="price-txt"
+      >
+        ფასი შეთანხმებით
+      </h6>
+    );
   } else if (priceId == 3) {
     return (
-      <div className="d-flex">
+      <div
+        className="d-flex pr"
+        style={{ visibility: vis ? "hidden" : "visible" }}
+      >
         <h5 className="price">{formatPrice(price.price_value)}</h5>
         <img className="price-icon" src={GelG} alt="" />
       </div>
     );
   }
   return (
-    <div className="d-flex">
+    <div
+      className="d-flex pr"
+      style={{ visibility: vis ? "hidden" : "visible" }}
+    >
       <h5 className="price">{formatPrice(price.price_usd)}</h5>
       <img className="price-icon" src={UsdG} />
     </div>

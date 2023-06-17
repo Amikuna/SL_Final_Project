@@ -7,7 +7,7 @@ type DestinationProps = {
   Id: number;
 };
 
-const PriceWithCommas: React.FC<DestinationProps> = ({ Id }) => {
+const Destination: React.FC<DestinationProps> = ({ Id }) => {
   const formatId = (id: number): string => {
     if (id === 2) {
       return "თბილისი";
@@ -58,4 +58,4 @@ const PriceWithCommas: React.FC<DestinationProps> = ({ Id }) => {
   );
 };
 
-export default PriceWithCommas;
+export default Destination;

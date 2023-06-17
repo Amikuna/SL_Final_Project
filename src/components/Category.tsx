@@ -87,7 +87,7 @@ const Manufacturer: React.FC<checkMenu> = ({ cats, onCatTypeChange }) => {
           </div>
         </Dropdown.Toggle>
         <BsChevronDown className="chevron" onClick={click} />
-        <Dropdown.Menu>
+        <Dropdown.Menu className="scr">
           <Form>
             <Form.Group>
               {cats.map((cat) => (

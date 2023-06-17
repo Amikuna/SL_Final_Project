@@ -1,44 +1,29 @@
 import React from "react";
-import Speed from "../assets/speed.svg";
+import Gear from "../assets/avtomatic.svg";
 
-type EngineProps = {
-  Run: number;
+type GearProps = {
+  id: number;
 };
 
-const PriceWithCommas: React.FC<EngineProps> = ({ Run }) => {
-  const formatVolume = (volume: number): string => {
-    return (volume / 1000).toFixed(1).toString();
-  };
-  const formatRun = (FuelId: number): string => {
-    if (FuelId === 2) {
-      return "ბენზინი";
-    } else if (FuelId === 3) {
-      return "დიზელი";
-    } else if (FuelId === 7) {
-      return "ელექტრო";
-    } else if (FuelId === 6) {
-      return "ჰიბრიდი";
-    } else if (FuelId === 10) {
-      return "დატენვადი ჰიბრიდი";
-    } else if (FuelId === 9) {
-      return "ბუნებრივი გაზი";
-    } else if (FuelId === 8) {
-      return "თხევადი გაზი";
+const GearBox: React.FC<GearProps> = ({ id }) => {
+  const formatGear = (id: number): string => {
+    if (id === 1) {
+      return "მექანიკა";
+    } else if (id === 3) {
+      return "ტიპტრონიკი";
+    } else if (id === 4) {
+      return "ვარიატორი";
     }
-    return "წყალბადი";
+    return "ავტომატიკა";
   };
-
   return (
     <div className="d-flex align-items-center">
-      <img className="falg" src={Speed} />
+      <img className="gear" src={Gear} />
       <div className="run" style={{ marginLeft: "7%" }}>
-        {Run}
-      </div>
-      <div className="run" style={{ marginLeft: "5%" }}>
-        კმ
+        {formatGear(id)}
       </div>
     </div>
   );
 };
 
-export default PriceWithCommas;
+export default GearBox;

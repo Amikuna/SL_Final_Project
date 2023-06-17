@@ -1,12 +1,12 @@
 import React from "react";
-import Engine from "../assets/Union.svg";
+import Eng from "../assets/Union.svg";
 
 type EngineProps = {
   Volume: number;
   FuelId: number;
 };
 
-const PriceWithCommas: React.FC<EngineProps> = ({ Volume, FuelId }) => {
+const Engine: React.FC<EngineProps> = ({ Volume, FuelId }) => {
   const formatVolume = (volume: number): string => {
     return (volume / 1000).toFixed(1).toString();
   };
@@ -31,7 +31,7 @@ const PriceWithCommas: React.FC<EngineProps> = ({ Volume, FuelId }) => {
 
   return (
     <div className="d-flex align-items-center">
-      <img className="falg" src={Engine} />
+      <img className="eng" src={Eng} />
       <div className="vol" style={{ marginLeft: "7%" }}>
         {formatVolume(Volume)}
       </div>
@@ -42,4 +42,4 @@ const PriceWithCommas: React.FC<EngineProps> = ({ Volume, FuelId }) => {
   );
 };
 
-export default PriceWithCommas;
+export default Engine;

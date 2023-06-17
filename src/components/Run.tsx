@@ -1,16 +1,16 @@
 import React from "react";
 import Speed from "../assets/speed.svg";
 
-type EngineProps = {
-  Run: number;
+type RunProps = {
+  Range: number;
 };
 
-const PriceWithCommas: React.FC<EngineProps> = ({ Run }) => {
+const Run: React.FC<RunProps> = ({ Range }) => {
   return (
     <div className="d-flex align-items-center">
       <img className="falg" src={Speed} />
       <div className="run" style={{ marginLeft: "7%" }}>
-        {Run}
+        {Range}
       </div>
       <div className="run" style={{ marginLeft: "5%" }}>
         კმ
@@ -19,4 +19,4 @@ const PriceWithCommas: React.FC<EngineProps> = ({ Run }) => {
   );
 };
 
-export default PriceWithCommas;
+export default Run;
