@@ -364,3 +364,18 @@ body {
   height: 30px !important;
   margin-left: 5%;
 }
+.flag {
+  margin-right: -50px !important;
+}
+.dest {
+  color: #6f7383;
+  font-size: 90%;
+}
+.vol {
+  color: #6f7383;
+  font-size: 100%;
+}
+.run {
+  color: #6f7383;
+  font-size: 100%;
+}

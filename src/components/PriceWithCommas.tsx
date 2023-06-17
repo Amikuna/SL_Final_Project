@@ -14,13 +14,13 @@ const PriceWithCommas: React.FC<PriceWithCommasProps> = ({
 }) => {
   const formatPrice = (price: number): string => {
     if (price > 999) {
-      let priceStr = price.toString().split("");
+      let priceStr = Math.round(price).toString().split("");
       for (let i = priceStr.length - 3; i > 0; i -= 3) {
         priceStr.splice(i, 0, ",");
       }
       return priceStr.join("");
     }
-    return price.toString();
+    return Math.round(price).toString();
   };
   if (price.price_value === 0) {
     return <h6 className="price-txt">ფასი შეთანხმებით</h6>;

@@ -40,6 +40,9 @@ import PriceWithCommas from "./components/PriceWithCommas";
 import Manufacturer from "./components/Manufacturer";
 import DealType from "./components/DealType";
 import Category from "./components/Category";
+import Destination from "./components/Destination";
+import Engine from "./components/Engine";
+import Run from "./components/Run";
 
 function App() {
   const [mans, setMans] = useState<ManProps[]>([]);
@@ -609,32 +612,6 @@ function App() {
                   </div>
 
                   <div className="d-flex justify-content-center">
-                    {/* <Dropdown
-                      title="ყველა მწარმოებელი"
-                      id="selectDropdown-4-div"
-                      role="button"
-                      onClick={catClick}
-                      className="d-flex checkbox-item align-items-center justify-content-between position-relative br2"
-                    >
-                      <DropdownButton
-                        title="ყველა კატეგორია"
-                        id="selectDropdown-5"
-                        variant="seondary"
-                        className="d-flex align-items-center justify-content-between position-relative br2 br2-button"
-                      >
-                        {categorys.map((category) => {
-                          return (
-                            <Dropdown.Item
-                              onClick={() => setCat(category)}
-                              // key={category.title}
-                            >
-                              {category.title}
-                            </Dropdown.Item>
-                          );
-                        })}
-                      </DropdownButton>
-                      <BsChevronDown style={{ marginRight: "3%" }} />
-                    </Dropdown> */}
                     <Category cats={categorys} onCatTypeChange={setCat} />
                   </div>
                 </Col>
@@ -831,11 +808,27 @@ function App() {
                                 <div className="custom_not">განუბაჟებელი</div>
                               )}
                             </div>
+
+                            <Destination Id={prod.location_id} />
                           </div>
                         </Row>
                         <Row>
-                          <div className="d-flex cont align-middle">
+                          <div className="d-flex cont align-middle justify-content-between">
+                            <Engine
+                              Volume={prod.engine_volume}
+                              FuelId={prod.fuel_type_id}
+                            />
+                            <Run Run={prod.car_run_km} />
                             <PriceWithCommas price={prod} priceId={curr} />
+                          </div>
+                        </Row>
+                        <Row>
+                          <div className="d-flex cont align-middle justify-content-">
+                            <Engine
+                              Volume={prod.engine_volume}
+                              FuelId={prod.fuel_type_id}
+                            />
+                            <Run Run={prod.car_run_km} />
                           </div>
                         </Row>
                       </div>
@@ -854,7 +847,6 @@ function App() {
                 changePage={(page) => {
                   setPage(page);
                   setProducts((prev) => []);
-                  // setS_url(prod_url + "?Page=" + page);
                   console.log(s_url);
                 }}
                 ellipsis={0}
