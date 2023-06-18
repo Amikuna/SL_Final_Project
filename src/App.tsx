@@ -1082,29 +1082,32 @@ function App() {
                             <Destination Id={prod.location_id} />
                           </div>
                         </Row>
-                        <Row>
-                          <div className="d-flex cont align-middle justify-content-between">
-                            <Engine
-                              Volume={prod.engine_volume}
-                              FuelId={prod.fuel_type_id}
-                            />
-                            <Run Range={prod.car_run_km} />
-                            <PriceWithCommas price={prod} priceId={curr} />
-                          </div>
-                        </Row>
-                        <Row>
-                          <div className="d-flex cont-2 align-middle justify-content-between">
-                            <GearBox id={prod.gear_type_id} />
+                        <div>
+                          <Row>
+                            <div className="d-flex cont align-middle justify-content-between">
+                              <Engine
+                                Volume={prod.engine_volume}
+                                FuelId={prod.fuel_type_id}
+                              />
+                              <Run Range={prod.car_run_km} />
+                              <PriceWithCommas price={prod} priceId={curr} />
+                            </div>
+                          </Row>
+                          <Row>
+                            <div className="d-flex cont-2 align-middle justify-content-between">
+                              <GearBox id={prod.gear_type_id} />
 
-                            <Wheel id={prod.rigth_wheel} />
+                              <Wheel id={prod.rigth_wheel} />
 
-                            <PriceWithCommas
-                              vis="hidden"
-                              price={prod}
-                              priceId={curr}
-                            />
-                          </div>
-                        </Row>
+                              <PriceWithCommas
+                                vis="hidden"
+                                price={prod}
+                                priceId={curr}
+                              />
+                            </div>
+                          </Row>
+                        </div>
+
                         <Row>
                           <div className="d-flex align-items-center">
                             <div className="d-flex cont-3 align-middle">

@@ -1,5 +1,8 @@
-# Get Products
+### Scripting Languages Final Project
 
-https://www.myauto.ge/ka/s/manqanebi?vehicleType=0&bargainType=&mansNModels=5&sort=2&page=1
+# Team Members:
 
-have to modify parameters like vehicleType={0,1,2} mansNModels={1,2,3...} sort{1,2,3...}, page={1,2,3...}
+- Giorgi Niniashvili
+- Elene Khabeishvili
+- Giorgi Ugulava
+- Amiran Makharadze
