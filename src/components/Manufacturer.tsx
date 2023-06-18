@@ -27,7 +27,7 @@ const Manufacturer: React.FC<checkMenu> = ({ mans, onManTypeChange }) => {
     }
   };
   useEffect(() => {
-    console.log(selectedItems);
+    // console.log(selectedItems);
     if (selectedItems.length === 1) {
       let text = "";
       let id = "";

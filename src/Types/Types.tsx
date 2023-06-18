@@ -12,6 +12,7 @@ export type ModProps = {
 };
 export type ModelProps = {
   model_id: number;
+  man_id: number;
   model_name: string;
   model_group: string;
   sort_order: number;

@@ -54,6 +54,7 @@ import Oval from "./assets/Oval.svg";
 import Heart from "./assets/heart.svg";
 import Vector from "./assets/Vector.svg";
 import Shape from "./assets/Shape.svg";
+import Models from "./components/Models";
 
 function App() {
   const [mans, setMans] = useState<ManProps[]>([]);
@@ -72,7 +73,7 @@ function App() {
   const [marginS2, setMarginS2] = useState("5vh");
   const [bargType, setBargType] = useState<number | string>("");
   const [submited, setSubmited] = useState<number>(0);
-  const [manType, setManType] = useState<number | string>("");
+  const [manType, setManType] = useState<string>("");
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [width, setWidth] = useState<number>();
   const [width2, setWidth2] = useState<number>();
@@ -613,6 +614,32 @@ function App() {
                 </Col>
               </Row>
               <br></br>
+              {manType.length !== 0 ? (
+                <div>
+                  <Row>
+                    <Col>
+                      <div
+                        style={{ width: "42%" }}
+                        className="d-flex justify-content-center sel"
+                      >
+                        <Form.Label>მოდელი</Form.Label>
+                      </div>
+
+                      <div className="d-flex justify-content-center">
+                        {manType ? (
+                          <Models
+                            man={manType}
+                            mans={mans}
+                            onManTypeChange={setMan}
+                          />
+                        ) : null}
+                      </div>
+                    </Col>
+                  </Row>
+                  <br></br>
+                </div>
+              ) : null}
+
               <Row>
                 <Col>
                   <div

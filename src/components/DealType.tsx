@@ -52,7 +52,7 @@ const DealType: React.FC<checkMenu> = ({ bargType, onBargTypeChange }) => {
           </div>
         </Dropdown.Toggle>
         <BsChevronDown className="chevron" onClick={click} />
-        <Dropdown.Menu>
+        <Dropdown.Menu style={{ width: "110%" }}>
           <Form>
             <Form.Group>
               {dealType.map((deal) => (
