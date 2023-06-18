@@ -6,15 +6,20 @@ import { ManProps } from "../Types/Types";
 
 type checkMenu = {
   mans: ManProps[];
+  Title: string;
   onManTypeChange: (newBargType: string) => void;
 };
-const Manufacturer: React.FC<checkMenu> = ({ mans, onManTypeChange }) => {
+const Manufacturer: React.FC<checkMenu> = ({
+  mans,
+  Title,
+  onManTypeChange,
+}) => {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const dropdown = useRef<HTMLButtonElement>(null);
   const text = useRef<HTMLDivElement>(null);
-  const [title, setTitle] = useState<string>("ყველა მწარმოებელი");
+  const [title, setTitle] = useState<string>(Title);
   const [clas, setClas] = useState<string>("txt");
-  const [ids, setIds] = useState<string>("");
+  let mns = Title.split(",");
 
   const handleItemClick = (itemValue: string) => {
     if (selectedItems.includes(itemValue)) {
@@ -54,11 +59,18 @@ const Manufacturer: React.FC<checkMenu> = ({ mans, onManTypeChange }) => {
       setTitle(text);
       onManTypeChange(id);
     } else {
-      setTitle("ყველა მწარმოებელი");
+      setTitle(Title);
       onManTypeChange("");
       setClas("txt");
     }
   }, [selectedItems]);
+  useEffect(() => {
+    setTitle(Title);
+    mns.map((mn) => {
+      let it = selectedItems.filter((item) => mn === item);
+      setSelectedItems(it);
+    });
+  }, [Title]);
   const click = () => {
     if (dropdown.current) {
       dropdown.current.click();

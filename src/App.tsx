@@ -87,6 +87,11 @@ function App() {
   const [Car, setCar] = useState<string>(car);
   const [Spec, setSpec] = useState<string>(specG);
   const [Moto, setMoto] = useState<string>(motoG);
+  const [ModelId, setModelId] = useState<string>("");
+  const [perUrl, setPerUrl] = useState<string>("");
+  const [perTitle, setPerTitle] = useState<string>("პერიოდი");
+  const [srtTitle, setSrtTitle] = useState<string>("თარიღი კლებადი");
+  const [mnTitle, setMnTitle] = useState<string>("ყველა მწარმოებელი");
   const plc: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
   useEffect(() => {
@@ -107,30 +112,59 @@ function App() {
     console.log(s_url);
     let url = s_url; //+ `?page=${page}`;
     if (isPeriod) {
-      url =
-        url +
-        `?TypeID=${type}` +
-        `&ForRent=${bargType}` +
-        `&Mans=${manType}` +
-        `&Cats=${catType}` +
-        `&PriceFrom=${priceFrom}` +
-        `&PriceTo=${priceTo}` +
-        `&CurrencyID=${curr}` +
-        `&Period=${period}h` +
-        `&SortOrder=${sort}` +
-        `&Page=${page}`;
+      if (ModelId != "") {
+        url =
+          url +
+          `?TypeID=${type}` +
+          `&ForRent=${bargType}` +
+          `&Mans=${ModelId}` +
+          `&Cats=${catType}` +
+          `&PriceFrom=${priceFrom}` +
+          `&PriceTo=${priceTo}` +
+          `&CurrencyID=${curr}` +
+          perUrl +
+          `&SortOrder=${sort}` +
+          `&Page=${page}`;
+      } else {
+        url =
+          url +
+          `?TypeID=${type}` +
+          `&ForRent=${bargType}` +
+          `&Mans=${manType}` +
+          `&Cats=${catType}` +
+          `&PriceFrom=${priceFrom}` +
+          `&PriceTo=${priceTo}` +
+          `&CurrencyID=${curr}` +
+          perUrl +
+          `&SortOrder=${sort}` +
+          `&Page=${page}`;
+      }
     } else {
-      url =
-        url +
-        `?TypeID=${type}` +
-        `&ForRent=${bargType}` +
-        `&Mans=${manType}` +
-        `&Cats=${catType}` +
-        `&PriceFrom=${priceFrom}` +
-        `&PriceTo=${priceTo}` +
-        `&CurrencyID=${curr}` +
-        `&SortOrder=${sort}` +
-        `&Page=${page}`;
+      if (ModelId != "") {
+        url =
+          url +
+          `?TypeID=${type}` +
+          `&ForRent=${bargType}` +
+          `&Mans=${ModelId}` +
+          `&Cats=${catType}` +
+          `&PriceFrom=${priceFrom}` +
+          `&PriceTo=${priceTo}` +
+          `&CurrencyID=${curr}` +
+          `&SortOrder=${sort}` +
+          `&Page=${page}`;
+      } else {
+        url =
+          url +
+          `?TypeID=${type}` +
+          `&ForRent=${bargType}` +
+          `&Mans=${manType}` +
+          `&Cats=${catType}` +
+          `&PriceFrom=${priceFrom}` +
+          `&PriceTo=${priceTo}` +
+          `&CurrencyID=${curr}` +
+          `&SortOrder=${sort}` +
+          `&Page=${page}`;
+      }
     }
 
     console.log(url);
@@ -180,7 +214,17 @@ function App() {
         console.log(el.innerHTML);
         console.log(period);
 
-        el.innerHTML = "ბოლო 1 საათი";
+        el.innerHTML = perTitle;
+      }
+    }
+    if (period === 2) {
+      let el = document.getElementById("selectDropdown-1");
+
+      if (el) {
+        console.log(el.innerHTML);
+        console.log(period);
+
+        el.innerHTML = perTitle;
       }
     }
     if (period === 3) {
@@ -190,17 +234,17 @@ function App() {
         console.log(el.innerHTML);
         console.log(period);
 
-        el.innerHTML = "ბოლო 3 საათი";
+        el.innerHTML = perTitle;
       }
     }
-    if (period === 6) {
+    if (period === 11) {
       let el = document.getElementById("selectDropdown-1");
 
       if (el) {
         console.log(el.innerHTML);
         console.log(period);
 
-        el.innerHTML = "ბოლო 6 საათი";
+        el.innerHTML = perTitle;
       }
     }
     if (period === 12) {
@@ -210,17 +254,47 @@ function App() {
         console.log(el.innerHTML);
         console.log(period);
 
-        el.innerHTML = "ბოლო 12 საათი";
+        el.innerHTML = perTitle;
       }
     }
-    if (period === 24) {
+    if (period === 13) {
       let el = document.getElementById("selectDropdown-1");
 
       if (el) {
         console.log(el.innerHTML);
         console.log(period);
 
-        el.innerHTML = "ბოლო 24 საათი";
+        el.innerHTML = perTitle;
+      }
+    }
+    if (period === 21) {
+      let el = document.getElementById("selectDropdown-1");
+
+      if (el) {
+        console.log(el.innerHTML);
+        console.log(period);
+
+        el.innerHTML = perTitle;
+      }
+    }
+    if (period === 22) {
+      let el = document.getElementById("selectDropdown-1");
+
+      if (el) {
+        console.log(el.innerHTML);
+        console.log(period);
+
+        el.innerHTML = perTitle;
+      }
+    }
+    if (period === 23) {
+      let el = document.getElementById("selectDropdown-1");
+
+      if (el) {
+        console.log(el.innerHTML);
+        console.log(period);
+
+        el.innerHTML = perTitle;
       }
     }
     let el = document.getElementById("selectDropdown-2");
@@ -270,6 +344,7 @@ function App() {
       console.log(el.title);
       console.log(url.length);
       el.innerHTML = "ბოლო 1 საათი";
+      setPerTitle("ბოლო 1 საათი");
       console.log(el.title);
       if (url.length === 34) {
         url = url + "?Period=1h";
@@ -280,6 +355,29 @@ function App() {
       // setS_url((prev) => url);
       setPeriod(1);
       setIsPeriod(true);
+      setPerUrl(`&Period=${1}h`);
+      setPage(1);
+    }
+  };
+  const period2H = () => {
+    let el = document.getElementById("selectDropdown-1");
+    let url: string = s_url;
+    if (el) {
+      console.log(el.title);
+      console.log(url.length);
+      el.innerHTML = "ბოლო 2 საათი";
+      console.log(el.title);
+      setPerTitle("ბოლო 2 საათი");
+      if (url.length === 34) {
+        url = url + "?Period=2h";
+      } else {
+        url = url + "&Period=2h";
+      }
+
+      // setS_url((prev) => url);
+      setPeriod(2);
+      setIsPeriod(true);
+      setPerUrl(`&Period=${2}h`);
       setPage(1);
     }
   };
@@ -289,6 +387,7 @@ function App() {
     if (el) {
       console.log(el.title);
       el.innerHTML = "ბოლო 3 საათი";
+      setPerTitle("ბოლო 3 საათი");
       console.log(el.title);
       if (url.length === 34) {
         url = url + "?Period=3h";
@@ -298,60 +397,126 @@ function App() {
       // setS_url((prev) => url);
       setPeriod(3);
       setIsPeriod(true);
+      setPerUrl(`&Period=${3}h`);
       setPage(1);
     }
   };
-  const period6H = () => {
+  const period1D = () => {
     let el = document.getElementById("selectDropdown-1");
     let url: string = s_url;
     if (el) {
       console.log(el.title);
-      el.innerHTML = "ბოლო 6 საათი";
+      el.innerHTML = "ბოლო 1 დღე";
       console.log(el.title);
+      setPerTitle("ბოლო 1 დღე");
       if (url.length === 34) {
-        url = url + "?Period=6h";
+        url = url + "?Period=1d";
       } else {
-        url = url + "&Period=6h";
+        url = url + "&Period=1d";
       }
       // setS_url((prev) => url);
-      setPeriod(6);
+      setPeriod(11);
       setIsPeriod(true);
+      setPerUrl(`&Period=${1}d`);
       setPage(1);
     }
   };
-  const period12H = () => {
+  const period2D = () => {
     let el = document.getElementById("selectDropdown-1");
     let url: string = s_url;
     if (el) {
       console.log(el.title);
-      el.innerHTML = "ბოლო 12 საათი";
+      el.innerHTML = "ბოლო 2 დღე";
       console.log(el.title);
-    }
-    if (url.length === 34) {
-      url = url + "?Period=12h";
-    } else {
-      url = url + "&Period=12h";
-    }
-    // setS_url((prev) => url);
-    setPeriod(12);
-    setIsPeriod(true);
-    setPage(1);
-  };
-  const period24H = () => {
-    let el = document.getElementById("selectDropdown-1");
-
-    let url: string = s_url;
-    if (el) {
-      console.log(el.title);
-      el.innerHTML = "ბოლო 24 საათი";
-      console.log(el.title);
+      setPerTitle("ბოლო 2 დღე");
       if (url.length === 34) {
-        url = url + "?Period=24h";
+        url = url + "?Period=2d";
       } else {
-        url = url + "&Period=24h";
+        url = url + "&Period=2d";
       }
       // setS_url((prev) => url);
-      setPeriod(24);
+      setPeriod(12);
+      setIsPeriod(true);
+      setPerUrl(`&Period=${2}d`);
+      setPage(1);
+    }
+  };
+  const period3D = () => {
+    let el = document.getElementById("selectDropdown-1");
+    let url: string = s_url;
+    if (el) {
+      console.log(el.title);
+      el.innerHTML = "ბოლო 3 დღე";
+      setPerTitle("ბოლო 3 დღე");
+      console.log(el.title);
+      if (url.length === 34) {
+        url = url + "?Period=3d";
+      } else {
+        url = url + "&Period=3d";
+      }
+      // setS_url((prev) => url);
+      setPeriod(13);
+      setIsPeriod(true);
+      setPerUrl(`&Period=${3}d`);
+      setPage(1);
+    }
+  };
+  const period1W = () => {
+    let el = document.getElementById("selectDropdown-1");
+    let url: string = s_url;
+    if (el) {
+      console.log(el.title);
+      el.innerHTML = "ბოლო 1 კვირა";
+      console.log(el.title);
+      setPerTitle("ბოლო 1 კვირა");
+      if (url.length === 34) {
+        url = url + "?Period=1w";
+      } else {
+        url = url + "&Period=1w";
+      }
+      // setS_url((prev) => url);
+      setPeriod(21);
+      setIsPeriod(true);
+      setPerUrl(`&Period=${1}w`);
+      setPage(1);
+    }
+  };
+  const period2W = () => {
+    let el = document.getElementById("selectDropdown-1");
+    let url: string = s_url;
+    if (el) {
+      console.log(el.title);
+      el.innerHTML = "ბოლო 2 კვირა";
+      console.log(el.title);
+      setPerTitle("ბოლო 2 კვირა");
+      if (url.length === 34) {
+        url = url + "?Period=2w";
+      } else {
+        url = url + "&Period=2w";
+      }
+      // setS_url((prev) => url);
+      setPeriod(22);
+      setIsPeriod(true);
+      setPerUrl(`&Period=${2}w`);
+      setPage(1);
+    }
+  };
+  const period3W = () => {
+    let el = document.getElementById("selectDropdown-1");
+    let url: string = s_url;
+    if (el) {
+      console.log(el.title);
+      el.innerHTML = "ბოლო 3 კვირა";
+      console.log(el.title);
+      setPerTitle("ბოლო 3 კვირა");
+      if (url.length === 34) {
+        url = url + "?Period=3w";
+      } else {
+        url = url + "&Period=3w";
+      }
+      // setS_url((prev) => url);
+      setPeriod(23);
+      setPerUrl(`&Period=${3}w`);
       setIsPeriod(true);
       setPage(1);
     }
@@ -362,6 +527,7 @@ function App() {
       console.log(el.title);
       el.innerHTML = "თარიღი კლებადი";
       console.log(el.title);
+      setSrtTitle("თარიღი კლებადი");
       setSort(1);
     }
   };
@@ -372,6 +538,7 @@ function App() {
       el.innerHTML = "თარიღი ზრდადი";
       console.log(el.title);
       setSort(2);
+      setSrtTitle("თარიღი ზრდადი");
     }
   };
   const priceDec = () => {
@@ -380,6 +547,7 @@ function App() {
       console.log(el.title);
       el.innerHTML = "ფასი კლებადი";
       console.log(el.title);
+      setSrtTitle("ფასი კლებადი");
       setSort(3);
     }
   };
@@ -389,6 +557,7 @@ function App() {
       console.log(el.title);
       el.innerHTML = "ფასი ზრდადი";
       console.log(el.title);
+      setSrtTitle("ფასი ზრდადი");
       setSort(4);
     }
   };
@@ -398,6 +567,7 @@ function App() {
       console.log(el.title);
       el.innerHTML = "გარბენი კლებადი";
       console.log(el.title);
+      setSrtTitle("გარბენი კლებადი");
       setSort(5);
     }
   };
@@ -407,6 +577,7 @@ function App() {
       console.log(el.title);
       el.innerHTML = "გარბენი ზრდადი";
       console.log(el.title);
+      setSrtTitle("გარბენი ზრდადი");
       setSort(6);
     }
   };
@@ -473,6 +644,13 @@ function App() {
       setMoto(moto);
     }
   };
+  const setMd = (md: string) => {
+    console.log(md);
+    setModelId(md);
+  };
+  const setMnT = (title: string) => {
+    setMnTitle(title);
+  };
 
   if (
     mans.length === 0 ||
@@ -532,7 +710,7 @@ function App() {
       <br />
       <Container className="main">
         <div className="d-flex">
-          <Col className="card" style={{ width: "250px", height: "570px" }}>
+          <Col className="card" style={{ width: "250px", height: "100%" }}>
             <div
               className="d-flex justify-content-center"
               style={{ width: "100%" }}
@@ -609,7 +787,11 @@ function App() {
                   </div>
 
                   <div className="d-flex justify-content-center">
-                    <Manufacturer mans={mans} onManTypeChange={setMan} />
+                    <Manufacturer
+                      mans={mans}
+                      Title={mnTitle}
+                      onManTypeChange={setMan}
+                    />
                   </div>
                 </Col>
               </Row>
@@ -631,6 +813,8 @@ function App() {
                             man={manType}
                             mans={mans}
                             onManTypeChange={setMan}
+                            onManTitleChange={setMnT}
+                            onModChange={setMd}
                           />
                         ) : null}
                       </div>
@@ -727,18 +911,20 @@ function App() {
                 </Col>
               </Row>
             </div>
-            <Row className="align-items-center">
-              <div className="d-flex justify-content-center align-items-center s-btn">
-                <Button
-                  type="submit"
-                  variant="secondary"
-                  className="search"
-                  onClick={submit}
-                >
-                  ძებნა
-                </Button>
-              </div>
-            </Row>
+            <div className="d-flex justify-content-center align-items-center s-btn">
+              <Row className="align-items-center">
+                <Col>
+                  <Button
+                    type="submit"
+                    variant="secondary"
+                    className="search"
+                    onClick={submit}
+                  >
+                    ძებნა
+                  </Button>
+                </Col>
+              </Row>
+            </div>
           </Col>
           <Col className="products col-9">
             <div className="d-flex align-items-center">
@@ -754,7 +940,7 @@ function App() {
                     className="d-flex align-items-center justify-content-between position-relative opt-3"
                   >
                     <DropdownButton
-                      title="პერიოდი"
+                      title={perTitle}
                       id="selectDropdown-1"
                       variant="seondary"
                       className="d-flex align-items-center justify-content-between position-relative br opt-3"
@@ -762,17 +948,29 @@ function App() {
                       <Dropdown.Item onClick={period1H}>
                         ბოლო 1 საათი
                       </Dropdown.Item>
+                      <Dropdown.Item onClick={period2H}>
+                        ბოლო 2 საათი
+                      </Dropdown.Item>
                       <Dropdown.Item onClick={period3H}>
                         ბოლო 3 საათი
                       </Dropdown.Item>
-                      <Dropdown.Item onClick={period6H}>
-                        ბოლო 6 საათი
+                      <Dropdown.Item onClick={period1D}>
+                        ბოლო 1 დღე
                       </Dropdown.Item>
-                      <Dropdown.Item onClick={period12H}>
-                        ბოლო 12 საათი
+                      <Dropdown.Item onClick={period2D}>
+                        ბოლო 2 დღე
                       </Dropdown.Item>
-                      <Dropdown.Item onClick={period24H}>
-                        ბოლო 24 საათი
+                      <Dropdown.Item onClick={period3D}>
+                        ბოლო 3 დღე
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={period1W}>
+                        ბოლო 1 კვირა
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={period2W}>
+                        ბოლო 2 კვირა
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={period3W}>
+                        ბოლო 3 კვირა
                       </Dropdown.Item>
                     </DropdownButton>
                     <BsChevronDown style={{ marginRight: "3%" }} />
@@ -787,7 +985,7 @@ function App() {
                   className="d-flex align-items-center justify-content-between position-relative opt-3"
                 >
                   <DropdownButton
-                    title="თარიღი კლებადი"
+                    title={srtTitle}
                     id="selectDropdown-2"
                     variant="seondary"
                     className="d-flex align-items-center justify-content-between position-relative br2 opt-3"
@@ -936,6 +1134,8 @@ function App() {
                   setPage(page);
                   setProducts((prev) => []);
                   setModels((prev) => []);
+                  // setPeriod(period);
+                  // setS
                   console.log(s_url);
                 }}
                 ellipsis={0}
