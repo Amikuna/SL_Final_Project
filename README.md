@@ -1,6 +1,6 @@
-### Scripting Languages Final Project
+# Scripting Languages Final Project
 
-# Team Members:
+### Team Members:
 
 - Giorgi Niniashvili
 - Elene Khabeishvili
