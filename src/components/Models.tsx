@@ -60,6 +60,7 @@ const Model: React.FC<checkMenu> = ({
       if (mnid.length === 0) {
         setSelectedItems((prev) => [...prev, ...[]]);
         onManTypeChange("");
+        onModChange("");
 
         // setSelectedMans((prev) => [...prev, ...[]]);
         onManTitleChange("ყველა მოდელი");

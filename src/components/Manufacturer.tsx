@@ -59,9 +59,15 @@ const Manufacturer: React.FC<checkMenu> = ({
       setTitle(text);
       onManTypeChange(id);
     } else {
-      setTitle(Title);
-      onManTypeChange("");
-      setClas("txt");
+      if (title === "ყველა მწარმოებელი") {
+        setTitle(Title);
+        onManTypeChange("");
+        setClas("txt");
+      } else {
+        setTitle("ყველა მწარმოებელი");
+        onManTypeChange("");
+        setClas("txt");
+      }
     }
   }, [selectedItems]);
   useEffect(() => {
