@@ -5,20 +5,28 @@ import { useRef } from "react";
 
 type checkMenu = {
   bargType: number | string;
+  currTitle: string;
   onBargTypeChange: (newBargType: number | string) => void;
+  onBargTitleChange: (newBargtitle: string) => void;
 };
-const DealType: React.FC<checkMenu> = ({ bargType, onBargTypeChange }) => {
-  const [selectedItems, setSelectedItems] = useState<string>("");
+const DealType: React.FC<checkMenu> = ({
+  bargType,
+  onBargTypeChange,
+  onBargTitleChange,
+  currTitle,
+}) => {
+  const [selectedItems, setSelectedItems] = useState<string>(currTitle);
   const [dealType, setDealType] = useState<string[]>(["იყიდება", "ქირავდება"]);
   const dropdown = useRef<HTMLButtonElement>(null);
   const text = useRef<HTMLDivElement>(null);
-  const [title, setTitle] = useState<string>("გარიგების ტიპი");
+  const [title, setTitle] = useState<string>(currTitle);
 
   const handleItemClick = (itemValue: string) => {
     if (selectedItems.includes(itemValue)) {
       onBargTypeChange("");
       setSelectedItems("");
       setTitle("გარიგების ტიპი");
+      onBargTitleChange("გარიგების ტიპი");
     } else {
       if (itemValue == "იყიდება") {
         onBargTypeChange(0);
@@ -27,6 +35,7 @@ const DealType: React.FC<checkMenu> = ({ bargType, onBargTypeChange }) => {
       }
       setSelectedItems(itemValue);
       setTitle(itemValue);
+      onBargTitleChange(itemValue);
     }
   };
   const click = () => {

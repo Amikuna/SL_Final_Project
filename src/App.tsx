@@ -92,6 +92,8 @@ function App() {
   const [perTitle, setPerTitle] = useState<string>("პერიოდი");
   const [srtTitle, setSrtTitle] = useState<string>("თარიღი კლებადი");
   const [mnTitle, setMnTitle] = useState<string>("ყველა მწარმოებელი");
+  const [BargTitle, setBargTitle] = useState<string>("გარიგების ტიპი");
+  const [categTitle, setCategTitle] = useState<string>("ყველა კატეგორია");
   const plc: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
   useEffect(() => {
@@ -584,6 +586,9 @@ function App() {
   const buy = (newBargType: number | string) => {
     setBargType(newBargType);
   };
+  const bargTitle = (title: string) => {
+    setBargTitle(title);
+  };
   const rent = () => {
     let el = document.getElementById("selectDropdown-3");
     if (el) {
@@ -593,6 +598,9 @@ function App() {
       setMarginS1("58%");
       setBargType(1);
     }
+  };
+  const setCatTitle = (title: string) => {
+    setCategTitle(title);
   };
   const submit = () => {
     setSubmited((prev) => prev + 1);
@@ -765,7 +773,12 @@ function App() {
                   </div>
 
                   <div className="d-flex justify-content-center">
-                    <DealType bargType={bargType} onBargTypeChange={buy} />
+                    <DealType
+                      bargType={bargType}
+                      onBargTypeChange={buy}
+                      onBargTitleChange={bargTitle}
+                      currTitle={BargTitle}
+                    />
                   </div>
 
                   <style>
@@ -834,7 +847,12 @@ function App() {
                   </div>
 
                   <div className="d-flex justify-content-center">
-                    <Category cats={categorys} onCatTypeChange={setCat} />
+                    <Category
+                      cats={categorys}
+                      onCatTypeChange={setCat}
+                      onCatTitleChange={setCatTitle}
+                      catTitle={categTitle}
+                    />
                   </div>
                 </Col>
               </Row>

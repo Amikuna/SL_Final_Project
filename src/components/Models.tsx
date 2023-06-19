@@ -35,7 +35,6 @@ const Model: React.FC<checkMenu> = ({
   const manNs: ManProps[] = mans.filter((mn) => mns.includes(mn.man_id));
   const mnNs: string[] = [];
 
-  console.log(mnNs);
   useEffect(() => {
     mans
       .filter((mn) => mns.includes(mn.man_id))
@@ -117,17 +116,17 @@ const Model: React.FC<checkMenu> = ({
   }, [man]);
   useEffect(() => {
     // console.log(selectedItems);
-    console.log(selectedMans);
-    if (selectedItems.length === 1 && mods[0]) {
+
+    if (selectedItems.length === 1 && mods[0] && selectedMans[0]) {
       let text = "";
       let id = "";
       text = text + selectedItems[0];
       id =
         id +
-        mods.filter((md) => md.model_name == selectedItems[0])[0].man_id +
+        mans.filter((md) => md.man_name == selectedMans[0])[0].man_id +
         "." +
         mods.filter((md) => md.model_name == selectedItems[0])[0].model_id;
-
+      onModChange(id);
       let mdss: obj = mns.reduce((obj, key) => {
         return {
           ...obj,
@@ -198,8 +197,6 @@ const Model: React.FC<checkMenu> = ({
           }
         });
       });
-
-      console.log("mdss", mdss);
 
       setClas("txt char-limit");
       setTitle(text);
