@@ -7,11 +7,13 @@ import { ManProps } from "../Types/Types";
 type checkMenu = {
   mans: ManProps[];
   Title: string;
+  onManTitleChange: (newBargType: string) => void;
   onManTypeChange: (newBargType: string) => void;
 };
 const Manufacturer: React.FC<checkMenu> = ({
   mans,
   Title,
+  onManTitleChange,
   onManTypeChange,
 }) => {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
@@ -32,7 +34,15 @@ const Manufacturer: React.FC<checkMenu> = ({
     }
   };
   useEffect(() => {
-    // console.log(selectedItems);
+    console.log("title", title);
+    if (Title !== "ყველა მწარმოებელი" && Title.includes(",")) {
+      setSelectedItems(Title.split(","));
+    } else if (Title !== "ყველა მწარმოებელი" && !Title.includes(",")) {
+      setSelectedItems((prev) => [...prev, ...[Title]]);
+    }
+  }, [mans]);
+  useEffect(() => {
+    console.log(selectedItems);
     if (selectedItems.length === 1) {
       let text = "";
       let id = "";
@@ -40,6 +50,7 @@ const Manufacturer: React.FC<checkMenu> = ({
       id =
         id + mans.filter((man) => man.man_name == selectedItems[0])[0].man_id;
       setTitle(text);
+      onManTitleChange(text);
       setClas("txt char-limit");
       onManTypeChange(id);
     } else if (selectedItems.length > 1) {
@@ -57,26 +68,29 @@ const Manufacturer: React.FC<checkMenu> = ({
       });
       setClas("txt char-limit");
       setTitle(text);
+      onManTitleChange(text);
       onManTypeChange(id);
     } else {
       if (title === "ყველა მწარმოებელი") {
         setTitle(Title);
+        onManTitleChange(Title);
         onManTypeChange("");
         setClas("txt");
       } else {
         setTitle("ყველა მწარმოებელი");
+        onManTitleChange(Title);
         onManTypeChange("");
         setClas("txt");
       }
     }
   }, [selectedItems]);
-  useEffect(() => {
-    setTitle(Title);
-    mns.map((mn) => {
-      let it = selectedItems.filter((item) => mn === item);
-      setSelectedItems(it);
-    });
-  }, [Title]);
+  // useEffect(() => {
+  //   setTitle(Title);
+  //   mns.map((mn) => {
+  //     let it = selectedItems.filter((item) => mn === item);
+  //     setSelectedItems(it);
+  //   });
+  // }, [Title]);
   const click = () => {
     if (dropdown.current) {
       dropdown.current.click();

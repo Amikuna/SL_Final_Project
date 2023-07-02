@@ -7,9 +7,11 @@ import { ManProps, ModProps, ModelProps } from "../Types/Types";
 type checkMenu = {
   man: string;
   mans: ManProps[];
+  Title: string;
   onModChange: (newModel: string) => void;
   onManTypeChange: (newManType: string) => void;
   onManTitleChange: (newManTitle: string) => void;
+  onTitleChange: (newManTitle: string) => void;
 };
 type obj = {
   [key: string]: string[];
@@ -17,15 +19,17 @@ type obj = {
 const Model: React.FC<checkMenu> = ({
   man,
   mans,
+  Title,
   onModChange,
   onManTypeChange,
+  onTitleChange,
   onManTitleChange,
 }) => {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [selectedMans, setSelectedMans] = useState<string[]>([]);
   const dropdown = useRef<HTMLButtonElement>(null);
   const text = useRef<HTMLDivElement>(null);
-  const [title, setTitle] = useState<string>("მოდელი");
+  const [title, setTitle] = useState<string>(Title);
   const [clas, setClas] = useState<string>("txt");
   const [ids, setIds] = useState<string>("");
   const [mods, setMods] = useState<ModelProps[]>([]);
@@ -62,7 +66,7 @@ const Model: React.FC<checkMenu> = ({
         onModChange("");
 
         // setSelectedMans((prev) => [...prev, ...[]]);
-        onManTitleChange("ყველა მოდელი");
+        onManTitleChange("ყველა მწარმოებელი");
       } else {
         mnid.forEach((id, idx) => {
           if (idx !== mnid.length - 1) {
@@ -90,6 +94,15 @@ const Model: React.FC<checkMenu> = ({
       }
     }
   };
+  useEffect(() => {
+    console.log("title", title);
+    if (Title !== "ყველა მოდელი" && Title.includes(",")) {
+      setSelectedItems(Title.split(","));
+    } else if (Title !== "ყველა მოდელი" && !Title.includes(",")) {
+      console.log(555);
+      setSelectedItems((prev) => [...prev, ...[Title]]);
+    }
+  }, [mans]);
   useEffect(() => {
     setMods((prev) => []);
     console.log(man);
@@ -150,6 +163,7 @@ const Model: React.FC<checkMenu> = ({
         }
       });
       setTitle(text);
+      onTitleChange(text);
       setClas("txt char-limit");
     } else if (selectedItems.length > 1) {
       let text = "";
@@ -200,9 +214,11 @@ const Model: React.FC<checkMenu> = ({
 
       setClas("txt char-limit");
       setTitle(text);
+      onTitleChange(text);
       onModChange(id);
     } else {
       setTitle("ყველა მოდელი");
+      onTitleChange("ყველა მოდელი");
       setClas("txt");
     }
   }, [selectedItems, selectedMans]);

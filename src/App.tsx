@@ -79,7 +79,7 @@ function App() {
   const [width2, setWidth2] = useState<number>();
   const [catType, setCatType] = useState<number | string>("");
   const [priceFrom, setPriceFrom] = useState<number | string>("");
-  const [priceTo, setPriceTo] = useState<number | string>("");
+  const [priceTo, setPriceTo] = useState<string>("");
   const [gel, setGel] = useState<string>(Gel);
   const [usd, setUsd] = useState<string>(UsdB);
   const [curr, setCurr] = useState<number>(3);
@@ -94,6 +94,7 @@ function App() {
   const [mnTitle, setMnTitle] = useState<string>("ყველა მწარმოებელი");
   const [BargTitle, setBargTitle] = useState<string>("გარიგების ტიპი");
   const [categTitle, setCategTitle] = useState<string>("ყველა კატეგორია");
+  const [modTitle, setModTitle] = useState<string>("ყველა მოდელი");
   const plc: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
   useEffect(() => {
@@ -115,6 +116,16 @@ function App() {
     let url = s_url; //+ `?page=${page}`;
     if (isPeriod) {
       if (ModelId != "") {
+        let ids = [];
+        let mnId: string[] = [];
+        if (ModelId.includes(",")) {
+          ids = ModelId.split(",");
+
+          ids.map((id) => {
+            mnId.push(id.split(".")[0]);
+          });
+        }
+        console.log("asd", mnId);
         url =
           url +
           `?TypeID=${type}` +
@@ -170,6 +181,7 @@ function App() {
     }
 
     console.log(url);
+    console.log(mnTitle);
     fetch(url)
       .then((response) => response.json())
       .then((data: ProdApi) => {
@@ -602,6 +614,12 @@ function App() {
   const setCatTitle = (title: string) => {
     setCategTitle(title);
   };
+  const setManTitle = (title: string) => {
+    setMnTitle(title);
+  };
+  const setModT = (title: string) => {
+    setModTitle(title);
+  };
   const submit = () => {
     setSubmited((prev) => prev + 1);
 
@@ -803,6 +821,7 @@ function App() {
                     <Manufacturer
                       mans={mans}
                       Title={mnTitle}
+                      onManTitleChange={setManTitle}
                       onManTypeChange={setMan}
                     />
                   </div>
@@ -825,6 +844,8 @@ function App() {
                           <Models
                             man={manType}
                             mans={mans}
+                            Title={modTitle}
+                            onTitleChange={setModT}
                             onManTypeChange={setMan}
                             onManTitleChange={setMnT}
                             onModChange={setMd}
@@ -922,6 +943,7 @@ function App() {
                       type="text"
                       id="price-t"
                       placeholder="მდე"
+                      value={priceTo}
                       onChange={(e) => setPriceTo(e.target.value)}
                     />
                   </div>
