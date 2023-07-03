@@ -130,7 +130,7 @@ const Model: React.FC<checkMenu> = ({
                 mods.push(dat.model_name);
               });
               prd[mn] = mods;
-              ks.push(mn);
+              if (!ks.includes(mn)) ks.push(mn);
             }
 
             // console.log(ln);
@@ -155,11 +155,24 @@ const Model: React.FC<checkMenu> = ({
       let text = "";
       let id = "";
       text = text + selectedItems[0];
-      id =
-        id +
-        mans.filter((md) => md.man_name == selectedMans[0])[0].man_id +
-        "." +
-        mods.filter((md) => md.model_name == selectedItems[0])[0].model_id;
+
+      pKeys.forEach((pk) => {
+        id = id + mans.filter((mns) => mns.man_id.toString() == pk)[0].man_id;
+        console.log("iddd", id);
+        if (prods[pk].includes(selectedItems[0])) {
+          id =
+            id +
+            "." +
+            mods.filter((md) => md.model_name == selectedItems[0])[0].model_id +
+            "-";
+        }
+      });
+
+      // id =
+      //   id +
+      //   mans.filter((md) => md.man_name == selectedMans[0])[0].man_id +
+      //   "." +
+      //   mods.filter((md) => md.model_name == selectedItems[0])[0].model_id;
       onModChange(id);
       let mdss: obj = mns.reduce((obj, key) => {
         return {
