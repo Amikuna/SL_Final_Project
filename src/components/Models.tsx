@@ -31,7 +31,8 @@ const Model: React.FC<checkMenu> = ({
   const text = useRef<HTMLDivElement>(null);
   const [title, setTitle] = useState<string>(Title);
   const [clas, setClas] = useState<string>("txt");
-  const [ids, setIds] = useState<string>("");
+  const [prods, setProds] = useState<obj>({});
+  const [pKeys, setPKeys] = useState<string[]>([]);
   const [mods, setMods] = useState<ModelProps[]>([]);
   const [modNames, setModNames] = useState<string[]>([]);
   const [sz, setSz] = useState<number[]>([]);
@@ -49,6 +50,7 @@ const Model: React.FC<checkMenu> = ({
   }, [man]);
 
   const handleItemClick = (itemValue: string) => {
+    console.log(selectedMans);
     let ms = selectedMans;
     ms = selectedMans.filter((man) => man !== itemValue);
     if (selectedMans.includes(itemValue)) {
@@ -110,8 +112,11 @@ const Model: React.FC<checkMenu> = ({
     console.log(man);
     // console.log(mans);
     let ln: ModelProps[] = [];
+    let prd: obj = {};
+    let ks: string[] = [];
     let md: string[] = [];
     mns.map((mn, index) => {
+      let mods: string[] = [];
       fetch(`https://api2.myauto.ge/ka/getManModels?man_id=${mn}`)
         .then((response) => response.json())
         .then((data: ModProps) => {
@@ -120,17 +125,31 @@ const Model: React.FC<checkMenu> = ({
             setMods((prev) => [...prev, ...data.data]);
             if (mns[index] !== "undefined" && manNs[index]) {
               md.push(manNs[index].man_name);
-              data.data.forEach((dat) => md.push(dat.model_name));
+              data.data.forEach((dat) => {
+                md.push(dat.model_name);
+                mods.push(dat.model_name);
+              });
+              prd[mn] = mods;
+              ks.push(mn);
             }
 
             // console.log(ln);
           }
         });
     });
+    setProds(prd);
+    setPKeys(ks);
+    // let ks = Object.keys(prd);
+    console.log("pkey", ks);
     setModNames(md);
   }, [man]);
   useEffect(() => {
     // console.log(selectedItems);
+    console.log("prd", prods);
+    let ks = Object.keys(prods);
+
+    console.log("prds", prods["2"]);
+    // console.log("pkey", pKeys);
 
     if (selectedItems.length === 1 && mods[0] && selectedMans[0]) {
       let text = "";
@@ -251,17 +270,47 @@ const Model: React.FC<checkMenu> = ({
         <Dropdown.Menu className="scr">
           <Form>
             <Form.Group>
-              {modNames.map((man) => (
-                <Form.Check
-                  type="checkbox"
-                  label={man}
-                  checked={
-                    selectedMans.includes(man) || selectedItems.includes(man)
-                  }
-                  onChange={() => handleItemClick(man)}
-                  className="scr"
-                />
-              ))}
+              {pKeys.map((prd) =>
+                prods[prd].map((p, i) =>
+                  i === 0 ? (
+                    <div>
+                      <Form.Check
+                        type="checkbox"
+                        label={
+                          mans.filter((mn) => mn.man_id.toString() === prd)[0]
+                            .man_name
+                        }
+                        checked={selectedMans.includes(
+                          mans.filter((mn) => mn.man_id.toString() === prd)[0]
+                            .man_name
+                        )}
+                        onChange={() =>
+                          handleItemClick(
+                            mans.filter((mn) => mn.man_id.toString() === prd)[0]
+                              .man_name
+                          )
+                        }
+                        className="scr"
+                      />
+                      <Form.Check
+                        type="checkbox"
+                        label={p}
+                        checked={selectedItems.includes(p)}
+                        onChange={() => handleItemClick(p)}
+                        className="scr"
+                      />
+                    </div>
+                  ) : (
+                    <Form.Check
+                      type="checkbox"
+                      label={p}
+                      checked={selectedItems.includes(p)}
+                      onChange={() => handleItemClick(p)}
+                      className="scr"
+                    />
+                  )
+                )
+              )}
             </Form.Group>
           </Form>
         </Dropdown.Menu>
