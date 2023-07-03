@@ -95,6 +95,7 @@ function App() {
   const [BargTitle, setBargTitle] = useState<string>("გარიგების ტიპი");
   const [categTitle, setCategTitle] = useState<string>("ყველა კატეგორია");
   const [modTitle, setModTitle] = useState<string>("ყველა მოდელი");
+  const [ch, setCh] = useState<string>("");
   const plc: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
   useEffect(() => {
@@ -618,6 +619,7 @@ function App() {
     setMnTitle(title);
   };
   const setModT = (title: string) => {
+    console.log(title);
     setModTitle(title);
   };
   const submit = () => {
@@ -628,6 +630,8 @@ function App() {
   };
   const setMan = (man: string) => {
     setManType(man);
+    setCh(man);
+    console.log(54654654);
   };
   const brgClick = () => {
     let but = document.getElementById("selectDropdown-3");
@@ -821,6 +825,7 @@ function App() {
                     <Manufacturer
                       mans={mans}
                       Title={mnTitle}
+                      ch={ch}
                       onManTitleChange={setManTitle}
                       onManTypeChange={setMan}
                     />
@@ -933,6 +938,7 @@ function App() {
                       type="text"
                       id="price-f"
                       placeholder="დან"
+                      value={priceFrom}
                       onChange={(e) => setPriceFrom(e.target.value)}
                     />
                     <span style={{ alignSelf: "center", margin: "0 5px" }}>

@@ -64,6 +64,7 @@ const Model: React.FC<checkMenu> = ({
         setSelectedItems((prev) => [...prev, ...[]]);
         onManTypeChange("");
         onModChange("");
+        console.log("emptied");
 
         // setSelectedMans((prev) => [...prev, ...[]]);
         onManTitleChange("ყველა მწარმოებელი");
@@ -99,8 +100,9 @@ const Model: React.FC<checkMenu> = ({
     if (Title !== "ყველა მოდელი" && Title.includes(",")) {
       setSelectedItems(Title.split(","));
     } else if (Title !== "ყველა მოდელი" && !Title.includes(",")) {
-      console.log(555);
       setSelectedItems((prev) => [...prev, ...[Title]]);
+    } else {
+      setSelectedItems([]);
     }
   }, [mans]);
   useEffect(() => {

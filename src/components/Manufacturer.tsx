@@ -7,12 +7,14 @@ import { ManProps } from "../Types/Types";
 type checkMenu = {
   mans: ManProps[];
   Title: string;
+  ch: string;
   onManTitleChange: (newBargType: string) => void;
   onManTypeChange: (newBargType: string) => void;
 };
 const Manufacturer: React.FC<checkMenu> = ({
   mans,
   Title,
+  ch,
   onManTitleChange,
   onManTypeChange,
 }) => {
@@ -38,9 +40,14 @@ const Manufacturer: React.FC<checkMenu> = ({
     if (Title !== "ყველა მწარმოებელი" && Title.includes(",")) {
       setSelectedItems(Title.split(","));
     } else if (Title !== "ყველა მწარმოებელი" && !Title.includes(",")) {
-      setSelectedItems((prev) => [...prev, ...[Title]]);
+      setSelectedItems([Title]);
+    } else {
+      setSelectedItems([]);
     }
-  }, [mans]);
+    console.log("ch", ch);
+    console.log(Title);
+    console.log(selectedItems);
+  }, [mans, ch]);
   useEffect(() => {
     console.log(selectedItems);
     if (selectedItems.length === 1) {
