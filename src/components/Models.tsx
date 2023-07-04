@@ -8,6 +8,8 @@ type checkMenu = {
   man: string;
   mans: ManProps[];
   Title: string;
+  selItems: string[];
+  onselItemsChange: (newModel: string[]) => void;
   onModChange: (newModel: string) => void;
   onManTypeChange: (newManType: string) => void;
   onManTitleChange: (newManTitle: string) => void;
@@ -20,12 +22,14 @@ const Model: React.FC<checkMenu> = ({
   man,
   mans,
   Title,
+  selItems,
+  onselItemsChange,
   onModChange,
   onManTypeChange,
   onTitleChange,
   onManTitleChange,
 }) => {
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [selectedItems, setSelectedItems] = useState<string[]>(selItems);
   const [selectedMans, setSelectedMans] = useState<string[]>([]);
   const dropdown = useRef<HTMLButtonElement>(null);
   const text = useRef<HTMLDivElement>(null);
@@ -64,6 +68,7 @@ const Model: React.FC<checkMenu> = ({
       let mnid = manNs.filter((ms) => ms.man_name !== itemValue);
       if (mnid.length === 0) {
         setSelectedItems((prev) => [...prev, ...[]]);
+        onselItemsChange([]);
         onManTypeChange("");
         onModChange("");
         console.log("emptied");
@@ -90,25 +95,40 @@ const Model: React.FC<checkMenu> = ({
       it = selectedItems.filter((item) => item !== itemValue);
 
       setSelectedItems(it);
+      onselItemsChange(it);
     } else {
       if (!mnNs.includes(itemValue)) {
         console.log(itemValue);
         setSelectedItems([...selectedItems, itemValue]);
+        onselItemsChange([...selectedItems, itemValue]);
       }
     }
   };
+  // useEffect(() => {
+  //   console.log("titleeee", title);
+  //   if (Title !== "ყველა მოდელი" && Title.includes(",")) {
+  //     setSelectedItems(Title.split(","));
+  //   } else if (Title !== "ყველა მოდელი" && !Title.includes(",")) {
+  //     console.log("asdasdas");
+  //     setSelectedItems([Title]);
+  //     console.log(Title);
+  //   } else {
+  //     setSelectedItems([]);
+  //   }
+  // }, [mans, man]);
+
   useEffect(() => {
-    console.log("title", title);
-    if (Title !== "ყველა მოდელი" && Title.includes(",")) {
-      setSelectedItems(Title.split(","));
-    } else if (Title !== "ყველა მოდელი" && !Title.includes(",")) {
-      setSelectedItems((prev) => [...prev, ...[Title]]);
-    } else {
-      setSelectedItems([]);
-    }
-  }, [mans]);
+    let text = "";
+    selectedItems.map((item, i) => {
+      if (i === selectedItems.length - 1) {
+        text = text + item;
+      } else {
+        text = text + item + ",";
+      }
+    });
+  }, [selectedItems, selectedMans, manNs]);
   useEffect(() => {
-    setMods((prev) => []);
+    // setMods((prev) => []);
     console.log(man);
     // console.log(mans);
     let ln: ModelProps[] = [];
@@ -116,20 +136,19 @@ const Model: React.FC<checkMenu> = ({
     let ks: string[] = [];
     let md: string[] = [];
     mns.map((mn, index) => {
-      let mods: string[] = [];
+      let mod: string[] = [];
       fetch(`https://api2.myauto.ge/ka/getManModels?man_id=${mn}`)
         .then((response) => response.json())
         .then((data: ModProps) => {
           if (data) {
-            // console.log(index);
             setMods((prev) => [...prev, ...data.data]);
             if (mns[index] !== "undefined" && manNs[index]) {
               md.push(manNs[index].man_name);
               data.data.forEach((dat) => {
                 md.push(dat.model_name);
-                mods.push(dat.model_name);
+                mod.push(dat.model_name);
               });
-              prd[mn] = mods;
+              prd[mn] = mod;
               if (!ks.includes(mn)) ks.push(mn);
             }
 
@@ -139,32 +158,32 @@ const Model: React.FC<checkMenu> = ({
     });
     setProds(prd);
     setPKeys(ks);
-    // let ks = Object.keys(prd);
-    console.log("pkey", ks);
     setModNames(md);
   }, [man]);
   useEffect(() => {
-    // console.log(selectedItems);
-    console.log("prd", prods);
-    let ks = Object.keys(prods);
-
-    console.log("prds", prods["2"]);
-    // console.log("pkey", pKeys);
-
-    if (selectedItems.length === 1 && mods[0] && selectedMans[0]) {
+    console.log("items", selectedItems);
+    console.log("prods", prods);
+    if (selectedItems.length === 1) {
       let text = "";
-      let id = "";
-      text = text + selectedItems[0];
 
-      pKeys.forEach((pk) => {
+      let id = "";
+      text = selectedItems[0];
+      console.log("oks", pKeys);
+      pKeys.map((pk) => {
+        console.log(75757);
+        console.log("pk", pk);
         id = id + mans.filter((mns) => mns.man_id.toString() == pk)[0].man_id;
         console.log("iddd", id);
+
         if (prods[pk].includes(selectedItems[0])) {
           id =
             id +
             "." +
-            mods.filter((md) => md.model_name == selectedItems[0])[0].model_id +
+            mods.filter((md) => md.model_name === selectedItems[0])[0]
+              .model_id +
             "-";
+        } else {
+          id = id + "-";
         }
       });
 
@@ -173,6 +192,7 @@ const Model: React.FC<checkMenu> = ({
       //   mans.filter((md) => md.man_name == selectedMans[0])[0].man_id +
       //   "." +
       //   mods.filter((md) => md.model_name == selectedItems[0])[0].model_id;
+      console.log("ida", id);
       onModChange(id);
       let mdss: obj = mns.reduce((obj, key) => {
         return {
@@ -182,12 +202,9 @@ const Model: React.FC<checkMenu> = ({
       }, {});
 
       selectedItems.map((item, index) => {
-        if (mns[0] !== "undefined") {
-          mns.forEach((mn) =>
-            mdss[mn].push(
-              mods.filter((ms) => ms.model_name == item)[0].model_id.toString()
-            )
-          );
+        const matchingModel = mods.find((ms) => ms.model_name === item);
+        if (matchingModel) {
+          mns.forEach((mn) => mdss[mn].push(matchingModel.model_id.toString()));
         }
 
         if (index === selectedItems.length - 1) {
@@ -250,12 +267,12 @@ const Model: React.FC<checkMenu> = ({
       setTitle(text);
       onTitleChange(text);
       onModChange(id);
-    } else {
+    } else if (selectedItems.length === 0) {
       setTitle("ყველა მოდელი");
       onTitleChange("ყველა მოდელი");
       setClas("txt");
     }
-  }, [selectedItems, selectedMans]);
+  }, [selectedItems, selectedMans, prods, man]);
   const click = () => {
     if (dropdown.current) {
       dropdown.current.click();

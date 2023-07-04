@@ -96,6 +96,7 @@ function App() {
   const [categTitle, setCategTitle] = useState<string>("ყველა კატეგორია");
   const [modTitle, setModTitle] = useState<string>("ყველა მოდელი");
   const [ch, setCh] = useState<string>("");
+  const [selItems, setSelItems] = useState<string[]>([]);
   const plc: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
   useEffect(() => {
@@ -631,7 +632,6 @@ function App() {
   const setMan = (man: string) => {
     setManType(man);
     setCh(man);
-    console.log(54654654);
   };
   const brgClick = () => {
     let but = document.getElementById("selectDropdown-3");
@@ -680,6 +680,9 @@ function App() {
   };
   const setMnT = (title: string) => {
     setMnTitle(title);
+  };
+  const setSItems = (items: string[]) => {
+    setSelItems(items);
   };
 
   if (
@@ -850,6 +853,8 @@ function App() {
                             man={manType}
                             mans={mans}
                             Title={modTitle}
+                            selItems={selItems}
+                            onselItemsChange={setSItems}
                             onTitleChange={setModT}
                             onManTypeChange={setMan}
                             onManTitleChange={setMnT}
