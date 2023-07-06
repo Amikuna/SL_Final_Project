@@ -15,8 +15,6 @@ const Destination: React.FC<DestinationProps> = ({ Id }) => {
       return "ქუთაისი";
     } else if (id == 4) {
       return "ბათუმი";
-    } else if (id == 3) {
-      return "ქუთაისი";
     } else if (id == 13) {
       return "გორი";
     } else if (id == 15) {
@@ -50,8 +48,8 @@ const Destination: React.FC<DestinationProps> = ({ Id }) => {
   }
   return (
     <div className="d-flex align-items-center">
-      <img className="falg" src={GEO} />
-      <div className="dest" style={{ marginLeft: "5%" }}>
+      <img className="falg" src={GEO} style={{ marginTop: "8%" }} />
+      <div className="dest" style={{ marginLeft: "5%", marginTop: "8%" }}>
         {formatId(Id)}
       </div>
     </div>

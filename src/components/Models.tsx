@@ -40,13 +40,16 @@ const Model: React.FC<checkMenu> = ({
   const [mods, setMods] = useState<ModelProps[]>([]);
   const [modNames, setModNames] = useState<string[]>([]);
   const [sz, setSz] = useState<number[]>([]);
-  const mns = man.split("-");
+  const [mns, setMns] = useState<string[]>(man.split("-"));
   const manNs: ManProps[] = mans.filter((mn) => mns.includes(mn.man_id));
   const mnNs: string[] = [];
 
   useEffect(() => {
+    setMns(man.split("-"));
+  }, [man]);
+  useEffect(() => {
     mans
-      .filter((mn) => mns.includes(mn.man_id))
+      .filter((mn) => man.split("-").includes(mn.man_id))
       .forEach((m) => {
         mnNs.push(m.man_name);
       });
@@ -54,14 +57,12 @@ const Model: React.FC<checkMenu> = ({
   }, [man]);
 
   const handleItemClick = (itemValue: string) => {
-    console.log(selectedMans);
     let ms = selectedMans;
     ms = selectedMans.filter((man) => man !== itemValue);
     if (selectedMans.includes(itemValue)) {
       if (mnNs.includes(itemValue)) {
-        console.log(itemValue);
+        // console.log(itemValue);
       }
-
       setSelectedMans(ms);
       let dd = "";
       let title = "";
@@ -71,7 +72,7 @@ const Model: React.FC<checkMenu> = ({
         onselItemsChange([]);
         onManTypeChange("");
         onModChange("");
-        console.log("emptied");
+        // console.log("emptied");
 
         // setSelectedMans((prev) => [...prev, ...[]]);
         onManTitleChange("ყველა მწარმოებელი");
@@ -88,7 +89,7 @@ const Model: React.FC<checkMenu> = ({
         onManTitleChange(title);
         onManTypeChange(dd);
       }
-      console.log(dd);
+      // console.log(dd);
     } else if (selectedItems.includes(itemValue)) {
       let it = selectedItems;
 
@@ -98,24 +99,12 @@ const Model: React.FC<checkMenu> = ({
       onselItemsChange(it);
     } else {
       if (!mnNs.includes(itemValue)) {
-        console.log(itemValue);
+        // console.log(itemValue);
         setSelectedItems([...selectedItems, itemValue]);
         onselItemsChange([...selectedItems, itemValue]);
       }
     }
   };
-  // useEffect(() => {
-  //   console.log("titleeee", title);
-  //   if (Title !== "ყველა მოდელი" && Title.includes(",")) {
-  //     setSelectedItems(Title.split(","));
-  //   } else if (Title !== "ყველა მოდელი" && !Title.includes(",")) {
-  //     console.log("asdasdas");
-  //     setSelectedItems([Title]);
-  //     console.log(Title);
-  //   } else {
-  //     setSelectedItems([]);
-  //   }
-  // }, [mans, man]);
 
   useEffect(() => {
     let text = "";
@@ -126,10 +115,10 @@ const Model: React.FC<checkMenu> = ({
         text = text + item + ",";
       }
     });
-  }, [selectedItems, selectedMans, manNs]);
+  }, [man, selectedItems, selectedMans, manNs, prods]);
   useEffect(() => {
     // setMods((prev) => []);
-    console.log(man);
+    // console.log(man);
     // console.log(mans);
     let ln: ModelProps[] = [];
     let prd: obj = {};
@@ -151,132 +140,44 @@ const Model: React.FC<checkMenu> = ({
               prd[mn] = mod;
               if (!ks.includes(mn)) ks.push(mn);
             }
-
-            // console.log(ln);
           }
         });
     });
     setProds(prd);
     setPKeys(ks);
     setModNames(md);
-  }, [man]);
+  }, [mns]);
   useEffect(() => {
-    console.log("items", selectedItems);
-    console.log("prods", prods);
-    if (selectedItems.length === 1) {
-      let text = "";
-
-      let id = "";
-      text = selectedItems[0];
-      console.log("oks", pKeys);
-      pKeys.map((pk) => {
-        console.log(75757);
-        console.log("pk", pk);
-        id = id + mans.filter((mns) => mns.man_id.toString() == pk)[0].man_id;
-        console.log("iddd", id);
-
-        if (prods[pk].includes(selectedItems[0])) {
-          id =
-            id +
-            "." +
-            mods.filter((md) => md.model_name === selectedItems[0])[0]
-              .model_id +
-            "-";
-        } else {
-          id = id + "-";
-        }
-      });
-
-      // id =
-      //   id +
-      //   mans.filter((md) => md.man_name == selectedMans[0])[0].man_id +
-      //   "." +
-      //   mods.filter((md) => md.model_name == selectedItems[0])[0].model_id;
-      console.log("ida", id);
-      onModChange(id);
-      let mdss: obj = mns.reduce((obj, key) => {
-        return {
-          ...obj,
-          [key]: [],
-        };
-      }, {});
-
-      selectedItems.map((item, index) => {
-        const matchingModel = mods.find((ms) => ms.model_name === item);
-        if (matchingModel) {
-          mns.forEach((mn) => mdss[mn].push(matchingModel.model_id.toString()));
-        }
-
-        if (index === selectedItems.length - 1) {
-          text = item;
-        } else {
-          text = item + ",";
-        }
-      });
-      setTitle(text);
-      onTitleChange(text);
-      setClas("txt char-limit");
-    } else if (selectedItems.length > 1) {
-      let text = "";
-      let id = "";
-      let mdss: obj = mns.reduce((obj, key) => {
-        return {
-          ...obj,
-          [key]: [],
-        };
-      }, {});
-
-      selectedItems.map((item, index) => {
-        if (mns[0] !== "undefined" && mods[0]) {
-          let m: ModelProps | null = null;
-          mns.forEach((mn) => {
-            m = mods.filter((ms) => ms.model_name == item)[0];
-            if (m && m.man_id.toString() == mn) {
-              mdss[mn].push(m.model_id.toString());
-            }
-          });
-        }
-
-        if (index === selectedItems.length - 1) {
-          text = text + item;
-        } else {
-          text = text + item + ",";
-        }
-      });
-      const keys = Object.keys(mdss);
-
-      keys.map((key, idx) => {
-        if (mdss[key].length === 0) {
-          id = id + key + "-";
-        } else {
-          id = id + key + ".";
-        }
-
-        mdss[key].map((md, index) => {
-          if (index === mdss[key].length - 1 && idx === keys.length - 1) {
-            id = id + md;
-          } else if (index === mdss[key].length - 1) {
-            id = id + md + "-";
-          } else {
-            id = id + md + ".";
-          }
-        });
-      });
-
-      setClas("txt char-limit");
-      setTitle(text);
-      onTitleChange(text);
-      onModChange(id);
-    } else if (selectedItems.length === 0) {
+    if (selectedItems.length === 0) {
       setTitle("ყველა მოდელი");
       onTitleChange("ყველა მოდელი");
       setClas("txt");
+    } else {
+      let text = "";
+      selectedMans.forEach((man, index) => {
+        const selectedModels = selectedItems
+          .filter((item) => item.startsWith(man))
+          .map((item) => item.substring(man.length + 1));
+
+        if (index > 0) {
+          text += "-";
+        }
+
+        text += man;
+        if (selectedModels.length > 0) {
+          text += "." + selectedModels.join(",");
+        }
+      });
+
+      setTitle(text);
+      onTitleChange(text);
+      setClas("txt-active");
     }
-  }, [selectedItems, selectedMans, prods, man]);
+  }, [prods, selectedItems, selectedMans]);
   const click = () => {
     if (dropdown.current) {
       dropdown.current.click();
-      console.log(modNames);
+      // console.log(modNames);
     }
   };
 

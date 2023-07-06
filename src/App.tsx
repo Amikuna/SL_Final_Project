@@ -116,18 +116,19 @@ function App() {
   useEffect(() => {
     console.log(s_url);
     let url = s_url; //+ `?page=${page}`;
+    console.log("asd", ModelId);
     if (isPeriod) {
       if (ModelId != "") {
-        let ids = [];
-        let mnId: string[] = [];
-        if (ModelId.includes(",")) {
-          ids = ModelId.split(",");
+        // let ids = [];
+        // let mnId: string[] = [];
+        // if (ModelId.includes(",")) {
+        //   ids = ModelId.split(",");
 
-          ids.map((id) => {
-            mnId.push(id.split(".")[0]);
-          });
-        }
-        console.log("asd", mnId);
+        //   ids.map((id) => {
+        //     mnId.push(id.split(".")[0]);
+        //   });
+        // }
+        console.log("asd", ModelId);
         url =
           url +
           `?TypeID=${type}` +
@@ -742,8 +743,13 @@ function App() {
       <br />
       <br />
       <Container className="main">
-        <div className="d-flex">
-          <Col className="card" style={{ width: "250px", height: "100%" }}>
+        <Row className="">
+          <Col
+            xs={8}
+            md={1}
+            className="card"
+            style={{ width: "250px", height: "100%" }}
+          >
             <div
               className="d-flex justify-content-center"
               style={{ width: "100%" }}
@@ -872,7 +878,7 @@ function App() {
                 <Col>
                   <div
                     style={{ width: "48%" }}
-                    className="d-flex justify-content-center sel"
+                    className="d-flex justify-content-center sel-ct"
                   >
                     <Form.Label>კატეგორია</Form.Label>
                   </div>
@@ -977,7 +983,7 @@ function App() {
               </Row>
             </div>
           </Col>
-          <Col className="products col-9">
+          <Col xs={11} className="products">
             <div className="d-flex align-items-center">
               <Col className="total">
                 <h6>{meta?.total} განცხადება</h6>
@@ -1096,11 +1102,13 @@ function App() {
               return (
                 <div>
                   <div className="prod-car">
-                    <div className="d-flex">
-                      <img className="prod-img" src={img_url} alt="" />
-                      <div className="d-flex flex-column w-100">
-                        <Row className="row-1">
-                          <div className="d-flex justify-content-between">
+                    <Row className="d-flex">
+                      <Col md={3} className="img-col">
+                        <img className="prod-img" src={img_url} alt="" />
+                      </Col>
+                      <Col className="d-flex flex-column info">
+                        <Row className="row-1 allign-items-center">
+                          <div className="d-flex justify-content-between align-items-start">
                             <div className="d-flex title">
                               <h6 className="name">
                                 {q_model[0]
@@ -1119,7 +1127,7 @@ function App() {
                                 {prod.prod_year + " წ"}
                               </h6>
                             </div>
-                            <div className="justify-self-end">
+                            <div className="justify-self-end align-items-center">
                               {prod.customs_passed ? (
                                 <div className="custom_passed">
                                   <img className="check" src={Check}></img>{" "}
@@ -1133,31 +1141,24 @@ function App() {
                             <Destination Id={prod.location_id} />
                           </div>
                         </Row>
-                        <div>
-                          <Row>
-                            <div className="d-flex cont align-middle justify-content-between">
-                              <Engine
-                                Volume={prod.engine_volume}
-                                FuelId={prod.fuel_type_id}
-                              />
-                              <Run Range={prod.car_run_km} />
-                              <PriceWithCommas price={prod} priceId={curr} />
-                            </div>
-                          </Row>
-                          <Row>
-                            <div className="d-flex cont-2 align-middle justify-content-between">
-                              <GearBox id={prod.gear_type_id} />
-
-                              <Wheel id={prod.rigth_wheel} />
-
-                              <PriceWithCommas
-                                vis="hidden"
-                                price={prod}
-                                priceId={curr}
-                              />
-                            </div>
-                          </Row>
-                        </div>
+                        <Row className="ft">
+                          <Col>
+                            <Engine
+                              Volume={prod.engine_volume}
+                              FuelId={prod.fuel_type_id}
+                            />
+                            <br></br>
+                            <GearBox id={prod.gear_type_id} />
+                          </Col>
+                          <Col>
+                            <Run Range={prod.car_run_km} />
+                            <br></br>
+                            <Wheel id={prod.rigth_wheel} />
+                          </Col>
+                          <Col className="d-flex pr justify-content-end">
+                            <PriceWithCommas price={prod} priceId={curr} />
+                          </Col>
+                        </Row>
 
                         <Row>
                           <div className="d-flex align-items-center">
@@ -1171,8 +1172,8 @@ function App() {
                             <img className="heart" src={Heart} />
                           </div>
                         </Row>
-                      </div>
-                    </div>
+                      </Col>
+                    </Row>
                   </div>
                 </div>
               );
@@ -1196,7 +1197,7 @@ function App() {
               />
             </div>
           </Col>
-        </div>
+        </Row>
       </Container>
     </div>
   );

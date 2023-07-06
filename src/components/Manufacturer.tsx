@@ -31,12 +31,12 @@ const Manufacturer: React.FC<checkMenu> = ({
       let it = selectedItems;
       it = selectedItems.filter((item) => item !== itemValue);
       setSelectedItems(it);
+      console.log("99999999999");
     } else {
       setSelectedItems([...selectedItems, itemValue]);
     }
   };
   useEffect(() => {
-    console.log("title", title);
     if (Title !== "ყველა მწარმოებელი" && Title.includes(",")) {
       setSelectedItems(Title.split(","));
     } else if (Title !== "ყველა მწარმოებელი" && !Title.includes(",")) {
@@ -44,12 +44,8 @@ const Manufacturer: React.FC<checkMenu> = ({
     } else {
       setSelectedItems([]);
     }
-    console.log("ch", ch);
-    console.log(Title);
-    console.log(selectedItems);
-  }, [mans, ch]);
+  }, [mans]);
   useEffect(() => {
-    console.log(selectedItems);
     if (selectedItems.length === 1) {
       let text = "";
       let id = "";
@@ -85,7 +81,7 @@ const Manufacturer: React.FC<checkMenu> = ({
         setClas("txt");
       } else {
         setTitle("ყველა მწარმოებელი");
-        onManTitleChange(Title);
+        onManTitleChange("ყველა მწარმოებელი");
         onManTypeChange("");
         setClas("txt");
       }
