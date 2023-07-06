@@ -848,7 +848,7 @@ function App() {
                     <Col>
                       <div
                         style={{ width: "42%" }}
-                        className="d-flex justify-content-center sel"
+                        className="d-flex justify-content-center sel-md"
                       >
                         <Form.Label>მოდელი</Form.Label>
                       </div>
@@ -901,7 +901,7 @@ function App() {
                 <Col>
                   <div
                     style={{ width: "100%" }}
-                    className="d-flex align-items-center justify-content-center sel"
+                    className="d-flex align-items-center justify-content-center sel-pr"
                   >
                     <Col className=" pr d-flex align-text-bottom">
                       <Form.Label>ფასი</Form.Label>

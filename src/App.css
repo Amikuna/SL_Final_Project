@@ -475,6 +475,12 @@ body {
   .sel-ct {
     margin-left: -7% !important;
   }
+  .sel-md {
+    margin-left: -5% !important;
+  }
+  .sel-pr {
+    margin-left: 2% !important;
+  }
   .card {
     width: 100% !important;
     position: relative !important;
