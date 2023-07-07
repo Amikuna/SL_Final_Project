@@ -3,6 +3,7 @@ import { Dropdown, Form } from "react-bootstrap";
 import { BsChevronDown } from "react-icons/bs";
 import { useRef } from "react";
 import { ManProps, ModProps, ModelProps } from "../Types/Types";
+import { sign } from "crypto";
 
 type checkMenu = {
   man: string;
@@ -15,6 +16,7 @@ type checkMenu = {
   onManTypeChange: (newManType: string) => void;
   onManTitleChange: (newManTitle: string) => void;
   onTitleChange: (newManTitle: string) => void;
+  onTlChange: (loading: string) => void;
 };
 type obj = {
   [key: string]: string[];
@@ -24,6 +26,7 @@ const Model: React.FC<checkMenu> = ({
   mans,
   Title,
   selItems,
+  onTlChange,
   onselModsChange,
   onselItemsChange,
   onModChange,
@@ -40,8 +43,6 @@ const Model: React.FC<checkMenu> = ({
   const [prods, setProds] = useState<obj>({});
   const [pKeys, setPKeys] = useState<string[]>([]);
   const [mods, setMods] = useState<ModelProps[]>([]);
-  const [modNames, setModNames] = useState<string[]>([]);
-  const [sz, setSz] = useState<number[]>([]);
   const [mns, setMns] = useState<string[]>(man.split("-"));
   const manNs: ManProps[] = mans.filter((mn) => mns.includes(mn.man_id));
   const mnNs: string[] = [];
@@ -60,9 +61,19 @@ const Model: React.FC<checkMenu> = ({
 
   const handleItemClick = (itemValue: string) => {
     let ms = selectedMans;
+    let si = selectedItems;
+
     ms = selectedMans.filter((man) => man !== itemValue);
     if (selectedMans.includes(itemValue)) {
+      let manId = mans.filter((mn) => mn.man_name === itemValue)[0].man_id;
       setSelectedMans(ms);
+      selectedItems.map((item) => {
+        if (prods[manId.toString()].includes(item)) {
+          si = si.filter((i) => i !== item);
+        }
+      });
+      setSelectedItems(si);
+      onselItemsChange(si);
 
       let dd = "";
       let title = "";
@@ -113,10 +124,17 @@ const Model: React.FC<checkMenu> = ({
       }
     });
   }, [man, selectedItems, selectedMans, manNs, prods]);
+
   useEffect(() => {
     let prd: obj = {};
     let ks: string[] = [];
     let md: string[] = [];
+    let tle = title;
+    setTitle("loading...");
+    onTlChange("loading...");
+    const els: HTMLElement[] = [];
+    const el = document.getElementsByClassName("products")[0] as HTMLElement;
+    el.style.filter = "blur(2px)";
 
     Promise.all(
       mns.map((mn, index) => {
@@ -143,11 +161,16 @@ const Model: React.FC<checkMenu> = ({
       .then(() => {
         setProds(prd);
         setPKeys(ks);
-        setModNames(md);
+        setTitle(tle);
+        const el = document.getElementsByClassName(
+          "products"
+        )[0] as HTMLElement;
+        el.style.filter = "";
       })
       .catch((error) => {
-        // Handle any error that occurred during the fetch requests
         console.log(error);
+        setTitle(tle);
+        onTlChange(tle);
       });
   }, [mns]);
 
@@ -162,7 +185,7 @@ const Model: React.FC<checkMenu> = ({
       let si = selectedItems;
       let prds = prods;
 
-      Object.keys(prds).map((pk) => {
+      pKeys.map((pk) => {
         id = id + mans.filter((mn) => mn.man_id === pk)[0].man_id;
 
         prds[pk].map((pr) => {

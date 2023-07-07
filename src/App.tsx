@@ -74,9 +74,6 @@ function App() {
   const [bargType, setBargType] = useState<number | string>("");
   const [submited, setSubmited] = useState<number>(0);
   const [manType, setManType] = useState<string>("");
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [width, setWidth] = useState<number>();
-  const [width2, setWidth2] = useState<number>();
   const [catType, setCatType] = useState<number | string>("");
   const [priceFrom, setPriceFrom] = useState<number | string>("");
   const [priceTo, setPriceTo] = useState<string>("");
@@ -98,6 +95,7 @@ function App() {
   const [ch, setCh] = useState<string>("");
   const [selItems, setSelItems] = useState<string[]>([]);
   const [MnN, setMnN] = useState<number>(0);
+  const [loading, setLoading] = useState<string>("loading...");
   const plc: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
   useEffect(() => {
@@ -115,21 +113,9 @@ function App() {
       });
   }, []);
   useEffect(() => {
-    console.log(s_url);
-    let url = s_url; //+ `?page=${page}`;
-    console.log("asd", ModelId);
+    let url = s_url;
     if (isPeriod) {
       if (ModelId != "") {
-        // let ids = [];
-        // let mnId: string[] = [];
-        // if (ModelId.includes(",")) {
-        //   ids = ModelId.split(",");
-
-        //   ids.map((id) => {
-        //     mnId.push(id.split(".")[0]);
-        //   });
-        // }
-        console.log("asd", ModelId);
         url =
           url +
           `?TypeID=${type}` +
@@ -184,8 +170,6 @@ function App() {
       }
     }
 
-    console.log(url);
-    console.log(mnTitle);
     fetch(url)
       .then((response) => response.json())
       .then((data: ProdApi) => {
@@ -194,9 +178,6 @@ function App() {
           setMeta(data.data.meta);
           setLastPage(data.data.meta.last_page);
         }
-
-        // console.log(data);
-        // console.log(data.data.meta.last_page);
       });
   }, [page, period, isPeriod, sort, submited]);
   useEffect(() => {
@@ -221,17 +202,10 @@ function App() {
   }, [products]);
 
   useEffect(() => {
-    // console.log(models);
-  }, [models]);
-  useEffect(() => {
-    console.log(period);
     if (period === 1) {
       let el = document.getElementById("selectDropdown-1");
 
       if (el) {
-        console.log(el.innerHTML);
-        console.log(period);
-
         el.innerHTML = perTitle;
       }
     }
@@ -239,9 +213,6 @@ function App() {
       let el = document.getElementById("selectDropdown-1");
 
       if (el) {
-        console.log(el.innerHTML);
-        console.log(period);
-
         el.innerHTML = perTitle;
       }
     }
@@ -249,9 +220,6 @@ function App() {
       let el = document.getElementById("selectDropdown-1");
 
       if (el) {
-        console.log(el.innerHTML);
-        console.log(period);
-
         el.innerHTML = perTitle;
       }
     }
@@ -259,9 +227,6 @@ function App() {
       let el = document.getElementById("selectDropdown-1");
 
       if (el) {
-        console.log(el.innerHTML);
-        console.log(period);
-
         el.innerHTML = perTitle;
       }
     }
@@ -269,9 +234,6 @@ function App() {
       let el = document.getElementById("selectDropdown-1");
 
       if (el) {
-        console.log(el.innerHTML);
-        console.log(period);
-
         el.innerHTML = perTitle;
       }
     }
@@ -279,9 +241,6 @@ function App() {
       let el = document.getElementById("selectDropdown-1");
 
       if (el) {
-        console.log(el.innerHTML);
-        console.log(period);
-
         el.innerHTML = perTitle;
       }
     }
@@ -289,9 +248,6 @@ function App() {
       let el = document.getElementById("selectDropdown-1");
 
       if (el) {
-        console.log(el.innerHTML);
-        console.log(period);
-
         el.innerHTML = perTitle;
       }
     }
@@ -299,9 +255,6 @@ function App() {
       let el = document.getElementById("selectDropdown-1");
 
       if (el) {
-        console.log(el.innerHTML);
-        console.log(period);
-
         el.innerHTML = perTitle;
       }
     }
@@ -309,48 +262,33 @@ function App() {
       let el = document.getElementById("selectDropdown-1");
 
       if (el) {
-        console.log(el.innerHTML);
-        console.log(period);
-
         el.innerHTML = perTitle;
       }
     }
     let el = document.getElementById("selectDropdown-2");
     if (sort === 1) {
       if (el) {
-        console.log(el.title);
         el.innerHTML = "თარიღი კლებადი";
-        console.log(el.title);
       }
     } else if (sort === 2) {
       if (el) {
-        console.log(el.title);
         el.innerHTML = "თარიღი ზრდადი";
-        console.log(el.title);
       }
     } else if (sort === 3) {
       if (el) {
-        console.log(el.title);
         el.innerHTML = "ფასი კლებადი";
-        console.log(el.title);
       }
     } else if (sort === 4) {
       if (el) {
-        console.log(el.title);
         el.innerHTML = "ფასი ზრდადი";
-        console.log(el.title);
       }
     } else if (sort === 5) {
       if (el) {
-        console.log(el.title);
         el.innerHTML = "გარბენი კლებადი";
-        console.log(el.title);
       }
     } else if (sort === 6) {
       if (el) {
-        console.log(el.title);
         el.innerHTML = "გარბენი ზრდადი";
-        console.log(el.title);
       }
     }
   }, [page, products]);
@@ -359,18 +297,14 @@ function App() {
     let el = document.getElementById("selectDropdown-1");
     let url: string = s_url;
     if (el) {
-      console.log(el.title);
-      console.log(url.length);
       el.innerHTML = "ბოლო 1 საათი";
       setPerTitle("ბოლო 1 საათი");
-      console.log(el.title);
       if (url.length === 34) {
         url = url + "?Period=1h";
       } else {
         url = url + "&Period=1h";
       }
 
-      // setS_url((prev) => url);
       setPeriod(1);
       setIsPeriod(true);
       setPerUrl(`&Period=${1}h`);
@@ -381,10 +315,7 @@ function App() {
     let el = document.getElementById("selectDropdown-1");
     let url: string = s_url;
     if (el) {
-      console.log(el.title);
-      console.log(url.length);
       el.innerHTML = "ბოლო 2 საათი";
-      console.log(el.title);
       setPerTitle("ბოლო 2 საათი");
       if (url.length === 34) {
         url = url + "?Period=2h";
@@ -392,7 +323,6 @@ function App() {
         url = url + "&Period=2h";
       }
 
-      // setS_url((prev) => url);
       setPeriod(2);
       setIsPeriod(true);
       setPerUrl(`&Period=${2}h`);
@@ -403,16 +333,13 @@ function App() {
     let el = document.getElementById("selectDropdown-1");
     let url: string = s_url;
     if (el) {
-      console.log(el.title);
       el.innerHTML = "ბოლო 3 საათი";
       setPerTitle("ბოლო 3 საათი");
-      console.log(el.title);
       if (url.length === 34) {
         url = url + "?Period=3h";
       } else {
         url = url + "&Period=3h";
       }
-      // setS_url((prev) => url);
       setPeriod(3);
       setIsPeriod(true);
       setPerUrl(`&Period=${3}h`);
@@ -423,16 +350,13 @@ function App() {
     let el = document.getElementById("selectDropdown-1");
     let url: string = s_url;
     if (el) {
-      console.log(el.title);
       el.innerHTML = "ბოლო 1 დღე";
-      console.log(el.title);
       setPerTitle("ბოლო 1 დღე");
       if (url.length === 34) {
         url = url + "?Period=1d";
       } else {
         url = url + "&Period=1d";
       }
-      // setS_url((prev) => url);
       setPeriod(11);
       setIsPeriod(true);
       setPerUrl(`&Period=${1}d`);
@@ -443,16 +367,13 @@ function App() {
     let el = document.getElementById("selectDropdown-1");
     let url: string = s_url;
     if (el) {
-      console.log(el.title);
       el.innerHTML = "ბოლო 2 დღე";
-      console.log(el.title);
       setPerTitle("ბოლო 2 დღე");
       if (url.length === 34) {
         url = url + "?Period=2d";
       } else {
         url = url + "&Period=2d";
       }
-      // setS_url((prev) => url);
       setPeriod(12);
       setIsPeriod(true);
       setPerUrl(`&Period=${2}d`);
@@ -463,16 +384,15 @@ function App() {
     let el = document.getElementById("selectDropdown-1");
     let url: string = s_url;
     if (el) {
-      console.log(el.title);
       el.innerHTML = "ბოლო 3 დღე";
       setPerTitle("ბოლო 3 დღე");
-      console.log(el.title);
+
       if (url.length === 34) {
         url = url + "?Period=3d";
       } else {
         url = url + "&Period=3d";
       }
-      // setS_url((prev) => url);
+
       setPeriod(13);
       setIsPeriod(true);
       setPerUrl(`&Period=${3}d`);
@@ -483,16 +403,15 @@ function App() {
     let el = document.getElementById("selectDropdown-1");
     let url: string = s_url;
     if (el) {
-      console.log(el.title);
       el.innerHTML = "ბოლო 1 კვირა";
-      console.log(el.title);
+
       setPerTitle("ბოლო 1 კვირა");
       if (url.length === 34) {
         url = url + "?Period=1w";
       } else {
         url = url + "&Period=1w";
       }
-      // setS_url((prev) => url);
+
       setPeriod(21);
       setIsPeriod(true);
       setPerUrl(`&Period=${1}w`);
@@ -503,16 +422,15 @@ function App() {
     let el = document.getElementById("selectDropdown-1");
     let url: string = s_url;
     if (el) {
-      console.log(el.title);
       el.innerHTML = "ბოლო 2 კვირა";
-      console.log(el.title);
+
       setPerTitle("ბოლო 2 კვირა");
       if (url.length === 34) {
         url = url + "?Period=2w";
       } else {
         url = url + "&Period=2w";
       }
-      // setS_url((prev) => url);
+
       setPeriod(22);
       setIsPeriod(true);
       setPerUrl(`&Period=${2}w`);
@@ -523,16 +441,15 @@ function App() {
     let el = document.getElementById("selectDropdown-1");
     let url: string = s_url;
     if (el) {
-      console.log(el.title);
       el.innerHTML = "ბოლო 3 კვირა";
-      console.log(el.title);
+
       setPerTitle("ბოლო 3 კვირა");
       if (url.length === 34) {
         url = url + "?Period=3w";
       } else {
         url = url + "&Period=3w";
       }
-      // setS_url((prev) => url);
+
       setPeriod(23);
       setPerUrl(`&Period=${3}w`);
       setIsPeriod(true);
@@ -542,9 +459,8 @@ function App() {
   const dateDec = () => {
     let el = document.getElementById("selectDropdown-2");
     if (el) {
-      console.log(el.title);
       el.innerHTML = "თარიღი კლებადი";
-      console.log(el.title);
+
       setSrtTitle("თარიღი კლებადი");
       setSort(1);
     }
@@ -552,9 +468,8 @@ function App() {
   const dateInc = () => {
     let el = document.getElementById("selectDropdown-2");
     if (el) {
-      console.log(el.title);
       el.innerHTML = "თარიღი ზრდადი";
-      console.log(el.title);
+
       setSort(2);
       setSrtTitle("თარიღი ზრდადი");
     }
@@ -562,9 +477,8 @@ function App() {
   const priceDec = () => {
     let el = document.getElementById("selectDropdown-2");
     if (el) {
-      console.log(el.title);
       el.innerHTML = "ფასი კლებადი";
-      console.log(el.title);
+
       setSrtTitle("ფასი კლებადი");
       setSort(3);
     }
@@ -572,9 +486,8 @@ function App() {
   const priceInc = () => {
     let el = document.getElementById("selectDropdown-2");
     if (el) {
-      console.log(el.title);
       el.innerHTML = "ფასი ზრდადი";
-      console.log(el.title);
+
       setSrtTitle("ფასი ზრდადი");
       setSort(4);
     }
@@ -582,9 +495,8 @@ function App() {
   const runDec = () => {
     let el = document.getElementById("selectDropdown-2");
     if (el) {
-      console.log(el.title);
       el.innerHTML = "გარბენი კლებადი";
-      console.log(el.title);
+
       setSrtTitle("გარბენი კლებადი");
       setSort(5);
     }
@@ -592,9 +504,8 @@ function App() {
   const runInc = () => {
     let el = document.getElementById("selectDropdown-2");
     if (el) {
-      console.log(el.title);
       el.innerHTML = "გარბენი ზრდადი";
-      console.log(el.title);
+
       setSrtTitle("გარბენი ზრდადი");
       setSort(6);
     }
@@ -605,16 +516,7 @@ function App() {
   const bargTitle = (title: string) => {
     setBargTitle(title);
   };
-  const rent = () => {
-    let el = document.getElementById("selectDropdown-3");
-    if (el) {
-      console.log(el.title);
-      el.innerHTML = "ქირავდება";
-      console.log(el.title);
-      setMarginS1("58%");
-      setBargType(1);
-    }
-  };
+
   const setCatTitle = (title: string) => {
     setCategTitle(title);
   };
@@ -625,27 +527,16 @@ function App() {
     setMnTitle(title);
   };
   const setModT = (title: string) => {
-    console.log(title);
     setModTitle(title);
   };
   const submit = () => {
     setSubmited((prev) => prev + 1);
-
-    console.log(priceFrom);
-    console.log(priceTo);
   };
   const setMan = (man: string) => {
     setManType(man);
     setCh(man);
   };
-  const brgClick = () => {
-    let but = document.getElementById("selectDropdown-3");
-    console.log(5);
-    if (but) {
-      console.log(but.innerHTML);
-      but.click();
-    }
-  };
+
   const SmnN = (items: number) => {
     setMnN(items);
   };
@@ -682,24 +573,20 @@ function App() {
       setMoto(moto);
     }
   };
+  const setLd = (loading: string) => {
+    setLoading(loading);
+  };
   const setMd = (md: string) => {
-    console.log(md);
     setModelId(md);
   };
   const setMnT = (title: string) => {
-    console.log(title);
     setMnTitle(title);
   };
   const setSItems = (items: string[]) => {
     setSelItems(items);
   };
 
-  if (
-    mans.length === 0 ||
-    categorys.length === 0 ||
-    // products.length === 0 ||
-    models.length < 15
-  ) {
+  if (mans.length === 0 || categorys.length === 0 || models.length < 15) {
     return (
       <div className="App">
         <Navbar.Brand href="/">
@@ -866,6 +753,7 @@ function App() {
                           <Models
                             man={manType}
                             mans={mans}
+                            onTlChange={setLd}
                             Title={modTitle}
                             selItems={selItems}
                             onselModsChange={SmnN}
@@ -1198,9 +1086,6 @@ function App() {
                   setPage(page);
                   setProducts((prev) => []);
                   setModels((prev) => []);
-                  // setPeriod(period);
-                  // setS
-                  console.log(s_url);
                 }}
                 ellipsis={0}
               />
