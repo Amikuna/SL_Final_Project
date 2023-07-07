@@ -49,12 +49,12 @@ const Model: React.FC<checkMenu> = ({
   }, [man]);
   useEffect(() => {
     mans
-      .filter((mn) => man.split("-").includes(mn.man_id))
+      .filter((mn) => mns.includes(mn.man_id))
       .forEach((m) => {
         mnNs.push(m.man_name);
       });
     setSelectedMans(mnNs);
-  }, [man]);
+  }, [mns]);
 
   const handleItemClick = (itemValue: string) => {
     let ms = selectedMans;
@@ -154,26 +154,40 @@ const Model: React.FC<checkMenu> = ({
       setClas("txt");
     } else {
       let text = "";
-      selectedMans.forEach((man, index) => {
-        const selectedModels = selectedItems
-          .filter((item) => item.startsWith(man))
-          .map((item) => item.substring(man.length + 1));
+      let id = "";
+      selectedItems.map((items) => {
+        Object.keys(prods).map((pk) => {
+          prods[pk].map((pr) => {
+            id =
+              id +
+              selectedMans.filter(
+                (mn) =>
+                  mn ===
+                  mans.filter((m) => m.man_id.toString() == pk)[0].man_name
+              );
+            if (pr.includes(items)) {
+              if (text === "") {
+                text = text + items;
+              } else {
+                text = text + "," + items;
+              }
 
-        if (index > 0) {
-          text += "-";
-        }
-
-        text += man;
-        if (selectedModels.length > 0) {
-          text += "." + selectedModels.join(",");
-        }
+              id =
+                id +
+                "." +
+                mods.filter((md) => md.model_name == items)[0].model_id;
+            }
+          });
+          id = id + "-";
+        });
       });
+      onModChange(id);
 
       setTitle(text);
       onTitleChange(text);
       setClas("txt-active");
     }
-  }, [prods, selectedItems, selectedMans]);
+  }, [prods, selectedItems]);
   const click = () => {
     if (dropdown.current) {
       dropdown.current.click();
