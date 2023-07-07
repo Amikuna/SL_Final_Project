@@ -46,6 +46,7 @@ const Model: React.FC<checkMenu> = ({
 
   useEffect(() => {
     setMns(man.split("-"));
+    console.log("man changed", selectedItems);
   }, [man]);
   useEffect(() => {
     mans
@@ -117,77 +118,94 @@ const Model: React.FC<checkMenu> = ({
     });
   }, [man, selectedItems, selectedMans, manNs, prods]);
   useEffect(() => {
-    // setMods((prev) => []);
-    // console.log(man);
-    // console.log(mans);
-    let ln: ModelProps[] = [];
     let prd: obj = {};
     let ks: string[] = [];
     let md: string[] = [];
-    mns.map((mn, index) => {
-      let mod: string[] = [];
-      fetch(`https://api2.myauto.ge/ka/getManModels?man_id=${mn}`)
-        .then((response) => response.json())
-        .then((data: ModProps) => {
-          if (data) {
-            setMods((prev) => [...prev, ...data.data]);
-            if (mns[index] !== "undefined" && manNs[index]) {
-              md.push(manNs[index].man_name);
-              data.data.forEach((dat) => {
-                md.push(dat.model_name);
-                mod.push(dat.model_name);
-              });
-              prd[mn] = mod;
-              if (!ks.includes(mn)) ks.push(mn);
+
+    Promise.all(
+      mns.map((mn, index) => {
+        let mod: string[] = [];
+
+        return fetch(`https://api2.myauto.ge/ka/getManModels?man_id=${mn}`)
+          .then((response) => response.json())
+          .then((data: ModProps) => {
+            if (data) {
+              setMods((prev) => [...prev, ...data.data]);
+              if (mns[index] !== "undefined" && manNs[index]) {
+                md.push(manNs[index].man_name);
+                data.data.forEach((dat) => {
+                  md.push(dat.model_name);
+                  mod.push(dat.model_name);
+                });
+                prd[mn] = mod;
+                if (!ks.includes(mn)) ks.push(mn);
+              }
             }
-          }
-        });
-    });
-    setProds(prd);
-    setPKeys(ks);
-    setModNames(md);
+          });
+      })
+    )
+      .then(() => {
+        setProds(prd);
+        setPKeys(ks);
+        setModNames(md);
+      })
+      .catch((error) => {
+        // Handle any error that occurred during the fetch requests
+        console.log(error);
+      });
   }, [mns]);
+
   useEffect(() => {
     if (selectedItems.length === 0) {
       setTitle("ყველა მოდელი");
       onTitleChange("ყველა მოდელი");
       setClas("txt");
     } else {
-      let text = "";
-      let id = "";
-      selectedItems.map((items) => {
-        Object.keys(prods).map((pk) => {
-          prods[pk].map((pr) => {
-            id =
-              id +
-              selectedMans.filter(
-                (mn) =>
-                  mn ===
-                  mans.filter((m) => m.man_id.toString() == pk)[0].man_name
-              );
-            if (pr.includes(items)) {
-              if (text === "") {
-                text = text + items;
-              } else {
-                text = text + "," + items;
-              }
+      if (Object.keys(prods).length > 0) {
+        let text = "";
+        let id = "";
+        let si = selectedItems;
+        let prds = prods;
 
-              id =
-                id +
-                "." +
-                mods.filter((md) => md.model_name == items)[0].model_id;
-            }
+        console.log(si.length);
+        console.log(Object.keys(prds).length);
+
+        Object.keys(prds).map((pk) => {
+          id = id + mans.filter((mn) => mn.man_id === pk)[0].man_id;
+
+          prds[pk].map((pr) => {
+            si.map((items) => {
+              if (pr.includes(items)) {
+                if (text === "") {
+                  text = text + items;
+                } else {
+                  text = text + "," + items;
+                }
+
+                console.log(
+                  "mm",
+                  mods.filter((md) => md.model_name == items)[0].model_id
+                );
+
+                id =
+                  id +
+                  "." +
+                  mods.filter((md) => md.model_name == items)[0].model_id;
+              }
+            });
           });
+
           id = id + "-";
         });
-      });
-      onModChange(id);
 
-      setTitle(text);
-      onTitleChange(text);
-      setClas("txt-active");
+        onModChange(id);
+        setTitle(text);
+        onTitleChange(text);
+        setClas("txt char-limit");
+      }
     }
   }, [prods, selectedItems]);
+
   const click = () => {
     if (dropdown.current) {
       dropdown.current.click();
