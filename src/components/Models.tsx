@@ -9,6 +9,7 @@ type checkMenu = {
   mans: ManProps[];
   Title: string;
   selItems: string[];
+  onselModsChange: (newModel: number) => void;
   onselItemsChange: (newModel: string[]) => void;
   onModChange: (newModel: string) => void;
   onManTypeChange: (newManType: string) => void;
@@ -23,6 +24,7 @@ const Model: React.FC<checkMenu> = ({
   mans,
   Title,
   selItems,
+  onselModsChange,
   onselItemsChange,
   onModChange,
   onManTypeChange,
@@ -46,7 +48,6 @@ const Model: React.FC<checkMenu> = ({
 
   useEffect(() => {
     setMns(man.split("-"));
-    console.log("man changed", selectedItems);
   }, [man]);
   useEffect(() => {
     mans
@@ -61,10 +62,8 @@ const Model: React.FC<checkMenu> = ({
     let ms = selectedMans;
     ms = selectedMans.filter((man) => man !== itemValue);
     if (selectedMans.includes(itemValue)) {
-      if (mnNs.includes(itemValue)) {
-        // console.log(itemValue);
-      }
       setSelectedMans(ms);
+
       let dd = "";
       let title = "";
       let mnid = manNs.filter((ms) => ms.man_name !== itemValue);
@@ -73,10 +72,8 @@ const Model: React.FC<checkMenu> = ({
         onselItemsChange([]);
         onManTypeChange("");
         onModChange("");
-        // console.log("emptied");
-
-        // setSelectedMans((prev) => [...prev, ...[]]);
         onManTitleChange("ყველა მწარმოებელი");
+        onselModsChange(Math.random());
       } else {
         mnid.forEach((id, idx) => {
           if (idx !== mnid.length - 1) {
@@ -88,9 +85,9 @@ const Model: React.FC<checkMenu> = ({
           }
         });
         onManTitleChange(title);
+        onselModsChange(Math.random());
         onManTypeChange(dd);
       }
-      // console.log(dd);
     } else if (selectedItems.includes(itemValue)) {
       let it = selectedItems;
 
@@ -100,7 +97,6 @@ const Model: React.FC<checkMenu> = ({
       onselItemsChange(it);
     } else {
       if (!mnNs.includes(itemValue)) {
-        // console.log(itemValue);
         setSelectedItems([...selectedItems, itemValue]);
         onselItemsChange([...selectedItems, itemValue]);
       }
@@ -161,55 +157,49 @@ const Model: React.FC<checkMenu> = ({
       onTitleChange("ყველა მოდელი");
       setClas("txt");
     } else {
-      if (Object.keys(prods).length > 0) {
-        let text = "";
-        let id = "";
-        let si = selectedItems;
-        let prds = prods;
+      let text = "";
+      let id = "";
+      let si = selectedItems;
+      let prds = prods;
 
-        console.log(si.length);
-        console.log(Object.keys(prds).length);
+      Object.keys(prds).map((pk) => {
+        id = id + mans.filter((mn) => mn.man_id === pk)[0].man_id;
 
-        Object.keys(prds).map((pk) => {
-          id = id + mans.filter((mn) => mn.man_id === pk)[0].man_id;
-
-          prds[pk].map((pr) => {
-            si.map((items) => {
-              if (pr.includes(items)) {
-                if (text === "") {
-                  text = text + items;
-                } else {
-                  text = text + "," + items;
-                }
-
-                console.log(
-                  "mm",
-                  mods.filter((md) => md.model_name == items)[0].model_id
-                );
-
-                id =
-                  id +
-                  "." +
-                  mods.filter((md) => md.model_name == items)[0].model_id;
+        prds[pk].map((pr) => {
+          si.map((items) => {
+            if (pr.includes(items)) {
+              if (text === "") {
+                text = text + items;
+              } else {
+                text = text + "," + items;
               }
-            });
-          });
 
-          id = id + "-";
+              id =
+                id +
+                "." +
+                mods.filter((md) => md.model_name == items)[0].model_id;
+            }
+          });
         });
 
-        onModChange(id);
+        id = id + "-";
+      });
+      if (text === "") {
+        setTitle("ყველა მოდელი");
+      } else {
         setTitle(text);
-        onTitleChange(text);
-        setClas("txt char-limit");
       }
+
+      onModChange(id);
+
+      onTitleChange(text);
+      setClas("txt char-limit");
     }
   }, [prods, selectedItems]);
 
   const click = () => {
     if (dropdown.current) {
       dropdown.current.click();
-      // console.log(modNames);
     }
   };
 

@@ -7,14 +7,14 @@ import { ManProps } from "../Types/Types";
 type checkMenu = {
   mans: ManProps[];
   Title: string;
-  ch: string;
+  sMnN: number;
   onManTitleChange: (newBargType: string) => void;
   onManTypeChange: (newBargType: string) => void;
 };
 const Manufacturer: React.FC<checkMenu> = ({
   mans,
   Title,
-  ch,
+  sMnN,
   onManTitleChange,
   onManTypeChange,
 }) => {
@@ -23,19 +23,19 @@ const Manufacturer: React.FC<checkMenu> = ({
   const text = useRef<HTMLDivElement>(null);
   const [title, setTitle] = useState<string>(Title);
   const [clas, setClas] = useState<string>("txt");
+
   let mns = Title.split(",");
 
   const handleItemClick = (itemValue: string) => {
     if (selectedItems.includes(itemValue)) {
-      // onManTypeChange("");
       let it = selectedItems;
       it = selectedItems.filter((item) => item !== itemValue);
       setSelectedItems(it);
-      console.log("99999999999");
     } else {
       setSelectedItems([...selectedItems, itemValue]);
     }
   };
+
   useEffect(() => {
     if (Title !== "ყველა მწარმოებელი" && Title.includes(",")) {
       setSelectedItems(Title.split(","));
@@ -44,14 +44,15 @@ const Manufacturer: React.FC<checkMenu> = ({
     } else {
       setSelectedItems([]);
     }
-  }, [mans]);
+  }, [mans, sMnN]);
+
   useEffect(() => {
     if (selectedItems.length === 1) {
       let text = "";
       let id = "";
       text = text + selectedItems[0];
       id =
-        id + mans.filter((man) => man.man_name == selectedItems[0])[0].man_id;
+        id + mans.filter((man) => man.man_name === selectedItems[0])[0].man_id;
       setTitle(text);
       onManTitleChange(text);
       setClas("txt char-limit");
@@ -63,10 +64,10 @@ const Manufacturer: React.FC<checkMenu> = ({
       selectedItems.map((item, index) => {
         if (index === selectedItems.length - 1) {
           text = text + item;
-          id = id + mans.filter((man) => man.man_name == item)[0].man_id;
+          id = id + mans.filter((man) => man.man_name === item)[0].man_id;
         } else {
           text = text + item + ",";
-          id = id + mans.filter((man) => man.man_name == item)[0].man_id + "-";
+          id = id + mans.filter((man) => man.man_name === item)[0].man_id + "-";
         }
       });
       setClas("txt char-limit");
@@ -75,7 +76,7 @@ const Manufacturer: React.FC<checkMenu> = ({
       onManTypeChange(id);
     } else {
       if (title === "ყველა მწარმოებელი") {
-        setTitle(Title);
+        setTitle(title);
         onManTitleChange(Title);
         onManTypeChange("");
         setClas("txt");
@@ -86,14 +87,8 @@ const Manufacturer: React.FC<checkMenu> = ({
         setClas("txt");
       }
     }
-  }, [selectedItems]);
-  // useEffect(() => {
-  //   setTitle(Title);
-  //   mns.map((mn) => {
-  //     let it = selectedItems.filter((item) => mn === item);
-  //     setSelectedItems(it);
-  //   });
-  // }, [Title]);
+  }, [selectedItems, sMnN]);
+
   const click = () => {
     if (dropdown.current) {
       dropdown.current.click();

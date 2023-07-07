@@ -97,6 +97,7 @@ function App() {
   const [modTitle, setModTitle] = useState<string>("ყველა მოდელი");
   const [ch, setCh] = useState<string>("");
   const [selItems, setSelItems] = useState<string[]>([]);
+  const [MnN, setMnN] = useState<number>(0);
   const plc: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
   useEffect(() => {
@@ -618,6 +619,9 @@ function App() {
     setCategTitle(title);
   };
   const setManTitle = (title: string) => {
+    if (title === "ყველა მწარმოებელი") {
+      setModelId("");
+    }
     setMnTitle(title);
   };
   const setModT = (title: string) => {
@@ -641,6 +645,9 @@ function App() {
       console.log(but.innerHTML);
       but.click();
     }
+  };
+  const SmnN = (items: number) => {
+    setMnN(items);
   };
 
   const setCat = (cat: string) => {
@@ -680,6 +687,7 @@ function App() {
     setModelId(md);
   };
   const setMnT = (title: string) => {
+    console.log(title);
     setMnTitle(title);
   };
   const setSItems = (items: string[]) => {
@@ -834,7 +842,7 @@ function App() {
                     <Manufacturer
                       mans={mans}
                       Title={mnTitle}
-                      ch={ch}
+                      sMnN={MnN}
                       onManTitleChange={setManTitle}
                       onManTypeChange={setMan}
                     />
@@ -860,6 +868,7 @@ function App() {
                             mans={mans}
                             Title={modTitle}
                             selItems={selItems}
+                            onselModsChange={SmnN}
                             onselItemsChange={setSItems}
                             onTitleChange={setModT}
                             onManTypeChange={setMan}
